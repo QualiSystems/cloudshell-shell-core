@@ -41,13 +41,13 @@ def DriverFunction(zapped=None, tags="", alias="", description="", extraMatrixRo
     @ee
     def w3(wrapped, instance, args, kwargs):
         return wrapped(*args, **kwargs)
-    rv=w3(zapped)
-    rv.tags=tags
-    rv.alias=alias
-    rv.description=description
-    rv.extraMatrixRows=extraMatrixRows
-    rv.category=category
-    rv.order=order
+    rv = w3(zapped)
+    rv.tags = tags
+    rv.alias = alias
+    rv.description = description
+    rv.extraMatrixRows = extraMatrixRows
+    rv.category = category
+    rv.order = order
     return rv
 
 

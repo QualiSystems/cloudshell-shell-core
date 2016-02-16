@@ -25,7 +25,7 @@ class HandlerFactory:
     }
 
     @staticmethod
-    def getExecutionInfo(reservation_details, qs_logger):
+    def get_execution_info(reservation_details, qs_logger):
         def __getQualyPyVersion():
 
             # qualipy_version = 'Unknown'
@@ -50,7 +50,7 @@ class HandlerFactory:
         reservation_info = {}
         #reservation_info['CloudShell Version'] = ''
         #reservation_info['Shell Version'] = ''
-        reservation_info['QualiPy Version'] = __getQualyPyVersion()
+        #reservation_info['QualiPy Version'] = __getQualyPyVersion()
         reservation_info['Python version'] = platform.python_version()
         reservation_info['Operating System'] = platform.platform()
         reservation_info['Platform'] = platform.system()
@@ -77,7 +77,7 @@ class HandlerFactory:
         return reservation_info
 
     @staticmethod
-    def getLogger(driver_name, logger=None, logger_params={}, reservation_info={}):
+    def get_logger(driver_name, logger=None, logger_params={}, reservation_info={}):
         """ Create logger handler with provided parameters
 
         :param driver_name:
@@ -89,17 +89,17 @@ class HandlerFactory:
         if not 'ReservationId' in logger_params['reservation_details']:
             logger_params['reservation_details']['ReservationId'] = 'Autoload'
 
-        ret_logger = logger if logger else qs_logger.getQSLogger(driver_name, logger_params['handler_name'],
+        ret_logger = logger if logger else qs_logger.get_qs_logger(driver_name, logger_params['handler_name'],
                                                                  logger_params['reservation_details']['ReservationId'])
 
-        execution_info = HandlerFactory.getExecutionInfo(logger_params['reservation_details'], ret_logger)
+        execution_info = HandlerFactory.get_execution_info(logger_params['reservation_details'], ret_logger)
         execution_info['ResourceName'] = logger_params['handler_name']
-        qs_logger.logExecutionInfo(ret_logger, execution_info )
+        qs_logger.log_execution_info(ret_logger, execution_info )
 
         return ret_logger
 
     @staticmethod
-    def createHandler(handler_name, host, username='', password='', session_handler_name='ssh', port=None,
+    def create_handler(handler_name, host, username='', password='', session_handler_name='ssh', port=None,
                       timeout=10, logger=None, **kwargs):
         """ Create resource handler with provided attributes, create nessesari logger, connection manager and snmp_handler for it
 
@@ -124,7 +124,7 @@ class HandlerFactory:
         else:
             reservation_info = {}
         if not logger:
-            logger = HandlerFactory.getLogger(handler_name, logger, logger_params, reservation_info)
+            logger = HandlerFactory.get_logger(handler_name, logger, logger_params, reservation_info)
 
         connection_manager = ConnectionManager(username=username, password=password, host=host, port=port,
                                                timeout=timeout, logger=logger, connection_type=session_handler_name,
