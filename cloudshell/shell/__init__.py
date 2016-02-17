@@ -1,1 +1,3 @@
-__author__ = 'ini'
+__author__ = 'coye'
+from pkgutil import extend_path
+__path__ = extend_path(__path__, __name__)
