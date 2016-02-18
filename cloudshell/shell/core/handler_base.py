@@ -22,7 +22,8 @@ class HandlerBase:
         self._prompt = '.*[>#] *$'
         self._params_sep = ' '
         self._command_retries = 3
-        self._expected_map = dict(HandlerBase.EXPECTED_MAP)
+        self._expected_map = HandlerBase.EXPECTED_MAP
+        # Todo refactor snmp handler
         self._snmp_handler = None
 
     def _send_command(self, command, expected_str=None, expected_map=None, timeout=30, retry_count=10,
