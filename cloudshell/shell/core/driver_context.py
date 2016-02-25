@@ -1,4 +1,4 @@
-﻿class InitCommandContext:
+class InitCommandContext:
     def __init__(self, connectivity, resource):
         self.connectivity = connectivity  # Connectivity details that can help connect to the APIs
         """:type : ConnectivityContext"""
@@ -31,12 +31,12 @@ class ConnectivityContext:
 
 
 class ResourceContextDetails:
-    def __init__(self, id, name, fullname, type, address, model, family, description, attributes, appdata_json,vmdata_json):
+    def __init__(self, id, name, fullname, type, address, model, family, description, attributes, app_context):
         self.id = id  # The identifier of the resource / service / app - consistent value that can't be changed / renamed by the user
         """:type : str"""
         self.name = name  # The name of the resource
         """:type : str"""
-        self.fullname = fullname  # The full name (path) of the resource
+        self.fullname = fullname  # The full name of the resource
         """:type : str"""
         self.type = type  # The type of the resource  (Service, App, Resource)
         """:type : str"""
@@ -50,9 +50,14 @@ class ResourceContextDetails:
         """:type : str"""
         self.attributes = attributes  # A dictionary that contains the resource attributes (name, value)
         """:type : dict[str,str]"""
-        self.appdata_json = appdata_json;  # In case of an app, a json serialized object that contains the app details, including the selected deployment and installation configuration
+        self.app_context = app_context
+        """:type : AppContext"""
+
+class AppContext:
+    def __init__(self, app_request_json, deployed_app_json):
+        self.app_request_json = app_request_json    # app request details: selected deployment path
         """:type : str"""
-        self.vmdata_json = vmdata_json;  # In case of a virtual machine (deployed app), a json serialized object that contains the host details
+        self.deployed_app_json = deployed_app_json  # resource name, family, model, address, attributes names and values, vm details
         """:type : str"""
 
 
