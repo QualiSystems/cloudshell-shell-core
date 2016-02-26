@@ -1,4 +1,1 @@
 cloudshell-core
-cloudshell-automation-api
-cloudshell-cli
-cloudshell-snmp
