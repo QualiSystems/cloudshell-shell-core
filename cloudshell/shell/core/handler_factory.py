@@ -62,8 +62,7 @@ class HandlerFactory:
             testshell_user = reservation_details['AdminUsername']
             testshell_password = reservation_details['AdminPassword']
             testshell_domain = reservation_details['Domain']
-            testshell = CloudShellAPISession(testshell_ip, testshell_user, testshell_password, testshell_domain,
-                                                     qs_logger)
+            testshell = CloudShellAPISession(testshell_ip, testshell_user, testshell_password, testshell_domain)
             ret = testshell.GetReservationDetails(reservation_details['ReservationId'])
             reservation_descriptiono = ret.ReservationDescription
             reservation_info['EnviromentName']='None'
