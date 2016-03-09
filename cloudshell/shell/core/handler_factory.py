@@ -26,26 +26,28 @@ class HandlerFactory:
 
     @staticmethod
     def get_execution_info(reservation_details, qs_logger):
-        def __getQualyPyVersion():
-
-            # qualipy_version = 'Unknown'
-            # import pkgutil
-            # package = pkgutil.get_loader("qualipy")
-            # path = package.filename
-            # fname = os.path.join(path, 'version.txt')
-            # if os.path.lexists(fname):
-            #     f = open(fname, 'r')
-            #     qualipy_version = f.read()
-            #     f.close()
-
-            #return qualipy_version
-            return '1.0.0'
+        #def __getQualyPyVersion():
+#
+        #    # qualipy_version = 'Unknown'
+        #    # import pkgutil
+        #    # package = pkgutil.get_loader("qualipy")
+        #    # path = package.filename
+        #    # fname = os.path.join(path, 'version.txt')
+        #    # if os.path.lexists(fname):
+        #    #     f = open(fname, 'r')
+        #    #     qualipy_version = f.read()
+        #    #     f.close()
+#
+        #    #return qualipy_version
+        #    return '1.0.0'
 
         testshell = None
 
-        import socket
-        hostname = socket.gethostname()
-        testshell_ip = socket.gethostbyname(hostname)
+        #import socket
+        #hostname = socket.gethostname()
+        hostname='localhost'
+        #testshell_ip = socket.gethostbyname(hostname)
+        testshell_ip = '127.0.0.1'
 
         reservation_info = {}
         #reservation_info['CloudShell Version'] = ''
