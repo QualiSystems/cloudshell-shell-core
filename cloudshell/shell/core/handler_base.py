@@ -1,7 +1,9 @@
 __author__ = 'g8y3e'
+import socket
 
 from cloudshell.cli import expected_actions
 from cloudshell.snmp.quali_snmp import QualiSnmp
+from cloudshell.api.cloudshell_api import CloudShellAPISession
 
 
 class HandlerBase:
@@ -25,6 +27,18 @@ class HandlerBase:
         self._expected_map = HandlerBase.EXPECTED_MAP
         # Todo refactor snmp handler
         self._snmp_handler = None
+
+    @property
+    def cloud_shell_api(self):
+        if not self._cloud_shell_api:
+            hostname = socket.gethostname()
+            testshell_ip = socket.gethostbyname(hostname)
+            testshell_user = self.reservation_dict['AdminUsername']
+            testshell_password = self.reservation_dict['AdminPassword']
+            testshell_domain = self.reservation_dict['Domain']
+            self._cloud_shell_api = CloudShellAPISession(testshell_ip, testshell_user, testshell_password,
+                                                         testshell_domain)
+        return self._cloud_shell_api
 
     def _send_command(self, command, expected_str=None, expected_map=None, timeout=30, retry_count=10,
                      is_need_default_prompt=True):
