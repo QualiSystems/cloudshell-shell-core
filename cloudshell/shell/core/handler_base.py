@@ -27,6 +27,7 @@ class HandlerBase:
         self._expected_map = HandlerBase.EXPECTED_MAP
         # Todo refactor snmp handler
         self._snmp_handler = None
+        self._cloud_shell_api = None
 
     @property
     def cloud_shell_api(self):
