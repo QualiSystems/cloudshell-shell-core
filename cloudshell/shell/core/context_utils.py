@@ -7,8 +7,8 @@ from cloudshell.shell.core.context import InitCommandContext
 CONTEXT_CONTAINER = WeakKeyDictionary()
 
 
-def put_context(context):
-    CONTEXT_CONTAINER[currentThread()] = build_suitable_context(context)
+def put_context(context_obj):
+    CONTEXT_CONTAINER[currentThread()] = build_suitable_context(context_obj)
 
 
 def get_context():
@@ -17,16 +17,16 @@ def get_context():
     return None
 
 
-def build_suitable_context(context):
+def build_suitable_context(context_obj):
     module = importlib.import_module(InitCommandContext.__module__)
-    context_class = str(context.__class__).split('.')[-1]
+    context_class = str(context_obj.__class__).split('.')[-1]
     if context_class in dir(module):
         classobject = getattr(module, context_class)
     else:
         raise Exception('build_suitable_context', 'Cannot find suitable class')
     obj = classobject()
-    for attribute in filter(lambda x: not str(x).startswith('__') and not x == 'ATTRIBUTE_MAP', dir(context)):
-        value = getattr(context, attribute)
+    for attribute in filter(lambda x: not str(x).startswith('__') and not x == 'ATTRIBUTE_MAP', dir(context_obj)):
+        value = getattr(context_obj, attribute)
         if value and str(value.__class__).split('.')[-1] in dir(module):
             value = build_suitable_context(value)
 
@@ -41,7 +41,11 @@ def build_suitable_context(context):
 
 def context(func):
     def wrap_func(*args, **kwargs):
-        put_context(args[0])
+        module = importlib.import_module(InitCommandContext.__module__)
+        for arg in args:
+            if str(arg.__class__).split('.')[-1] in dir(module):
+                put_context(arg)
+                break
         return func(*args, **kwargs)
 
     return wrap_func

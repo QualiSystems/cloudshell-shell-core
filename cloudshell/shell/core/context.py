@@ -1,4 +1,4 @@
-class InitCommandContext:
+﻿class InitCommandContext:
     ATTRIBUTE_MAP = {}
 
     def __init__(self):
@@ -23,7 +23,7 @@ class ResourceCommandContext:
 
 
 class ConnectivityContext:
-    ATTRIBUTE_MAP = {'admin_auth_token_s': 'admin_auth_token'}
+    ATTRIBUTE_MAP = {}
 
     def __init__(self):
         self.server_address = None  # The address of the Quali server
@@ -40,17 +40,17 @@ class ResourceContextDetails:
     ATTRIBUTE_MAP = {}
 
     def __init__(self):
-        self.id = id  # The identifier of the resource / service / app - consistent value that can't be changed / renamed by the user
+        self.id = None  # The identifier of the resource / service / app - consistent value that can't be changed / renamed by the user
         """:type : str"""
         self.name = None  # The name of the resource
         """:type : str"""
-        self.fullname = None  # The full name (path) of the resource
+        self.fullname = None  # The full name of the resource
         """:type : str"""
         self.type = None  # The type of the resource  (Service, App, Resource)
         """:type : str"""
         self.address = None  # The IP address of the resource
         """:type : str"""
-        self.model = None # The resource model
+        self.model = None  # The resource model
         """:type : str"""
         self.family = None  # The resource family
         """:type : str"""
@@ -58,9 +58,17 @@ class ResourceContextDetails:
         """:type : str"""
         self.attributes = None  # A dictionary that contains the resource attributes (name, value)
         """:type : dict[str,str]"""
-        self.appdata_json = None  # In case of an app, a json serialized object that contains the app details, including the selected deployment and installation configuration
+        self.app_context = None
+        """:type : AppContext"""
+
+
+class AppContext:
+    ATTRIBUTE_MAP = {}
+
+    def __init__(self):
+        self.app_request_json = None  # app request details: selected deployment path
         """:type : str"""
-        self.vmdata_json = None  # In case of a virtual machine (deployed app), a json serialized object that contains the host details
+        self.deployed_app_json = None  # resource name, family, model, address, attributes names and values, vm details
         """:type : str"""
 
 
@@ -114,7 +122,7 @@ class CancellationContext:
     ATTRIBUTE_MAP = {}
 
     def __init__(self):
-        self.is_cancelled = False
+        self.is_cancelled = None
         """:type : bool"""
 
 
