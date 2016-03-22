@@ -27,7 +27,7 @@ def build_suitable_context(context_obj):
     obj = classobject()
     for attribute in filter(lambda x: not str(x).startswith('__') and not x == 'ATTRIBUTE_MAP', dir(context_obj)):
         value = getattr(context_obj, attribute)
-        if value and value.__class__.__name__ in dir(module):
+        if value and hasattr(value, '__class__') and value.__class__.__name__ in dir(module):
             value = build_suitable_context(value)
 
         if attribute in obj.ATTRIBUTE_MAP:
@@ -43,7 +43,7 @@ def context(func):
     def wrap_func(*args, **kwargs):
         module = importlib.import_module(InitCommandContext.__module__)
         for arg in args:
-            if str(arg.__class__).split('.')[-1] in dir(module):
+            if hasattr(arg, '__class__') and arg.__class__.__name__ in dir(module):
                 put_context(arg)
                 break
         return func(*args, **kwargs)
