@@ -19,15 +19,15 @@ def get_context():
 
 def build_suitable_context(context_obj):
     module = importlib.import_module(InitCommandContext.__module__)
-    context_class = str(context_obj.__class__).split('.')[-1]
+    context_class = context_obj.__class__.__name__
     if context_class in dir(module):
         classobject = getattr(module, context_class)
     else:
-        raise Exception('build_suitable_context', 'Cannot find suitable class')
+        raise Exception('build_suitable_context', 'Cannot find suitable context class')
     obj = classobject()
     for attribute in filter(lambda x: not str(x).startswith('__') and not x == 'ATTRIBUTE_MAP', dir(context_obj)):
         value = getattr(context_obj, attribute)
-        if value and str(value.__class__).split('.')[-1] in dir(module):
+        if value and value.__class__.__name__ in dir(module):
             value = build_suitable_context(value)
 
         if attribute in obj.ATTRIBUTE_MAP:
