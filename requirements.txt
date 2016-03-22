@@ -1,3 +1,4 @@
+six
 cloudshell-core<2.0
 cloudshell-automation-api==6.4.17
 cloudshell-cli<2.0
