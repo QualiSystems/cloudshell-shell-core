@@ -42,7 +42,7 @@ def build_suitable_context(context_obj):
 def context(func):
     def wrap_func(*args, **kwargs):
         module = importlib.import_module(InitCommandContext.__module__)
-        for arg in args:
+        for arg in list(args)+kwargs.values():
             if hasattr(arg, '__class__') and arg.__class__.__name__ in dir(module):
                 put_context(arg)
                 break
