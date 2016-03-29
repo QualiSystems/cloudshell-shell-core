@@ -1,4 +1,4 @@
-cloudshell-core<2.0
-cloudshell-automation-api==6.4.17
-cloudshell-cli<2.0
-cloudshell-snmp<2.0
+cloudshell-core>=2.0,<2.1
+cloudshell-automation-api>=7.0
+cloudshell-cli>=2.0,<2.1
+cloudshell-snmp>=2.0,<2.1
