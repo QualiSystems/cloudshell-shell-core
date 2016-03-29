@@ -23,7 +23,7 @@ def get_context_based_logger(context=None, handler_class=None):
 
     if isinstance(context, AutoLoadCommandContext):
         reservation_id = 'Autoload'
-        resource_name = 'Default'
+        resource_name = context.resource.name
     elif isinstance(context, ResourceCommandContext):
         reservation_id = context.reservation.reservation_id
         resource_name = context.resource.name
