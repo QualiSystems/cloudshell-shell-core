@@ -5,7 +5,7 @@ from cloudshell.shell.core.context import AutoLoadCommandContext, ResourceComman
 
 
 @inject.params(context='context', handler_class='handler_class')
-def get_context_based_logger(context=None, handler_class=None):
+def get_logger_for_driver(context=None, handler_class=None):
     """
         Create QS Logger for command context AutoLoadCommandContext, ResourceCommandContext
         or ResourceRemoteCommandContext

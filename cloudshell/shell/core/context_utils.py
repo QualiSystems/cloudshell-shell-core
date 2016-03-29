@@ -39,7 +39,7 @@ def build_suitable_context(context_obj):
     return obj
 
 
-def context(func):
+def context_from_args(func):
     def wrap_func(*args, **kwargs):
         module = importlib.import_module(InitCommandContext.__module__)
         for arg in list(args)+kwargs.values():
