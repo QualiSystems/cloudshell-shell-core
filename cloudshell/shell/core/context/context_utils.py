@@ -2,18 +2,18 @@ from weakref import WeakKeyDictionary
 from threading import currentThread
 import importlib
 
-from cloudshell.shell.core.context import InitCommandContext
+from cloudshell.shell.core.context.drivercontext import InitCommandContext
 
-CONTEXT_CONTAINER = WeakKeyDictionary()
+_CONTEXT_CONTAINER = WeakKeyDictionary()
 
 
 def put_context(context_obj):
-    CONTEXT_CONTAINER[currentThread()] = build_suitable_context(context_obj)
+    _CONTEXT_CONTAINER[currentThread()] = build_suitable_context(context_obj)
 
 
 def get_context():
-    if currentThread() in CONTEXT_CONTAINER:
-        return CONTEXT_CONTAINER[currentThread()]
+    if currentThread() in _CONTEXT_CONTAINER:
+        return _CONTEXT_CONTAINER[currentThread()]
     return None
 
 
