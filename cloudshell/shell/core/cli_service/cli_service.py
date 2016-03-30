@@ -1,5 +1,5 @@
 from cloudshell.shell.core.cli_service.cli_service_interface import CliServiceInterface
-from cloudshell.shell.core.command_template.command_template_service import CommandTemplateService
+# from cloudshell.shell.core.command_template.command_template_service import CommandTemplateService
 import re
 
 class CliService(CliServiceInterface):
