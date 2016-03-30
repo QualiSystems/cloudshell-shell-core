@@ -1,4 +1,5 @@
 import re
+from cloudshell.shell.core.cli_service.cli_service import CliService
 from cloudshell.shell.core.command_template.command_template_validator import CommandTemplateValidator
 
 _TEMPLATE_DICT = {}
@@ -31,7 +32,6 @@ class CommandTemplateService:
 
         commands_list = CommandTemplateService.get_commands_list(command_map)
         output = CommandTemplateService.send_commands_list(commands_list, send_command_func)
-        CommandTemplateService._check_output_for_errors(output)
         return output
 
 
@@ -44,6 +44,3 @@ class CommandTemplateService:
                 prepared_commands.append(CommandTemplateValidator.get_validate_list(command_template, value))
         return prepared_commands
 
-    @staticmethod
-    def rollback():
-        CommandTemplateService.execute_command_map({'rollback': []})
