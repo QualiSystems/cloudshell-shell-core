@@ -11,5 +11,4 @@ TEST_TEMPLATE = {
                                            'Interface name is incorrect!')
 }
 
-if __name__ == "__main__":
-    CommandTemplateService.execute_command_map(TEST_TEMPLATE, send_command)
+CommandTemplateService.execute_command_map(TEST_TEMPLATE, send_command)
