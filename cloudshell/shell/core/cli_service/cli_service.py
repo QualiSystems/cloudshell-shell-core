@@ -1,14 +1,134 @@
+import time
+
 from cloudshell.shell.core.cli_service.cli_service_interface import CliServiceInterface
-# from cloudshell.shell.core.command_template.command_template_service import CommandTemplateService
 import re
+import inject
+
 
 class CliService(CliServiceInterface):
-
     def __init__(self):
-        self._error_list = []
+        self._config = inject.instance('config')
+        self._error_list = self._config.ERROR_LIST
+        self._config_mode_prompt = self._config.CONFIG_MODE_PROMPT
+        self._prompt = self._config.PROMPT
+        self._expected_map = self._config.EXPECTED_MAP
+        self._command_retries = self._config.COMMAND_RETRIES
 
-    def _check_output_for_errors(self, output):
-        for error_pattern in self._error_list:
+    def update_error_list(self, error_list):
+        self._error_list += error_list
+
+    @inject.params(session='session', logger='logger')
+    def send_config_command(self, command, expected_str=None, expected_map=None, timeout=30, retry_count=10,
+                            is_need_default_prompt=False, logger=None):
+        """Send command into configuration mode, enter to config mode if needed
+
+        :param command: command to send
+        :param expected_str: expected output string (_prompt by default)
+        :param timeout: command timeout
+        :return: received output buffer
+        """
+
+        self._enter_configuration_mode()
+
+        if expected_str is None:
+            expected_str = self._prompt
+
+        out = self.send_command(command=command, expected_str=expected_str, timeout=timeout,
+                                is_need_default_prompt=is_need_default_prompt)
+        logger.info(out)
+        return out
+
+    @inject.params(session='session', logger='logger')
+    def send_command(self, command, expected_str=None, expected_map=None, timeout=30, retry_count=10,
+                     is_need_default_prompt=True, session=None, logger=None):
+
+        """Send command in base mode
+
+        :param cmd: command to send
+        :param expected_str: expected output string (_prompt by default)
+        :param timeout: command timeout
+        :return: received output buffer
+        """
+
+
+        if not expected_map:
+            expected_map = self._expected_map
+
+        if not expected_str:
+            expected_str = self._prompt
+        else:
+            if is_need_default_prompt:
+                expected_str = expected_str + '|' + self._prompt
+
+        out = ''
+        for retry in range(self._command_retries):
+            try:
+                out = session.hardware_expect(command, expected_str, timeout, expected_map=expected_map,
+                                              retry_count=retry_count)
+                self._check_output_for_errors(out, self._error_list)
+                break
+            except Exception as e:
+                logger.error(e)
+                if retry == self._command_retries - 1:
+                    raise Exception('Can not send command')
+                session.reconnect()
+        return out
+
+    def send_command_list(self, commands_list, send_command_func=send_config_command):
+        output = ""
+        for command in commands_list:
+            output += send_command_func(command)
+        return output
+
+    @inject.params(logger='logger')
+    def _exit_configuration_mode(self, logger=None):
+        """Send 'enter' to SSH console to get prompt,
+        if config prompt received , send 'exit' command, change _prompt to DEFAULT
+        else: return
+        :return: console output
+        """
+
+        out = None
+        for retry in range(5):
+            out = self.send_command(' ')
+            if re.search(self._config_mode_prompt, out):
+                self.send_command('exit')
+            else:
+                break
+
+        return out
+
+    @inject.params(logger='logger')
+    def _enter_configuration_mode(self, logger=None):
+        """Send 'enter' to SSH console to get prompt,
+        if default prompt received , send 'configure terminal' command, change _prompt to CONFIG_MODE
+        else: return
+
+        :return: True if config mode entered, else - False
+        """
+
+        out = None
+        for retry in range(3):
+            out = self.send_command(' ')
+            if not out:
+                logger.error('Failed to get prompt, retrying ...')
+                time.sleep(1)
+
+            elif not re.search(self._config_mode_prompt, out):
+                out = self.send_command('configure', self._config_mode_prompt)
+
+            else:
+                break
+
+        if not out:
+            return False
+        # self._prompt = self.CONFIG_MODE_PROMPT
+        return re.search(self._prompt, out)
+
+    def _check_output_for_errors(self, output, error_list=None):
+        if not error_list:
+            error_list = self._error_list
+        for error_pattern in error_list:
             if re.search(error_pattern, output):
                 self.rollback()
                 raise Exception(
@@ -16,5 +136,4 @@ class CliService(CliServiceInterface):
         return output
 
     def rollback(self):
-        # CommandTemplateService.execute_command_map({'rollback': []})
         pass
