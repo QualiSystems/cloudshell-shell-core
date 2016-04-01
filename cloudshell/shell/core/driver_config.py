@@ -3,27 +3,15 @@ from collections import OrderedDict
 from cloudshell.cli.connection_manager import SessionCreator
 from cloudshell.cli.ssh_session import SSHSession
 
-
-
 ### Session information
-from cloudshell.shell.core.context.drivercontext import ResourceContextDetails
+from cloudshell.shell.core.context.context_utils import get_attribute_wrapper
 
 CONNECTION_MAP = OrderedDict()
 
 ssh_session = SessionCreator(SSHSession)
 
-def get_wrapper(attribute):
-    def get_attribute(context, api):
-        if not isinstance(context, ResourceContextDetails):
-            raise Exception('Wrong context supplied')
-        resolved_attribute = context.attributes.get(attribute)
-        if not resolved_attribute:
-            raise Exception('Attribute ' + attribute + ' is empty')
-        return resolved_attribute
-    return get_attribute
-
-ssh_session.kwargs = {'username': get_wrapper('username'), 'password': get_wrapper('password'),
-                      'host': get_wrapper('host')}
+ssh_session.kwargs = {'username': get_attribute_wrapper('username'), 'password': get_attribute_wrapper('password'),
+                      'host': get_attribute_wrapper('host')}
 
 CONNECTION_MAP['ssh'] = ssh_session
 # CONNECTION_MAP['tcp'] = SessionHelper(TCPSession)
