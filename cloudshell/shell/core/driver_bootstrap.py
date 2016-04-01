@@ -42,5 +42,9 @@ class DriverBootstrap(object):
         # Binding from handler Class
         binder.bind('handler_class', HandlerBase)
 
+        # Binding for API
+        binder.bind('api', 'sdsd')
+
+
     def configuration(self, binder):
         pass
