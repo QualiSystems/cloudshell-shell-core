@@ -2,7 +2,7 @@ from collections import OrderedDict
 
 from cloudshell.cli.connection_manager import SessionCreator
 from cloudshell.cli.ssh_session import SSHSession
-
+from cloudshell.cli.connection_manager import ReturnToPoolProxy
 
 
 ### Session information
@@ -10,7 +10,6 @@ from cloudshell.shell.core.context.drivercontext import ResourceContextDetails
 
 CONNECTION_MAP = OrderedDict()
 
-ssh_session = SessionCreator(SSHSession)
 
 def get_wrapper(attribute):
     def get_attribute(context, api):
@@ -22,6 +21,8 @@ def get_wrapper(attribute):
         return resolved_attribute
     return get_attribute
 
+ssh_session = SessionCreator(SSHSession)
+ssh_session.proxy = ReturnToPoolProxy
 ssh_session.kwargs = {'username': get_wrapper('username'), 'password': get_wrapper('password'),
                       'host': get_wrapper('host')}
 
@@ -33,6 +34,16 @@ CONNECTION_MAP['ssh'] = ssh_session
 #                                                     'console_server_password', 'console_port'])
 # CONNECTION_MAP['telnet'] = SessionHelper(TelnetSession)
 # CONNECTION_MAP['ssh'] = SessionHelper(SSHSession)
+
+CONNECTION_TYPE_AUTO = 'auto'
+DEFAULT_CONNECTION_TYPE = CONNECTION_TYPE_AUTO
+CONNECTION_TYPE = get_wrapper('Connection Type')
+
+
+POOL_TIMEOUT = 60
+
+
+DEFAULT_PROMPT = r'.*[>#]\s*$'
 
 CONFIG_MODE_PROMPT = r'.*#\s*$'
 ERROR_LIST = []

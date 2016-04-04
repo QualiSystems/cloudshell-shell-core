@@ -4,6 +4,7 @@ from cloudshell.shell.core.context.context_utils import get_context
 from cloudshell.shell.core.dependency_injection.context_based_logger import get_logger_for_driver
 from cloudshell.shell.core.handler_base import HandlerBase
 from cloudshell.shell.core import driver_config
+from cloudshell.cli.connection_manager import get_session
 
 
 class DriverBootstrap(object):
@@ -38,6 +39,9 @@ class DriverBootstrap(object):
 
         # Binding for logger
         binder.bind_to_provider('logger', get_logger_for_driver)
+
+        # Session
+        binder.bind_to_provider('session', get_session)
 
         # Binding from handler Class
         binder.bind('handler_class', HandlerBase)
