@@ -3,6 +3,7 @@ from threading import currentThread
 import importlib
 
 from cloudshell.shell.core.context.drivercontext import InitCommandContext
+from cloudshell.shell.core.context.drivercontext import ResourceContextDetails
 
 _CONTEXT_CONTAINER = WeakKeyDictionary()
 
@@ -49,3 +50,13 @@ def context_from_args(func):
         return func(*args, **kwargs)
 
     return wrap_func
+
+def get_attribute_wrapper(attribute):
+    def get_attribute(context, api):
+        if not isinstance(context, ResourceContextDetails):
+            raise Exception('Wrong context supplied')
+        resolved_attribute = context.attributes.get(attribute)
+        if not resolved_attribute:
+            raise Exception('Attribute ' + attribute + ' is empty')
+        return resolved_attribute
+    return get_attribute
