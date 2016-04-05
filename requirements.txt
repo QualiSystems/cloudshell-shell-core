@@ -1,5 +1,5 @@
 six
 cloudshell-core<2.0
-cloudshell-automation-api<2.0
+cloudshell-automation-api<7.0
 cloudshell-cli<2.0
 cloudshell-snmp<2.0
