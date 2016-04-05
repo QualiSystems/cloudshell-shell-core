@@ -43,7 +43,7 @@ def build_suitable_context(context_obj):
 def context_from_args(func):
     def wrap_func(*args, **kwargs):
         module = importlib.import_module(InitCommandContext.__module__)
-        for arg in list(args)+kwargs.values():
+        for arg in list(args) + kwargs.values():
             if hasattr(arg, '__class__') and arg.__class__.__name__ in dir(module):
                 put_context(arg)
                 break
@@ -51,12 +51,15 @@ def context_from_args(func):
 
     return wrap_func
 
+
 def get_attribute_wrapper(attribute):
-    def get_attribute(context, api):
-        if not isinstance(context, ResourceContextDetails):
+    def get_attribute(context=None, api=None):
+        if context and hasattr(context, 'resource') and isinstance(context.resource, ResourceContextDetails):
+            attributes = context.resource.attributes
+            resolved_attribute = None
+            if attribute in attributes:
+                resolved_attribute = attributes[attribute]
+            return resolved_attribute
+        else:
             raise Exception('Wrong context supplied')
-        resolved_attribute = context.attributes.get(attribute)
-        if not resolved_attribute:
-            raise Exception('Attribute ' + attribute + ' is empty')
-        return resolved_attribute
     return get_attribute

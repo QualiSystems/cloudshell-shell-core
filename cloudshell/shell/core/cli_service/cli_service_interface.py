@@ -28,10 +28,6 @@ class CliServiceInterface:
         pass
 
     @abstractmethod
-    def _check_output_for_errors(self, output, error_list=None):
-        pass
-
-    @abstractmethod
     def rollback(self):
         pass
 

@@ -1,6 +1,7 @@
 import time
 
 from cloudshell.shell.core.cli_service.cli_service_interface import CliServiceInterface
+from cloudshell.shell.core.cli_service.cli_exceptions import CommandExecutionException
 import re
 import inject
 
@@ -10,8 +11,9 @@ class CliService(CliServiceInterface):
         self._config = inject.instance('config')
         self._error_list = self._config.ERROR_LIST
         self._config_mode_prompt = self._config.CONFIG_MODE_PROMPT
-        self._prompt = self._config.PROMPT
+        self._prompt = self._config.DEFAULT_PROMPT
         self._expected_map = self._config.EXPECTED_MAP
+        self._error_map = self._config.ERROR_MAP
         self._command_retries = self._config.COMMAND_RETRIES
 
     def update_error_list(self, error_list):
@@ -50,7 +52,6 @@ class CliService(CliServiceInterface):
         :return: received output buffer
         """
 
-
         if not expected_map:
             expected_map = self._expected_map
 
@@ -63,15 +64,18 @@ class CliService(CliServiceInterface):
         out = ''
         for retry in range(self._command_retries):
             try:
-                out = session.hardware_expect(command, expected_str, timeout, expected_map=expected_map,
-                                              retry_count=retry_count)
-                self._check_output_for_errors(out, self._error_list)
+                out = session.hardware_expect(command, expected_str, expect_map=expected_map,
+                                              error_map=self._error_map, retries_count=retry_count, timeout=timeout)
                 break
+            except CommandExecutionException as e:
+                self.rollback()
+                logger.error(e)
+                raise e
             except Exception as e:
                 logger.error(e)
                 if retry == self._command_retries - 1:
                     raise Exception('Can not send command')
-                session.reconnect()
+                session.reconnect(self._prompt)
         return out
 
     def send_command_list(self, commands_list, send_command_func=send_config_command):
@@ -124,16 +128,6 @@ class CliService(CliServiceInterface):
             return False
         # self._prompt = self.CONFIG_MODE_PROMPT
         return re.search(self._prompt, out)
-
-    def _check_output_for_errors(self, output, error_list=None):
-        if not error_list:
-            error_list = self._error_list
-        for error_pattern in error_list:
-            if re.search(error_pattern, output):
-                self.rollback()
-                raise Exception(
-                    'Output contains error with pattern: "{0}", for output: "{1}"'.format(error_pattern, output))
-        return output
 
     def rollback(self):
         pass
