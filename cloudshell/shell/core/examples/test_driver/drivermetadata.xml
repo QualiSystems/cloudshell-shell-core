@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Driver Name="Test Driver" Version="1.0.0" MainClass="test_driver.TestDriver" Description="Driver description">
+  <Layout>
+      <Command Name="simple_command" DisplayName="Simple Command" Tags="">
+        <Parameters>
+          <Parameter Name="command" Type="String" Mandatory = "True" DefaultValue=""  Description=""/>
+        </Parameters>
+      </Command>
+  </Layout>
+</Driver>

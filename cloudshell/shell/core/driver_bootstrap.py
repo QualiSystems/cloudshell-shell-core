@@ -29,7 +29,7 @@ class DriverBootstrap(object):
         if not inject.is_configured():
             inject.configure(self._configure)
 
-    def base_configuration(self, binder):
+    def base_configuration(self, binder=inject.Binder()):
 
         # Driver configuration
         binder.bind('config', self._config)
@@ -39,6 +39,8 @@ class DriverBootstrap(object):
 
         # Binding for logger
         binder.bind_to_provider('logger', get_logger_for_driver)
+
+        binder.bind_to_constructor('connection_manager', ConnectionManager)
 
         # Session
         binder.bind_to_provider('session', ConnectionManager.get_session)
