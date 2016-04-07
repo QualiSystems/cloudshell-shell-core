@@ -69,6 +69,11 @@ context.resource.attributes['host'] = 'localhost'
 #         time.sleep(1)
 
 
+class MyThread(threading.Thread):
+
+    def __del__(self):
+        print('Delete Thread: '+self.getName())
+
 
 # threading.Thread(target=print_pool_size).start()
 
@@ -76,9 +81,9 @@ context.resource.attributes['host'] = 'localhost'
 #     time.sleep(tt)
 
 # dd = threading.Thread(target=wait, args=[20])
-threading.Thread(target=tt.simple_command, args=[context, '10']).start()
-threading.Thread(target=tt.simple_command, args=[context, '10']).start()
-threading.Thread(target=tt.simple_command, args=[context, '10']).start()
+MyThread(target=tt.simple_command, args=[context, '10']).start()
+MyThread(target=tt.simple_command, args=[context, '10']).start()
+MyThread(target=tt.simple_command, args=[context, '10']).start()
 
 # threading.Thread(target=tt.simple_command, args=[context, '10']).start()
 # threading.Thread(target=tt.simple_command, args=[context, '10']).start()

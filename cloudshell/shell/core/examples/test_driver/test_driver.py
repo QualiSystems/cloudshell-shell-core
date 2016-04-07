@@ -25,14 +25,14 @@ class TestDriver:
         pass
 
     @context_from_args
-    @inject.params(logger='logger', context='context')
-    def simple_command(self, context, command, logger=None):
+    @inject.params(logger='logger', context='context', cli='cli_service')
+    def simple_command(self, context, command, logger=None, cli=None):
         # ss = 'dsd'
         # for i in range(0, int(command)):
         #     logger.info('Resource: ' + context.resource.name)
         #     time.sleep(1)
         # return logger.log_path
-        cli = CliService()
         out = cli.send_command('ls')
+        out = cli.send_command('df -h')
         logger.info('Command completed')
         return out

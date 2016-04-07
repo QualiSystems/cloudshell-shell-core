@@ -1,119 +1,54 @@
-import threading
-import time
-from Queue import Queue
-import inject
-import threading
-
-class Fet:
-    def do(self, tt):
-        # with _LOCK:
-        print(tt)
-
-
-class ReturnToPoolProxy:
-    def __init__(self, instance):
-        self._instance = instance
-
-    def __getattr__(self, name):
-        return getattr(self._instance, name)
-
-    def __del__(self):
-        if CM_INSTANCE:
-            CM_INSTANCE.put_to_queue(self)
-            print('Put')
-
-
-class CM(object):
-    _CM_INSTANCE = threading.Lock()
-    def __new__(cls, *args, **kwargs):
-        with cls._SINGLETON_LOCK:
-            if not _CM_INSTANCE:
-                _CM_INSTANCE = object.__new__(cls, *args, **kwargs)
-        return _CM_INSTANCE
-
-        @classmethod
-        def is_defined(cls):
-            defined = False
-            if cls._instance:
-                defined = True
-            return defined
-
-    def __init__(self):
-        self.queue = Queue()
-        self.put_to_queue(ReturnToPoolProxy(Fet()))
-        print('CM created')
-
-    def put_to_queue(self, obj):
-        self.queue.put(obj)
-
-    def get_from_queue(self):
-        return self.queue.get(True, 10)
-
-CM_INSTANCE = CM()
-# _SINGLETON_LOCK = threading.Lock()
-
-# class Singleton(object):
-#     # _instance = None
-#
-#     def __new__(cls, *args, **kwargs):
-#
-#         if not CM_INSTANCE:
-#             with _SINGLETON_LOCK:
-#                  CM_INSTANCE = object.__new__(cls, *args, **kwargs)
-#         return cls._instance
-#
-#     @classmethod
-#     def is_defined(cls):
-#         defined = False
-#         if cls._instance:
-#             defined = True
-#         return defined
+import cloudshell.configuration as configuration
+import os
+import imp
 
 
 
-# QUEUE = Queue(maxsize=1)
-# _LOCK = threading.Lock()
+# print(configuration.__path__)
+# package = sys.modules[configuration]
+# print(dir(package))
+
+
+def search_files(search_path, pattern):
+    if not isinstance(search_path, list):
+        search_path = [search_path]
+    found_files = []
+    for path in search_path:
+        for file in os.listdir(path):
+            full_path = os.path.join(path, file)
+            if os.path.isfile(full_path):
+                if file == pattern:
+                    found_files.append(full_path)
+            else:
+                found_files += search_files(full_path, pattern)
+    return found_files
 
 
 
+def import_module(path):
+    module_dir, module_file = os.path.split(path)
+    module_name, module_ext = os.path.splitext(module_file)
+    f, pathname, desc = imp.find_module(module_name, [module_dir])
+    module_obj = imp.load_module(module_name, f, pathname, desc)
+    f.close()
+    return module_obj
 
 
 
+config_list = search_files(configuration.__path__, 'configuration.py')
+
+for config in config_list:
+    print(config)
+    module = import_module(config)
+    print(module.__name__)
+    # sys.path.append(os.path.dirname(config))
+    # module = importlib.import_module()
+
+    # print(os.path.)
+    # print(config)
+    # mod = importlib.import_module(config)
+    # dir(mod)
+# print(sys.path)
 
 
-def config(binder=inject.Binder()):
-    binder.bind_to_provider('obj', CM_INSTANCE.get_from_queue)
 
-@inject.params(obj='obj')
-def obj_print(ss, obj=None):
-    obj.do(ss)
-    time.sleep(1)
-
-
-
-inject.configure(config)
-
-
-def yy():
-    for i in range(1,10):
-        # obj = inject.instance('obj')
-        # obj.do(i)
-        # ff.do(i)
-        # time.sleep(1)
-        # QUEUE.put(ff)
-        obj_print(i)
-        # time.sleep(1)
-
-
-threading.Thread(target=yy).start()
-threading.Thread(target=yy).start()
-threading.Thread(target=yy).start()
-threading.Thread(target=yy).start()
-
-# time.sleep(2)
-# QUEUE.put(ReturnToPoolProxy(Fet()))
-
-
-# Fet().start()
-# Fet().start()
-# Fet().start()

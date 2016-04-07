@@ -19,7 +19,7 @@ class CliService(CliServiceInterface):
     def update_error_list(self, error_list):
         self._error_list += error_list
 
-    @inject.params(session='session', logger='logger')
+    @inject.params(logger='logger')
     def send_config_command(self, command, expected_str=None, expected_map=None, timeout=30, retry_count=10,
                             is_need_default_prompt=False, logger=None):
         """Send command into configuration mode, enter to config mode if needed
@@ -40,9 +40,9 @@ class CliService(CliServiceInterface):
         logger.info(out)
         return out
 
-    @inject.params(session='session', logger='logger')
+    @inject.params(logger='logger', session='session')
     def send_command(self, command, expected_str=None, expected_map=None, timeout=30, retry_count=10,
-                     is_need_default_prompt=True, session=None, logger=None):
+                     is_need_default_prompt=True, logger=None, session=None):
 
         """Send command in base mode
 
@@ -65,7 +65,8 @@ class CliService(CliServiceInterface):
         for retry in range(self._command_retries):
             try:
                 out = session.hardware_expect(command, expected_str, expect_map=expected_map,
-                                              error_map=self._error_map, retries_count=retry_count, timeout=timeout)
+                                              error_map=self._error_map, retries_count=retry_count,
+                                              timeout=timeout)
                 break
             except CommandExecutionException as e:
                 self.rollback()

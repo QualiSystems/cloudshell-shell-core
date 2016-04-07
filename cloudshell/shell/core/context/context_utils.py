@@ -2,14 +2,19 @@ from weakref import WeakKeyDictionary
 from threading import currentThread
 import importlib
 
+import inject
 from cloudshell.shell.core.context.drivercontext import InitCommandContext
 from cloudshell.shell.core.context.drivercontext import ResourceContextDetails
 
 _CONTEXT_CONTAINER = WeakKeyDictionary()
 
-
-def put_context(context_obj):
-    _CONTEXT_CONTAINER[currentThread()] = build_suitable_context(context_obj)
+@inject.params(config='config')
+def put_context(context_obj, config=None):
+    if hasattr(config, 'CONTEXT_WRAPPER') and callable(config.CONTEXT_WRAPPER):
+        suitable_context = config.CONTEXT_WRAPPER(context_obj)
+    else:
+        suitable_context = context_obj
+    _CONTEXT_CONTAINER[currentThread()] = suitable_context
 
 
 def get_context():
@@ -52,7 +57,8 @@ def context_from_args(func):
     return wrap_func
 
 
-def get_attribute_wrapper(attribute):
+def get_attribute_by_name_wrapper(attribute):
+    @inject.params(context='context', api='api')
     def get_attribute(context=None, api=None):
         if context and hasattr(context, 'resource') and isinstance(context.resource, ResourceContextDetails):
             attributes = context.resource.attributes
@@ -62,4 +68,5 @@ def get_attribute_wrapper(attribute):
             return resolved_attribute
         else:
             raise Exception('Wrong context supplied')
+
     return get_attribute
