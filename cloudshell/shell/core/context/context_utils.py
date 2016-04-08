@@ -3,8 +3,8 @@ from threading import currentThread
 import importlib
 
 import inject
-from cloudshell.shell.core.context.drivercontext import InitCommandContext
-from cloudshell.shell.core.context.drivercontext import ResourceContextDetails
+from cloudshell.shell.core.context.driver_context import InitCommandContext
+from cloudshell.shell.core.context.driver_context import ResourceContextDetails
 
 _CONTEXT_CONTAINER = WeakKeyDictionary()
 

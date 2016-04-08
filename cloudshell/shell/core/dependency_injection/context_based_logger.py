@@ -1,7 +1,7 @@
 import types
 from cloudshell.core.logger.qs_logger import get_qs_logger
 import inject
-from cloudshell.shell.core.context.drivercontext import AutoLoadCommandContext, ResourceCommandContext, \
+from cloudshell.shell.core.context.driver_context import AutoLoadCommandContext, ResourceCommandContext, \
     ResourceRemoteCommandContext
 
 

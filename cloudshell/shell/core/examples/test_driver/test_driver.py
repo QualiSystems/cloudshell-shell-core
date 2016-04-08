@@ -15,7 +15,7 @@ class TestDriver:
     @context_from_args
     def initialize(self, context):
         """
-        :type context: cloudshell.shell.core.driver_context.InitCommandContext
+        :type context: cloudshell.shell.core.context.driver_context.InitCommandContext
         """
         return 'Finished initializing'
 

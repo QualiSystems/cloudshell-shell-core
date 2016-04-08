@@ -27,7 +27,7 @@
                  if the <sources> element is not specified, all the files under the project are added to the driver's zip file -->
             <!--<sources>-->
                  <!--<source>drivermetadata.xml</source>-->
-                 <!--<source>drivercontext.py</source>-->
+                 <!--<source>driver_context.py</source>-->
                  <!--<source>test_driver.py</source>-->
                  <!--<source>requirements.txt</source>-->
             <!--</sources>-->

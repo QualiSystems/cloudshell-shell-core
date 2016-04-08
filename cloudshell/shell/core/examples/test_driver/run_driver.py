@@ -1,7 +1,7 @@
 import threading
 
 from test_driver import TestDriver
-from cloudshell.shell.core.context.drivercontext import ResourceCommandContext, ResourceContextDetails, \
+from cloudshell.shell.core.context.driver_context import ResourceCommandContext, ResourceContextDetails, \
     ReservationContextDetails
 from cloudshell.cli.connection_manager import ConnectionManager
 import time
