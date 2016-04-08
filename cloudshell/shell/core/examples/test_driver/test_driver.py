@@ -1,5 +1,5 @@
 from cloudshell.shell.core.context.context_utils import context_from_args
-from test_bootstrap import TestBootstrap
+from cloudshell.shell.core.driver_bootstrap import DriverBootstrap
 from cloudshell.shell.core.cli_service.cli_service import CliService
 import inject
 import test_config as config
@@ -7,7 +7,7 @@ import test_config as config
 
 class TestDriver:
     def __init__(self):
-        bootstrap = TestBootstrap()
+        bootstrap = DriverBootstrap()
         bootstrap.add_config(config)
         bootstrap.initialize()
         # self.config = inject.instance('config')
@@ -25,14 +25,15 @@ class TestDriver:
         pass
 
     @context_from_args
-    @inject.params(logger='logger', context='context')
-    def simple_command(self, context, command, logger=None):
+    @inject.params(logger='logger', context='context', handler='handler')
+    def simple_command(self, context, command, logger=None, handler=None):
         # ss = 'dsd'
         # for i in range(0, int(command)):
         #     logger.info('Resource: ' + context.resource.name)
         #     time.sleep(1)
         # return logger.log_path
-        cli = CliService()
-        out = cli.send_command('ls')
+        # out = cli.send_command('ls')
+        # out = cli.send_command('df -h')
+        print(handler.send_dd())
         logger.info('Command completed')
-        return out
+        return None
