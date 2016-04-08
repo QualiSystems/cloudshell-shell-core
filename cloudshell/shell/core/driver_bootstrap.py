@@ -9,7 +9,13 @@ from cloudshell.shell.core.context.context_utils import get_context
 from cloudshell.shell.core.dependency_injection.context_based_logger import get_logger_for_driver
 from cloudshell.shell.core import driver_config
 from cloudshell.shell.core.cli_service.cli_service import CliService
-import cloudshell.configuration as configuration_path
+
+try:
+    import cloudshell.configuration as configuration_path
+except:
+    configuration_path = None
+
+CONFIGURATION_PATH = './configuration'
 
 
 def search_files(search_path, pattern):
@@ -36,11 +42,14 @@ def import_module(path):
     return module_obj
 
 
+# def get_logger():
+#     get_qs_logger(reservation_id, logger_name, resource_name)
+
 class DriverBootstrap(object):
     BASE_CONFIG = driver_config
 
     def __init__(self):
-        self._modules_configuration_path = configuration_path.__path__
+        self._modules_configuration_path = configuration_path.__path__ or CONFIGURATION_PATH
         self._configuration_file_name_pattern = r'configuration.py$'
         self._bindings_file_name_pattern = r'bindings.py$'
         self._bindings_func_name = 'bindings'
@@ -94,8 +103,10 @@ class DriverBootstrap(object):
         """Binding for API"""
         binder.bind('api', 'sdsd')
 
-        """CLI service"""
+    def configuration(self, binder):
+
+        """Binding for CLI service"""
         binder.bind_to_provider('cli_service', CliService)
 
-    def configuration(self, binder):
-        pass
+        """Binding for handler"""
+        binder.bind_to_provider('handler', self._config.HANDLER_CLASS)
