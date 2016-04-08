@@ -1,7 +1,8 @@
-import cloudshell.configuration as configuration
-import os
 import imp
 
+import re
+import cloudshell.configuration as configuration
+import os
 
 
 # print(configuration.__path__)
@@ -17,12 +18,11 @@ def search_files(search_path, pattern):
         for file in os.listdir(path):
             full_path = os.path.join(path, file)
             if os.path.isfile(full_path):
-                if file == pattern:
+                if re.search(pattern, file):
                     found_files.append(full_path)
             else:
                 found_files += search_files(full_path, pattern)
     return found_files
-
 
 
 def import_module(path):
@@ -34,21 +34,29 @@ def import_module(path):
     return module_obj
 
 
-
-config_list = search_files(configuration.__path__, 'configuration.py')
+config_list = search_files(configuration_.__path__, r'bindings.py$')
 
 for config in config_list:
-    print(config)
-    module = import_module(config)
-    print(module.__name__)
-    # sys.path.append(os.path.dirname(config))
-    # module = importlib.import_module()
-
-    # print(os.path.)
     # print(config)
-    # mod = importlib.import_module(config)
-    # dir(mod)
+    module = import_module(config)
+    for key in filter(lambda x: x == 'bindings', dir(module)):
+        attr = getattr(module, key)
+        if callable(attr):
+            print(attr)
+            # print(dir(module))
+            # type(module)
+            # for key in dir(module):
+            #     attr =
+            # if attr == 'cloudshell_shell_core_bindings':
+            #     attr()
+            # if callable(func):
+            #     print(func)
+            # print(module.__name__)
+            # sys.path.append(os.path.dirname(config))
+            # module = importlib.import_module()
+
+            # print(os.path.)
+            # print(config)
+            # mod = importlib.import_module(config)
+            # dir(mod)
 # print(sys.path)
-
-
-

@@ -1,11 +1,12 @@
 import types
 from cloudshell.core.logger.qs_logger import get_qs_logger
 import inject
-from cloudshell.shell.core.context.drivercontext import AutoLoadCommandContext, ResourceCommandContext, ResourceRemoteCommandContext
+from cloudshell.shell.core.context.drivercontext import AutoLoadCommandContext, ResourceCommandContext, \
+    ResourceRemoteCommandContext
 
 
-@inject.params(context='context', handler_class='handler_class')
-def get_logger_for_driver(context=None, handler_class=None):
+@inject.params(context='context', config='config')
+def get_logger_for_driver(context=None, config=None):
     """
         Create QS Logger for command context AutoLoadCommandContext, ResourceCommandContext
         or ResourceRemoteCommandContext
@@ -13,6 +14,13 @@ def get_logger_for_driver(context=None, handler_class=None):
         :param handler_class:
         :return:
     """
+    if hasattr(config, 'HANDLER_CLASS'):
+        if callable(config.HANDLER_CLASS):
+            handler_class = config.HANDLER_CLASS()
+        else:
+            handler_class = config.HANDLER_CLASS
+    else:
+        handler_class = None
 
     if handler_class and isinstance(handler_class, types.ClassType):
         logger_name = handler_class.__name__
@@ -34,4 +42,3 @@ def get_logger_for_driver(context=None, handler_class=None):
         raise Exception('get_context_based_logger', 'Unsuppported command context provided {0}'.format(context))
 
     return get_qs_logger(reservation_id, logger_name, resource_name)
-

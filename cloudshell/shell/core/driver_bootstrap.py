@@ -1,13 +1,13 @@
 import imp
 
+import re
+
 import inject
 import os
 import types
 from cloudshell.shell.core.context.context_utils import get_context
 from cloudshell.shell.core.dependency_injection.context_based_logger import get_logger_for_driver
-from cloudshell.shell.core.handler_base import HandlerBase
 from cloudshell.shell.core import driver_config
-from cloudshell.cli.connection_manager import ConnectionManager
 from cloudshell.shell.core.cli_service.cli_service import CliService
 import cloudshell.configuration as configuration_path
 
@@ -20,7 +20,7 @@ def search_files(search_path, pattern):
         for file in os.listdir(path):
             full_path = os.path.join(path, file)
             if os.path.isfile(full_path):
-                if file == pattern:
+                if re.search(pattern, file):
                     found_files.append(full_path)
             else:
                 found_files += search_files(full_path, pattern)
@@ -41,15 +41,25 @@ class DriverBootstrap(object):
 
     def __init__(self):
         self._modules_configuration_path = configuration_path.__path__
-        self._configuration_file_name = 'configuration.py'
+        self._configuration_file_name_pattern = r'configuration.py$'
+        self._bindings_file_name_pattern = r'bindings.py$'
+        self._bindings_func_name = 'bindings'
         self._config = None
-        self._load_configuration_for_modules()
         self.add_config(DriverBootstrap.BASE_CONFIG)
+        self._load_configuration_for_modules()
 
     def _load_configuration_for_modules(self):
-        for config_path in search_files(self._modules_configuration_path, self._configuration_file_name):
+        for config_path in search_files(self._modules_configuration_path, self._configuration_file_name_pattern):
             module = import_module(config_path)
             self.add_config(module)
+
+    def _load_bindings_for_modules(self, binder):
+        for binding_file in search_files(self._modules_configuration_path, self._bindings_file_name_pattern):
+            module = import_module(binding_file)
+            for key in filter(lambda x: x == self._bindings_func_name, dir(module)):
+                attr = getattr(module, key)
+                if callable(attr):
+                    attr(binder)
 
     def add_config(self, config):
         if not hasattr(self, '_config') or not self._config:
@@ -59,6 +69,7 @@ class DriverBootstrap(object):
                 setattr(self._config, attr, getattr(config, attr))
 
     def _configure(self, binder):
+        self._load_bindings_for_modules(binder)
         self.base_configuration(binder)
         self.configuration(binder)
 
@@ -66,29 +77,24 @@ class DriverBootstrap(object):
         if not inject.is_configured():
             inject.configure(self._configure)
 
-    def base_configuration(self, binder=inject.Binder()):
+    def base_configuration(self, binder):
 
-        # Driver configuration
+        """Driver configuration"""
         binder.bind('config', self._config)
 
-        # Binding for context
+        """Binding for context"""
         binder.bind_to_provider('context', get_context)
 
-        # Binding for logger
+        """Binding for logger"""
         binder.bind_to_provider('logger', get_logger_for_driver)
 
-        binder.bind_to_constructor('connection_manager', ConnectionManager)
+        """Binding for session"""
+        binder.bind_to_provider('session', self._config.GET_SESSION)
 
-        # Session
-        binder.bind_to_provider('session', self._config.GET_SESSION_FUNCTION)
-
-        # Binding from handler Class
-        binder.bind('handler_class', HandlerBase)
-
-        # Binding for API
+        """Binding for API"""
         binder.bind('api', 'sdsd')
 
-        # CLI service
+        """CLI service"""
         binder.bind_to_provider('cli_service', CliService)
 
     def configuration(self, binder):
