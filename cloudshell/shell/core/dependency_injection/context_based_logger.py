@@ -1,8 +1,7 @@
 import types
 from cloudshell.core.logger.qs_logger import get_qs_logger
+from cloudshell.shell.core.context.context_utils import is_instance_of
 import inject
-from cloudshell.shell.core.context.drivercontext import AutoLoadCommandContext, ResourceCommandContext, \
-    ResourceRemoteCommandContext
 
 
 @inject.params(context='context', config='config')
@@ -11,7 +10,7 @@ def get_logger_for_driver(context=None, config=None):
         Create QS Logger for command context AutoLoadCommandContext, ResourceCommandContext
         or ResourceRemoteCommandContext
         :param context:
-        :param handler_class:
+        :param config:
         :return:
     """
     if hasattr(config, 'HANDLER_CLASS'):
@@ -29,13 +28,13 @@ def get_logger_for_driver(context=None, config=None):
     else:
         logger_name = 'QS'
 
-    if isinstance(context, AutoLoadCommandContext):
+    if is_instance_of(context, config.AUTOLOAD_COMMAND_CONTEXT):
         reservation_id = 'Autoload'
         resource_name = context.resource.name
-    elif isinstance(context, ResourceCommandContext):
+    elif is_instance_of(context, config.RESOURCE_COMMAND_CONTEXT):
         reservation_id = context.reservation.reservation_id
         resource_name = context.resource.name
-    elif isinstance(context, ResourceRemoteCommandContext):
+    elif is_instance_of(context, config.RESOURCE_REMOTE_COMMAND_CONTEXT):
         reservation_id = context.remote_reservation.reservation_id
         resource_name = context.remote_endpoints[0].name
     else:

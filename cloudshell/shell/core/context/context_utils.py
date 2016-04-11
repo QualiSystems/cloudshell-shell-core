@@ -8,6 +8,7 @@ from cloudshell.shell.core.context.drivercontext import ResourceContextDetails
 
 _CONTEXT_CONTAINER = WeakKeyDictionary()
 
+
 @inject.params(config='config')
 def put_context(context_obj, config=None):
     if hasattr(config, 'CONTEXT_WRAPPER') and callable(config.CONTEXT_WRAPPER):
@@ -21,6 +22,11 @@ def get_context():
     if currentThread() in _CONTEXT_CONTAINER:
         return _CONTEXT_CONTAINER[currentThread()]
     return None
+
+
+def is_instance_of(context, type_name):
+    context_type = context.__class__.__name__
+    return context_type == type_name
 
 
 def build_suitable_context(context_obj):
@@ -60,7 +66,8 @@ def context_from_args(func):
 def get_attribute_by_name_wrapper(attribute):
     @inject.params(context='context', api='api')
     def get_attribute(context=None, api=None):
-        if context and hasattr(context, 'resource') and isinstance(context.resource, ResourceContextDetails):
+        if context and hasattr(context, 'resource') and is_instance_of(context.resource,
+                                                                       ResourceContextDetails.__name__):
             attributes = context.resource.attributes
             resolved_attribute = None
             if attribute in attributes:
