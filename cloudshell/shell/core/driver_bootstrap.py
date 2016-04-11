@@ -9,6 +9,7 @@ from cloudshell.shell.core.context.context_utils import get_context
 from cloudshell.shell.core.dependency_injection.context_based_logger import get_logger_for_driver
 from cloudshell.shell.core import driver_config
 from cloudshell.shell.core.cli_service.cli_service import CliService
+from cloudshell.core.logger.qs_logger import get_qs_logger
 
 try:
     import cloudshell.configuration as configuration_path
@@ -42,13 +43,12 @@ def import_module(path):
     return module_obj
 
 
-# def get_logger():
-#     get_qs_logger(reservation_id, logger_name, resource_name)
-
 class DriverBootstrap(object):
     BASE_CONFIG = driver_config
 
     def __init__(self):
+        self._logger = get_qs_logger('Bootstrap', 'QS', 'Generic resource')
+        self._logger.debug('Initializing project')
         self._modules_configuration_path = configuration_path.__path__ or CONFIGURATION_PATH
         self._configuration_file_name_pattern = r'configuration.py$'
         self._bindings_file_name_pattern = r'bindings.py$'
@@ -59,11 +59,13 @@ class DriverBootstrap(object):
 
     def _load_configuration_for_modules(self):
         for config_path in search_files(self._modules_configuration_path, self._configuration_file_name_pattern):
+            self._logger.debug('Load configuration ' + config_path)
             module = import_module(config_path)
             self.add_config(module)
 
     def _load_bindings_for_modules(self, binder):
         for binding_file in search_files(self._modules_configuration_path, self._bindings_file_name_pattern):
+            self._logger.debug('Load binding ' + binding_file)
             module = import_module(binding_file)
             for key in filter(lambda x: x == self._bindings_func_name, dir(module)):
                 attr = getattr(module, key)
@@ -71,6 +73,7 @@ class DriverBootstrap(object):
                     attr(binder)
 
     def add_config(self, config):
+        self._logger.debug('Load configuration ' + config.__name__)
         if not hasattr(self, '_config') or not self._config:
             self._config = types.ModuleType('config')
         if isinstance(config, types.ModuleType):
@@ -83,6 +86,7 @@ class DriverBootstrap(object):
         self.configuration(binder)
 
     def initialize(self):
+        self._logger.debug('Initialize bindings')
         if not inject.is_configured():
             inject.configure(self._configure)
 
