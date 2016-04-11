@@ -20,7 +20,7 @@ class CliServiceInterface:
         pass
 
     @abstractmethod
-    def _exit_configuration_mode(self):
+    def exit_configuration_mode(self):
         pass
 
     @abstractmethod

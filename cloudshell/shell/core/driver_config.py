@@ -9,6 +9,9 @@ from collections import OrderedDict
 # CONTEXT_WRAPPER = build_suitable_context
 CONTEXT_WRAPPER = None
 
+"""Function or classobj for snmp handler creation"""
+SNMP_HANDLER = None
+
 """Function or classobj for handler creation"""
 HANDLER_CLASS = None
 

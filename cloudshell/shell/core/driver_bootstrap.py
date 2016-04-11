@@ -108,5 +108,8 @@ class DriverBootstrap(object):
         """Binding for CLI service"""
         binder.bind_to_provider('cli_service', CliService)
 
+        """Binding for snmp handler"""
+        binder.bind_to_provider('snmp_handler', self._config.SNMP_HANDLER)
+
         """Binding for handler"""
         binder.bind_to_provider('handler', self._config.HANDLER_CLASS)

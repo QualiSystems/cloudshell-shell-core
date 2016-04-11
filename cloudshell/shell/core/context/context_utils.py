@@ -56,17 +56,19 @@ def context_from_args(func):
 
     return wrap_func
 
+@inject.params(context='context')
+def get_attribute_by_name(attribute_name, context=None):
+    if context and hasattr(context, 'resource') and isinstance(context.resource, ResourceContextDetails):
+        attributes = context.resource.attributes
+        resolved_attribute = None
+        if attribute_name in attributes:
+            resolved_attribute = attributes[attribute_name]
+        return resolved_attribute
+    else:
+        raise Exception('Wrong context supplied')
 
 def get_attribute_by_name_wrapper(attribute):
-    @inject.params(context='context', api='api')
-    def get_attribute(context=None, api=None):
-        if context and hasattr(context, 'resource') and isinstance(context.resource, ResourceContextDetails):
-            attributes = context.resource.attributes
-            resolved_attribute = None
-            if attribute in attributes:
-                resolved_attribute = attributes[attribute]
-            return resolved_attribute
-        else:
-            raise Exception('Wrong context supplied')
+    def attribute_func():
+        return get_attribute_by_name(attribute)
+    return attribute_func
 
-    return get_attribute

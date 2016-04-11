@@ -51,7 +51,7 @@ class CliService(CliServiceInterface):
         :param timeout: command timeout
         :return: received output buffer
         """
-
+        self.exit_configuration_mode()
         if not expected_map:
             expected_map = self._expected_map
 
@@ -86,7 +86,7 @@ class CliService(CliServiceInterface):
         return output
 
     @inject.params(logger='logger')
-    def _exit_configuration_mode(self, logger=None):
+    def exit_configuration_mode(self, logger=None):
         """Send 'enter' to SSH console to get prompt,
         if config prompt received , send 'exit' command, change _prompt to DEFAULT
         else: return
