@@ -3,7 +3,7 @@ from threading import currentThread
 import importlib
 
 import inject
-from cloudshell.shell.core.context.context import InitCommandContext
+from cloudshell.shell.core.context import context
 from cloudshell.shell.core.context.context import ResourceContextDetails
 
 _CONTEXT_CONTAINER = WeakKeyDictionary()
@@ -23,8 +23,13 @@ def get_context():
     return None
 
 
+def is_instance_of(context, type_name):
+    context_type = context.__class__.__name__
+    return context_type == type_name
+
+
 def build_suitable_context(context_obj):
-    module = importlib.import_module(InitCommandContext.__module__)
+    module = context
     context_class = context_obj.__class__.__name__
     if context_class in dir(module):
         classobject = getattr(module, context_class)
@@ -47,7 +52,7 @@ def build_suitable_context(context_obj):
 
 def context_from_args(func):
     def wrap_func(*args, **kwargs):
-        module = importlib.import_module(InitCommandContext.__module__)
+        module = context
         for arg in list(args) + kwargs.values():
             if hasattr(arg, '__class__') and arg.__class__.__name__ in dir(module):
                 put_context(arg)
@@ -58,7 +63,7 @@ def context_from_args(func):
 
 @inject.params(context='context')
 def get_attribute_by_name(attribute_name, context=None):
-    if context and hasattr(context, 'resource') and isinstance(context.resource, ResourceContextDetails):
+    if context and hasattr(context, 'resource') and is_instance_of(context.resource, ResourceContextDetails.__name__):
         attributes = context.resource.attributes
         resolved_attribute = None
         if attribute_name in attributes:
@@ -70,5 +75,5 @@ def get_attribute_by_name(attribute_name, context=None):
 def get_attribute_by_name_wrapper(attribute):
     def attribute_func():
         return get_attribute_by_name(attribute)
-    return attribute_func
 
+    return attribute_func

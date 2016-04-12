@@ -20,6 +20,7 @@ CONFIGURATION_PATH = './configuration'
 
 
 def search_files(search_path, pattern):
+    """Recursively search file by pattern in specific path"""
     if not isinstance(search_path, list):
         search_path = [search_path]
     found_files = []
