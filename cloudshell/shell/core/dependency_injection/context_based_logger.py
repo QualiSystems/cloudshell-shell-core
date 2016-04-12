@@ -14,10 +14,7 @@ def get_logger_for_driver(context=None, config=None):
         :return:
     """
     if hasattr(config, 'HANDLER_CLASS'):
-        if callable(config.HANDLER_CLASS):
-            handler_class = config.HANDLER_CLASS()
-        else:
-            handler_class = config.HANDLER_CLASS
+        handler_class = config.HANDLER_CLASS
     else:
         handler_class = None
 
