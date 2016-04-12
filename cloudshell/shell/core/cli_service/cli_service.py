@@ -19,9 +19,9 @@ class CliService(CliServiceInterface):
     def update_error_list(self, error_list):
         self._error_list += error_list
 
-    @inject.params(logger='logger')
+    @inject.params(logger='logger', session='session')
     def send_config_command(self, command, expected_str=None, expected_map=None, timeout=30, retry_count=10,
-                            is_need_default_prompt=False, logger=None):
+                            is_need_default_prompt=False, logger=None, session=None):
         """Send command into configuration mode, enter to config mode if needed
 
         :param command: command to send
@@ -30,13 +30,13 @@ class CliService(CliServiceInterface):
         :return: received output buffer
         """
 
-        self._enter_configuration_mode()
+        self._enter_configuration_mode(session)
 
         if expected_str is None:
             expected_str = self._prompt
 
-        out = self.send_command(command=command, expected_str=expected_str, timeout=timeout,
-                                is_need_default_prompt=is_need_default_prompt)
+        out = self._send_command(command, expected_str, expected_map=expected_map, retry_count=retry_count,
+                                 is_need_default_prompt=is_need_default_prompt, timeout=timeout, session=session)
         logger.info(out)
         return out
 
@@ -51,7 +51,28 @@ class CliService(CliServiceInterface):
         :param timeout: command timeout
         :return: received output buffer
         """
-        self.exit_configuration_mode()
+        self.exit_configuration_mode(session)
+        out = ''
+        try:
+            self._send_command(command, expected_str, expected_map=expected_map, retry_count=retry_count,
+                               is_need_default_prompt=is_need_default_prompt, timeout=timeout, session=session)
+        except CommandExecutionException as e:
+            self.rollback()
+            logger.error(e)
+            raise e
+        return out
+
+    @inject.params(logger='logger')
+    def _send_command(self, command, expected_str=None, expected_map=None, timeout=30, retry_count=10,
+                      is_need_default_prompt=True, logger=None, session=None):
+
+        """Send command
+        :param command: command to send
+        :param expected_str: expected output string (_prompt by default)
+        :param timeout: command timeout
+        :return: received output buffer
+        """
+
         if not expected_map:
             expected_map = self._expected_map
 
@@ -68,10 +89,6 @@ class CliService(CliServiceInterface):
                                               error_map=self._error_map, retries_count=retry_count,
                                               timeout=timeout)
                 break
-            except CommandExecutionException as e:
-                self.rollback()
-                logger.error(e)
-                raise e
             except Exception as e:
                 logger.error(e)
                 if retry == self._command_retries - 1:
@@ -86,7 +103,7 @@ class CliService(CliServiceInterface):
         return output
 
     @inject.params(logger='logger')
-    def exit_configuration_mode(self, logger=None):
+    def exit_configuration_mode(self, session=None, logger=None):
         """Send 'enter' to SSH console to get prompt,
         if config prompt received , send 'exit' command, change _prompt to DEFAULT
         else: return
@@ -95,16 +112,16 @@ class CliService(CliServiceInterface):
 
         out = None
         for retry in range(5):
-            out = self.send_command(' ')
+            out = self._send_command(' ', session=session)
             if re.search(self._config_mode_prompt, out):
-                self.send_command('exit')
+                self._send_command('exit', session=session)
             else:
                 break
 
         return out
 
     @inject.params(logger='logger')
-    def _enter_configuration_mode(self, logger=None):
+    def _enter_configuration_mode(self, session=None, logger=None):
         """Send 'enter' to SSH console to get prompt,
         if default prompt received , send 'configure terminal' command, change _prompt to CONFIG_MODE
         else: return
@@ -114,13 +131,13 @@ class CliService(CliServiceInterface):
 
         out = None
         for retry in range(3):
-            out = self.send_command(' ')
+            out = self._send_command(' ', session=session)
             if not out:
                 logger.error('Failed to get prompt, retrying ...')
                 time.sleep(1)
 
             elif not re.search(self._config_mode_prompt, out):
-                out = self.send_command('configure', self._config_mode_prompt)
+                out = self._send_command('configure', self._config_mode_prompt, session=session)
 
             else:
                 break

@@ -27,15 +27,15 @@ RESOURCE_REMOTE_COMMAND_CONTEXT = ResourceRemoteCommandContext.__name__
 # Handler configuration
 
 """Function or classobj for snmp handler creation"""
-SNMP_HANDLER = None
+SNMP_HANDLER = ""
 
 """Function or classobj for handler creation"""
-HANDLER_CLASS = None
+HANDLER_CLASS = ""
 
 
 # Session configuration
 """Function or Classobj for session creation"""
-GET_SESSION = None
+GET_SESSION = ""
 
 """Default prompt used in CLI service"""
 DEFAULT_PROMPT = r'.*[>$#]\s*$'
