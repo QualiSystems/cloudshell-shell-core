@@ -26,6 +26,9 @@ RESOURCE_REMOTE_COMMAND_CONTEXT = ResourceRemoteCommandContext.__name__
 
 # Handler configuration
 
+"""Function or classobj for snmp handler creation"""
+SNMP_HANDLER = None
+
 """Function or classobj for handler creation"""
 HANDLER_CLASS = None
 

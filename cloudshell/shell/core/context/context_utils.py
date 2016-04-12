@@ -3,8 +3,8 @@ from threading import currentThread
 import importlib
 
 import inject
-from cloudshell.shell.core.context.drivercontext import InitCommandContext
-from cloudshell.shell.core.context.drivercontext import ResourceContextDetails
+from cloudshell.shell.core.context import driver_context
+from cloudshell.shell.core.context.driver_context import ResourceContextDetails
 
 _CONTEXT_CONTAINER = WeakKeyDictionary()
 
@@ -30,7 +30,7 @@ def is_instance_of(context, type_name):
 
 
 def build_suitable_context(context_obj):
-    module = importlib.import_module(InitCommandContext.__module__)
+    module = driver_context
     context_class = context_obj.__class__.__name__
     if context_class in dir(module):
         classobject = getattr(module, context_class)
@@ -53,7 +53,7 @@ def build_suitable_context(context_obj):
 
 def context_from_args(func):
     def wrap_func(*args, **kwargs):
-        module = importlib.import_module(InitCommandContext.__module__)
+        module = driver_context
         for arg in list(args) + kwargs.values():
             if hasattr(arg, '__class__') and arg.__class__.__name__ in dir(module):
                 put_context(arg)
@@ -63,17 +63,20 @@ def context_from_args(func):
     return wrap_func
 
 
-def get_attribute_by_name_wrapper(attribute):
-    @inject.params(context='context', api='api')
-    def get_attribute(context=None, api=None):
-        if context and hasattr(context, 'resource') and is_instance_of(context.resource,
-                                                                       ResourceContextDetails.__name__):
-            attributes = context.resource.attributes
-            resolved_attribute = None
-            if attribute in attributes:
-                resolved_attribute = attributes[attribute]
-            return resolved_attribute
-        else:
-            raise Exception('Wrong context supplied')
+@inject.params(context='context')
+def get_attribute_by_name(attribute_name, context=None):
+    if context and hasattr(context, 'resource') and is_instance_of(context.resource, ResourceContextDetails.__name__):
+        attributes = context.resource.attributes
+        resolved_attribute = None
+        if attribute_name in attributes:
+            resolved_attribute = attributes[attribute_name]
+        return resolved_attribute
+    else:
+        raise Exception('Wrong context supplied')
 
-    return get_attribute
+
+def get_attribute_by_name_wrapper(attribute):
+    def attribute_func():
+        return get_attribute_by_name(attribute)
+
+    return attribute_func
