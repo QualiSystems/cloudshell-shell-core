@@ -82,8 +82,8 @@ class DriverBootstrap(object):
                 setattr(self._config, attr, getattr(config, attr))
 
     def _configure(self, binder):
-        self._load_bindings_for_modules(binder)
         self.base_configuration(binder)
+        self._load_bindings_for_modules(binder)
         self.configuration(binder)
 
     def initialize(self):
@@ -108,8 +108,6 @@ class DriverBootstrap(object):
         """Binding for API"""
         binder.bind('api', 'sdsd')
 
-    def configuration(self, binder):
-
         """Binding for CLI service"""
         binder.bind_to_provider('cli_service', CliService)
 
@@ -118,3 +116,7 @@ class DriverBootstrap(object):
 
         """Binding for handler"""
         binder.bind_to_provider('handler', self._config.HANDLER_CLASS)
+
+
+    def configuration(self, binder):
+        pass
