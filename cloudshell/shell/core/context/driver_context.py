@@ -1,186 +1,147 @@
-﻿class InitCommandContext:
-    ATTRIBUTE_MAP = {}
-
-    def __init__(self):
-        self.connectivity = None  # Connectivity details that can help connect to the APIs
+class InitCommandContext:
+    def __init__(self, connectivity, resource):
+        self.connectivity = connectivity                # Connectivity details that can help connect to the APIs
         """:type : ConnectivityContext"""
-        self.resource = None  # The details of the resource using the driver
+        self.resource = resource                        # The details of the resource using the driver
         """:type : ResourceContextDetails"""
-
 
 class ResourceCommandContext:
-    ATTRIBUTE_MAP = {}
-
-    def __init__(self):
-        self.connectivity = None  # Connectivity details that can help connect to the APIs
+    def __init__(self, connectivity, resource, reservation, connectors):
+        self.connectivity = connectivity                # Connectivity details that can help connect to the APIs
         """:type : ConnectivityContext"""
-        self.resource = None  # The details of the resource using the driver
+        self.resource = resource                        # The details of the resource using the driver
         """:type : ResourceContextDetails"""
-        self.reservation = None  # The details of the reservation
+        self.reservation = reservation                  # The details of the reservation 
         """:type : ReservationContextDetails"""
-        self.connectors = None  # The list of visual connectors and routes that are connected to the resource (the resource will be considered as the source end point)
+        self.connectors = connectors                    # The list of visual connectors and routes that are connected to the resource (the resource will be considered as the source end point)
         """:type : list[Connector]"""
 
 
 class ConnectivityContext:
-    ATTRIBUTE_MAP = {}
-
-    def __init__(self):
-        self.server_address = None  # The address of the Quali server
+    def __init__(self, serverAddress, tsAPIPort, qualiAPIPort, token):
+        self.serverAddress = serverAddress              # The address of the Quali server 
         """:type : str"""
-        self.cloudshell_api_port = None  # the port of the TestShell API
+        self.tsAPIPort = tsAPIPort                      # the port of the TestShell API
         """:type : str"""
-        self.quali_api_port = None  # The port of the Quali API
+        self.qualiAPIPort = qualiAPIPort                # The port of the Quali API
         """:type : str"""
-        self.admin_auth_token = None  # security token
+        self.token = token                              # security token (?)
         """:type : str"""
-
 
 class ResourceContextDetails:
-    ATTRIBUTE_MAP = {}
-
-    def __init__(self):
-        self.id = None  # The identifier of the resource / service / app - consistent value that can't be changed / renamed by the user
+    def __init__(self, name, fullname, type, address, model,family,description, attributes, appDataJson, vmDataJson):
+        self.name = name                                # The name of the resource
         """:type : str"""
-        self.name = None  # The name of the resource
+        self.fullname = fullname                        # The full name (path) of the resource
         """:type : str"""
-        self.fullname = None  # The full name of the resource
+        self.type = type                                # The type of the resource  (Service, App, Resource)
         """:type : str"""
-        self.type = None  # The type of the resource  (Service, App, Resource)
+        self.address = address                          # The IP address of the resource
         """:type : str"""
-        self.address = None  # The IP address of the resource
+        self.model = model                              # The resource model
         """:type : str"""
-        self.model = None  # The resource model
+        self.family = family                            # The resource family
         """:type : str"""
-        self.family = None  # The resource family
+        self.description = description                  # The resource description
         """:type : str"""
-        self.description = None  # The resource description
-        """:type : str"""
-        self.attributes = None  # A dictionary that contains the resource attributes (name, value)
+        self.attributes = attributes                    # A dictionary that contains the resource attributes (name, value)
         """:type : dict[str,str]"""
-        self.app_context = None
-        """:type : AppContext"""
-
-
-class AppContext:
-    ATTRIBUTE_MAP = {}
-
-    def __init__(self):
-        self.app_request_json = None  # app request details: selected deployment path
+        self.appDataJson = appDataJson;                 # In case of an app, a json serialized object that contains the app details, including the selected deployment and installation configuration
         """:type : str"""
-        self.deployed_app_json = None  # resource name, family, model, address, attributes names and values, vm details
+        self.vmDataJson = vmDataJson;                   # In case of a virtual machine (deployed app), a json serialized object that contains the host details
         """:type : str"""
-
 
 class Connector:
-    ATTRIBUTE_MAP = {}
-
-    def __init__(self):
-        self.source = None  # The name of the source resource (end point)
+    def __init__(self, source, target, targetFamily, targetModel, targetType, targetAttributes, direction, alias, attributes, connection_type):
+        self.source = source                            # The name of the source resource (end point)
         """:type : str"""
-        self.target = None  # The name of the target resource (end point)
+        self.target = target                            # The name of the target resource (end point)
         """:type : str"""
-        self.target_family = None  # The family of the target resource
+        self.targetFamily = targetFamily                # The family of the target resource 
         """:type : str"""
-        self.target_model = None  # The model of the target resource
+        self.targetModel = targetModel                  # The model of the target resource 
         """:type : str"""
-        self.target_type = None  # The type of the target resource  (Service, App, Resource)
+        self.targetType = targetType                    # The type of the target resource  (Service, App, Resource)
         """:type : str"""
-        self.target_attributes = None  # A dictionary with the target resource attributes (name, value)
+        self.targetAttributes = targetAttributes        # A dictionary with the target resource attributes (name, value)
         """:type : dict[str,str]"""
-        self.direction = None  # The direction of the connection: Uni, Bi
+        self.direction = direction                      # The direction of the connection: Uni, Bi
         """:type : str"""
-        self.alias = None  # The connection alias
+        self.alias = alias                              # The connection alias
         """:type : str"""
-        self.attributes = None  # The dictionary that includes the connection attributes (name, value)
+        self.attributes = attributes                    # The dictionary that includes the connection attributes (name, value)
         """:type : dict[str,str]"""
-        self.connection_type = None  # The type of the connection: Route, Visual Connector, Physical
+        self.connection_type = connection_type          # The type of the connection: Route, Visual Connector, Physical
         """:type : str"""
-
 
 class ReservationContextDetails:
-    ATTRIBUTE_MAP = {}
-
-    def __init__(self):
-        self.reservation_id = None  # The unique identifier of the reservation
+    def __init__(self, environment_name, environment_path, domain, description, owner_user, owner_email, reservation_id):
+        self.reservation_id = reservation_id            # The unique identifier of the reservation
         """:type : str"""
-        self.environment_name = None  # The name of the environment
+        self.environment_name = environment_name        # The name of the environment
         """:type : str"""
-        self.environment_path = None  # The full path of the environment
+        self.environment_path = environment_path        # The full path of the environment
         """:type : str"""
-        self.domain = None  # The reservation domain
+        self.domain = domain                            # The reservation domain
         """:type : str"""
-        self.description = None  # The reservation description
+        self.description = description                  # The reservation description
         """:type : str"""
-        self.owner_user = None  # the owner of the reservation
+        self.owner_user = owner_user                    # the owner of the reservation
         """:type : str"""
-        self.owner_email = None  # the email of the owner of the reservation
+        self.owner_email = owner_email                  # the email of the owner of the reservation
         """:type : str"""
-
 
 class CancellationContext:
-    ATTRIBUTE_MAP = {}
-
     def __init__(self):
-        self.is_cancelled = None
+        self.is_cancelled = False
         """:type : bool"""
 
-
 class AutoLoadCommandContext:
-    ATTRIBUTE_MAP = {}
-
-    def __init__(self):
-        self.connectivity = None  # Connectivity details that can help connect to the APIs
+    def __init__(self, connectivity, resource):
+        self.connectivity = connectivity                # Connectivity details that can help connect to the APIs
         """:type : ConnectivityContext"""
-        self.resource = None  # The details of the resource using the driver
+        self.resource = resource                        # The details of the resource using the driver
         """:type : ResourceContextDetails"""
-
 
 class AutoLoadDetails:
-    ATTRIBUTE_MAP = {}
-
-    def __init__(self):
-        self.resources = None  # the list of resources (root and sub) that were discovered
+    def __init__(self, resources, attributes):
+        self.resources = resources                     # the list of resources (root and sub) that were discovered 
         """:type : list[AutoLoadResource]"""
-        self.attributes = None  # the list of attributes for the resources
+        self.attributes = attributes                   # the list of attributes for the resources 
         """:type : list[AutoLoadAttribute]"""
 
-
 class AutoLoadResource:
-    ATTRIBUTE_MAP = {}
-
-    def __init__(self):
-        self.model = None
+    def __init__(self, model, name, relative_address, unique_identifier = None):
+        self.model = model
         """:type : str"""
-        self.name = None
+        self.name = name
         """:type : str"""
-        self.relative_address = None
+        self.relative_address = relative_address
         """:type : str"""
-        self.unique_identifier = None
+        self.unique_identifier = unique_identifier
         """:type : str"""
-
 
 class AutoLoadAttribute:
-    ATTRIBUTE_MAP = {}
-
-    def __init__(self):
-        self.relative_address = None
+    def __init__(self, relative_address, attribute_name, attribute_value):
+        self.relative_address = relative_address
         """:type : str"""
-        self.attribute_name = None
+        self.attribute_name = attribute_name
         """:type : str"""
-        self.attribute_value = None
+        self.attribute_value = attribute_value
         """:type : str"""
-
 
 class ResourceRemoteCommandContext:
-    ATTRIBUTE_MAP = {}
-
-    def __init__(self):
-        self.connectivity = None  # Connectivity details that can help connect to the APIs
+    def __init__(self, connectivity, resource, reservation, connectors, ports, remote_endpoints):
+        self.connectivity = connectivity                # Connectivity details that can help connect to the APIs
         """:type : ConnectivityContext"""
-        self.resource = None  # The details of the resource using the driver
+        self.resource = resource                        # The details of the resource using the driver
         """:type : ResourceContextDetails"""
-        self.remote_reservation = None  # The details of the remote reservation
+        self.reservation = reservation                  # The details of the reservation 
         """:type : ReservationContextDetails"""
-        self.remote_endpoints = None
-        """:type : list[ResourceContextDetails]"""
+        self.connectors = connectors                    # The list of visual connectors and routes that are connected to the resource (the resource will be considered as the source end point)
+        """:type : list[Connector]"""
+        self.ports = ports
+        """:type : list[string]"""
+        self.remote_endpoints = remote_endpoints
+        """:type : list[ResourceContextDetails]"""                                                                       
+

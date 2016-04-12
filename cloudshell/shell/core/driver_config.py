@@ -1,7 +1,7 @@
 from collections import OrderedDict
 
 from cloudshell.shell.core.context.context_utils import build_suitable_context
-from cloudshell.shell.core.context.drivercontext import AutoLoadCommandContext, ResourceCommandContext, \
+from cloudshell.shell.core.context.context import AutoLoadCommandContext, ResourceCommandContext, \
     ResourceRemoteCommandContext
 
 

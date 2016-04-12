@@ -3,11 +3,10 @@ from threading import currentThread
 import importlib
 
 import inject
-from cloudshell.shell.core.context import driver_context
-from cloudshell.shell.core.context.driver_context import ResourceContextDetails
+from cloudshell.shell.core.context import context
+from cloudshell.shell.core.context.context import ResourceContextDetails
 
 _CONTEXT_CONTAINER = WeakKeyDictionary()
-
 
 @inject.params(config='config')
 def put_context(context_obj, config=None):
@@ -30,7 +29,7 @@ def is_instance_of(context, type_name):
 
 
 def build_suitable_context(context_obj):
-    module = driver_context
+    module = context
     context_class = context_obj.__class__.__name__
     if context_class in dir(module):
         classobject = getattr(module, context_class)
@@ -53,7 +52,7 @@ def build_suitable_context(context_obj):
 
 def context_from_args(func):
     def wrap_func(*args, **kwargs):
-        module = driver_context
+        module = context
         for arg in list(args) + kwargs.values():
             if hasattr(arg, '__class__') and arg.__class__.__name__ in dir(module):
                 put_context(arg)
@@ -61,7 +60,6 @@ def context_from_args(func):
         return func(*args, **kwargs)
 
     return wrap_func
-
 
 @inject.params(context='context')
 def get_attribute_by_name(attribute_name, context=None):
@@ -73,7 +71,6 @@ def get_attribute_by_name(attribute_name, context=None):
         return resolved_attribute
     else:
         raise Exception('Wrong context supplied')
-
 
 def get_attribute_by_name_wrapper(attribute):
     def attribute_func():
