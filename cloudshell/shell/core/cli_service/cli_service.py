@@ -52,9 +52,8 @@ class CliService(CliServiceInterface):
         :return: received output buffer
         """
         self.exit_configuration_mode(session)
-        out = ''
         try:
-            self._send_command(command, expected_str, expected_map=expected_map, retry_count=retry_count,
+            out = self._send_command(command, expected_str, expected_map=expected_map, retry_count=retry_count,
                                is_need_default_prompt=is_need_default_prompt, timeout=timeout, session=session)
         except CommandExecutionException as e:
             self.rollback()
