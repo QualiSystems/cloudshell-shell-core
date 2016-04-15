@@ -7,17 +7,18 @@ import inject
 
 
 class CliService(CliServiceInterface):
-    def __init__(self):
-        self._config = inject.instance('config')
-        self._error_list = self._config.ERROR_LIST
-        self._config_mode_prompt = self._config.CONFIG_MODE_PROMPT
-        self._prompt = self._config.DEFAULT_PROMPT
+    @inject.params(config='config')
+    def __init__(self, config):
+        if not config:
+            raise Exception(self.__class__.__name__, 'Config not defined')
+        self._config = config
         self._expected_map = self._config.EXPECTED_MAP
         self._error_map = self._config.ERROR_MAP
         self._command_retries = self._config.COMMAND_RETRIES
-
-    def update_error_list(self, error_list):
-        self._error_list += error_list
+        self._prompt = self._config.DEFAULT_PROMPT
+        self._config_mode_prompt = self._config.CONFIG_MODE_PROMPT
+        self._enter_config_mode_prompt_command = self._config.ENTER_CONFIG_MODE_PROMPT_COMMAND
+        self._exit_config_mode_prompt_command = self._config.EXIT_CONFIG_MODE_PROMPT_COMMAND
 
     @inject.params(logger='logger', session='session')
     def send_config_command(self, command, expected_str=None, expected_map=None, timeout=30, retry_count=10,
@@ -54,7 +55,7 @@ class CliService(CliServiceInterface):
         self.exit_configuration_mode(session)
         try:
             out = self._send_command(command, expected_str, expected_map=expected_map, retry_count=retry_count,
-                               is_need_default_prompt=is_need_default_prompt, timeout=timeout, session=session)
+                                     is_need_default_prompt=is_need_default_prompt, timeout=timeout, session=session)
         except CommandExecutionException as e:
             self.rollback()
             logger.error(e)
@@ -113,7 +114,7 @@ class CliService(CliServiceInterface):
         for retry in range(5):
             out = self._send_command(' ', session=session)
             if re.search(self._config_mode_prompt, out):
-                self._send_command('exit', session=session)
+                self._send_command(self._exit_config_mode_prompt_command, session=session)
             else:
                 break
 
@@ -136,7 +137,7 @@ class CliService(CliServiceInterface):
                 time.sleep(1)
 
             elif not re.search(self._config_mode_prompt, out):
-                out = self._send_command('configure', self._config_mode_prompt, session=session)
+                out = self._send_command(self._enter_config_mode_prompt_command, self._config_mode_prompt, session=session)
 
             else:
                 break
