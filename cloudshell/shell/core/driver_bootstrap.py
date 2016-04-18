@@ -10,6 +10,7 @@ from cloudshell.shell.core.dependency_injection.context_based_logger import get_
 from cloudshell.shell.core import driver_config
 from cloudshell.shell.core.cli_service.cli_service import CliService
 from cloudshell.core.logger.qs_logger import get_qs_logger
+from cloudshell.shell.core.dependency_injection.context_based_cloudshell_api import get_cloudshell_api
 
 try:
     import cloudshell.configuration as configuration_path
@@ -106,7 +107,7 @@ class DriverBootstrap(object):
         binder.bind_to_provider('session', self._config.GET_SESSION)
 
         """Binding for API"""
-        binder.bind('api', 'sdsd')
+        binder.bind_to_provider('api', get_cloudshell_api)
 
         """Binding for CLI service"""
         binder.bind_to_provider('cli_service', CliService)
