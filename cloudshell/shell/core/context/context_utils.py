@@ -97,17 +97,10 @@ def get_resource_name(context=None):
 
 
 @inject.params(context='context', api='api')
-def get_resource_password(context=None, api=None):
+def decrypt_password(password, context=None, api=None):
     if context and hasattr(context, 'resource') and is_instance_of(context.resource, ResourceContextDetails.__name__):
-        return api.DecryptPassword(get_attribute_by_name('Password')).Value
+        return api.DecryptPassword(get_attribute_by_name(password)).Value
     else:
         raise Exception('get_resource_password', 'Context do not has Password attribute')
 
-
-@inject.params(context='context', api='api', logger='logger')
-def get_resource_enable_password(context=None, api=None, logger=None):
-    if context and hasattr(context, 'resource') and is_instance_of(context.resource, ResourceContextDetails.__name__):
-        return api.DecryptPassword(get_attribute_by_name('Enable Password')).Value
-    else:
-        raise Exception('get_resource_enable_password', 'Context do not has Password attribute')
 
