@@ -1,14 +1,13 @@
 import imp
 
 import re
-
 import inject
 import os
 import types
 from cloudshell.shell.core.context.context_utils import get_context
 from cloudshell.shell.core.dependency_injection.context_based_logger import get_logger_for_driver
 from cloudshell.shell.core import driver_config
-from cloudshell.shell.core.cli_service.cli_service import CliService
+# from cloudshell.cli.service import CliService
 from cloudshell.core.logger.qs_logger import get_qs_logger
 from cloudshell.shell.core.dependency_injection.context_based_cloudshell_api import get_cloudshell_api
 
@@ -57,7 +56,7 @@ class DriverBootstrap(object):
         self._bindings_func_name = 'bindings'
         self._config = None
         self.add_config(DriverBootstrap.BASE_CONFIG)
-        self._load_configuration_for_modules()
+        # self._load_configuration_for_modules()
 
     def _load_configuration_for_modules(self):
         for config_path in search_files(self._modules_configuration_path, self._configuration_file_name_pattern):
@@ -83,16 +82,22 @@ class DriverBootstrap(object):
                 setattr(self._config, attr, getattr(config, attr))
 
     def _configure(self, binder):
-        self.base_configuration(binder)
+        self.base_bindings(binder)
+        self.bindings(binder)
         self._load_bindings_for_modules(binder)
-        self.configuration(binder)
 
     def initialize(self):
         self._logger.debug('Initialize bindings')
         if not inject.is_configured():
             inject.configure(self._configure)
 
-    def base_configuration(self, binder):
+    def base_bindings(self, binder):
+        """
+        Base bindings
+        :param binder: The Binder object for binding creation
+        :type binder: inject.Binder
+
+        """
 
         """Driver configuration"""
         binder.bind('config', self._config)
@@ -103,21 +108,19 @@ class DriverBootstrap(object):
         """Binding for logger"""
         binder.bind_to_provider('logger', get_logger_for_driver)
 
-        """Binding for session"""
-        binder.bind_to_provider('session', self._config.GET_SESSION)
-
         """Binding for API"""
-        binder.bind_to_provider('api', get_cloudshell_api)
+        # binder.bind_to_provider('api', get_cloudshell_api)
+        binder.bind_to_provider('api', "test")
 
-        """Binding for CLI service"""
-        binder.bind_to_provider('cli_service', CliService)
-
-        """Binding for snmp handler"""
-        binder.bind_to_provider('snmp_handler', self._config.SNMP_HANDLER)
-
-        """Binding for handler"""
-        binder.bind_to_provider('handler', self._config.HANDLER_CLASS)
+        # """Binding for handler"""
+        # binder.bind_to_provider('handler', self._config.HANDLER_CLASS)
 
 
-    def configuration(self, binder):
+    def bindings(self, binder):
+        """
+        Bindings
+        :param binder: The Binder object for binding creation
+        :type binder: inject.Binder
+
+        """
         pass

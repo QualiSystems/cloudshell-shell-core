@@ -26,29 +26,29 @@ RESOURCE_REMOTE_COMMAND_CONTEXT = ResourceRemoteCommandContext.__name__
 
 # Handler configuration
 
-"""Function or classobj for snmp handler creation"""
-SNMP_HANDLER = ""
-
-"""Function or classobj for handler creation"""
-HANDLER_CLASS = ""
-
-
-# Session configuration
-"""Function or Classobj for session creation"""
-GET_SESSION = ""
-
-"""Default prompt used in CLI service"""
-DEFAULT_PROMPT = r'.*[>$#]\s*$'
-
-"""Default config mode prompt used in CLI service"""
-CONFIG_MODE_PROMPT = r'.*#\s*$'
-
-"""Default expected map used in CLI service"""
-EXPECTED_MAP = OrderedDict()
-# # ERROR_MAP = OrderedDict({r'.*':'ErrorError'})
-
-"""Default error map used in CLI service"""
-ERROR_MAP = OrderedDict()
-
-"""Send command retries"""
-COMMAND_RETRIES = 10
+# """Function or classobj for snmp handler creation"""
+# SNMP_HANDLER = ""
+#
+# """Function or classobj for handler creation"""
+# HANDLER_CLASS = ""
+#
+#
+# # Session configuration
+# """Function or Classobj for session creation"""
+# GET_SESSION = ""
+#
+# """Default prompt used in CLI service"""
+# DEFAULT_PROMPT = r'.*[>$#]\s*$'
+#
+# """Default config mode prompt used in CLI service"""
+# CONFIG_MODE_PROMPT = r'.*#\s*$'
+#
+# """Default expected map used in CLI service"""
+# EXPECTED_MAP = OrderedDict()
+# # # ERROR_MAP = OrderedDict({r'.*':'ErrorError'})
+#
+# """Default error map used in CLI service"""
+# ERROR_MAP = OrderedDict()
+#
+# """Send command retries"""
+# COMMAND_RETRIES = 10
