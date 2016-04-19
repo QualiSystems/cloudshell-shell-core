@@ -20,9 +20,9 @@ def _open_new_api_connection(context):
             and context.connectivity \
             and context.connectivity.__class__.__name__ == 'ConnectivityContext':
 
-        server_address = context.connectivity.serverAddress
-        api_port = context.connectivity.tsAPIPort
-        token = context.connectivity.token
+        server_address = context.connectivity.server_address
+        api_port = context.connectivity.cloudshell_api_port
+        token = context.connectivity.admin_auth_token
         api = CloudShellAPISession(server_address, port=api_port, token_id=token)
         return api
     else:

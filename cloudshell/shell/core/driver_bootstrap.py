@@ -109,11 +109,8 @@ class DriverBootstrap(object):
         binder.bind_to_provider('logger', get_logger_for_driver)
 
         """Binding for API"""
-        # binder.bind_to_provider('api', get_cloudshell_api)
-        binder.bind_to_provider('api', "test")
+        binder.bind_to_provider('api', get_cloudshell_api)
 
-        # """Binding for handler"""
-        # binder.bind_to_provider('handler', self._config.HANDLER_CLASS)
 
 
     def bindings(self, binder):

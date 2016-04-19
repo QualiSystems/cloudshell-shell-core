@@ -2,7 +2,7 @@ from weakref import WeakKeyDictionary
 from threading import currentThread
 
 import inject
-from cloudshell.shell.core.context import context
+from cloudshell.shell.core.context import context as driver_context
 from cloudshell.shell.core.context.context import ResourceContextDetails
 
 _CONTEXT_CONTAINER = WeakKeyDictionary()
@@ -29,7 +29,7 @@ def is_instance_of(context, type_name):
 
 
 def build_suitable_context(context_obj):
-    module = context
+    module = driver_context
     context_class = context_obj.__class__.__name__
     if context_class in dir(module):
         classobject = getattr(module, context_class)
@@ -52,7 +52,7 @@ def build_suitable_context(context_obj):
 
 def context_from_args(func):
     def wrap_func(*args, **kwargs):
-        module = context
+        module = driver_context
         for arg in list(args) + kwargs.values():
             if hasattr(arg, '__class__') and arg.__class__.__name__ in dir(module):
                 put_context(arg)
@@ -82,25 +82,29 @@ def get_attribute_by_name_wrapper(attribute):
 
 
 @inject.params(context='context')
-def get_resource_address(context=None):
+def get_resource_address(context):
     if context and hasattr(context, 'resource') and is_instance_of(context.resource, ResourceContextDetails.__name__):
         return context.resource.address
     else:
         raise Exception('get_resource_address', 'Context do not has resource')
 
+
 @inject.params(context='context')
-def get_resource_name(context=None):
+def get_resource_name(context):
     if context and hasattr(context, 'resource') and is_instance_of(context.resource, ResourceContextDetails.__name__):
         return context.resource.name
     else:
         raise Exception('get_resource_name', 'Context do not has resource')
 
 
-@inject.params(context='context', api='api')
-def decrypt_password(password, context=None, api=None):
-    if context and hasattr(context, 'resource') and is_instance_of(context.resource, ResourceContextDetails.__name__):
-        return api.DecryptPassword(get_attribute_by_name(password)).Value
-    else:
-        raise Exception('get_resource_password', 'Context do not has Password attribute')
+@inject.params(api='api')
+def decrypt_password(password, api):
+    return api.DecryptPassword(password).Value
 
 
+def get_decrypted_password_by_attribute_name_wrapper(attribute):
+    def attribute_func():
+        password = get_attribute_by_name(attribute)
+        return decrypt_password(password)
+
+    return attribute_func
