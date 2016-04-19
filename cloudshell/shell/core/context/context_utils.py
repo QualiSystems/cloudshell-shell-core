@@ -87,3 +87,10 @@ def get_resource_address(context=None):
         return context.resource.address
     else:
         raise Exception('get_resource_address', 'Context do not has resource')
+
+@inject.params(context='context')
+def get_resource_name(context=None):
+    if context and hasattr(context, 'resource') and is_instance_of(context.resource, ResourceContextDetails.__name__):
+        return context.resource.name
+    else:
+        raise Exception('get_resource_name', 'Context do not has resource')
