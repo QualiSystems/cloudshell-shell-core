@@ -28,12 +28,14 @@ class HandlerBase:
         # Todo refactor snmp handler
         self._snmp_handler = None
         self._cloud_shell_api = None
+        self._qs_server_address = None
 
     @property
     def cloud_shell_api(self):
         if not self._cloud_shell_api:
-            hostname = socket.gethostname()
-            testshell_ip = socket.gethostbyname(hostname)
+            if not self._qs_server_address:
+                raise Exception ('HandlerBase', 'cloudshell api server address is empty')
+            testshell_ip = self._qs_server_address
             testshell_user = self.reservation_dict['AdminUsername']
             testshell_password = self.reservation_dict['AdminPassword']
             testshell_domain = self.reservation_dict['Domain']
@@ -42,7 +44,7 @@ class HandlerBase:
         return self._cloud_shell_api
 
     def _send_command(self, command, expected_str=None, expected_map=None, timeout=30, retry_count=10,
-                     is_need_default_prompt=True):
+                      is_need_default_prompt=True):
         if expected_map is None:
             expected_map = self._expected_map
 
@@ -59,7 +61,7 @@ class HandlerBase:
         for retry in range(self._command_retries):
             try:
                 out = self._session.hardware_expect(command, expected_str, timeout, expected_map=expected_map,
-                                        retry_count=retry_count)
+                                                    retry_count=retry_count)
                 break
             except Exception as e:
                 self._logger.error(e)
@@ -69,9 +71,10 @@ class HandlerBase:
         return out
 
     def set_parameters(self, json_object):
-        self.attributes_dict = json_object['resource']
-        self.reservation_dict = json_object['reservation']
-        pass
+        if 'resource' in json_object:
+            self.attributes_dict = json_object['resource']
+        if 'reservation' in json_object:
+            self.reservation_dict = json_object['reservation']
 
     def _default_actions(self):
         pass

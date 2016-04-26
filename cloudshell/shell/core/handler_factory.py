@@ -25,38 +25,12 @@ class HandlerFactory:
     }
 
     @staticmethod
-    def get_execution_info(reservation_details, qs_logger):
-        #def __getQualyPyVersion():
-#
-        #    # qualipy_version = 'Unknown'
-        #    # import pkgutil
-        #    # package = pkgutil.get_loader("qualipy")
-        #    # path = package.filename
-        #    # fname = os.path.join(path, 'version.txt')
-        #    # if os.path.lexists(fname):
-        #    #     f = open(fname, 'r')
-        #    #     qualipy_version = f.read()
-        #    #     f.close()
-#
-        #    #return qualipy_version
-        #    return '1.0.0'
-
-        testshell = None
-
-        #import socket
-        #hostname = socket.gethostname()
-        hostname='localhost'
-        #testshell_ip = socket.gethostbyname(hostname)
-        testshell_ip = '127.0.0.1'
-
+    def get_execution_info(reservation_details, qs_logger, qs_server_address='localhost'):
         reservation_info = {}
-        #reservation_info['CloudShell Version'] = ''
-        #reservation_info['Shell Version'] = ''
-        #reservation_info['QualiPy Version'] = __getQualyPyVersion()
         reservation_info['Python version'] = platform.python_version()
         reservation_info['Operating System'] = platform.platform()
         reservation_info['Platform'] = platform.system()
-        reservation_info['Hostname'] = hostname
+        reservation_info['Hostname'] = qs_server_address
 
         reservation_info['ReservationID'] = reservation_details['ReservationId']
 
@@ -64,7 +38,7 @@ class HandlerFactory:
             testshell_user = reservation_details['AdminUsername']
             testshell_password = reservation_details['AdminPassword']
             testshell_domain = reservation_details['Domain']
-            testshell = CloudShellAPISession(testshell_ip, testshell_user, testshell_password, testshell_domain)
+            testshell = CloudShellAPISession(qs_server_address, testshell_user, testshell_password, testshell_domain)
             ret = testshell.GetReservationDetails(reservation_details['ReservationId'])
             reservation_descriptiono = ret.ReservationDescription
             reservation_info['EnviromentName']='None'
@@ -91,9 +65,10 @@ class HandlerFactory:
             logger_params['reservation_details']['ReservationId'] = 'Autoload'
 
         ret_logger = logger if logger else qs_logger.get_qs_logger(driver_name, logger_params['handler_name'],
-                                                                 logger_params['reservation_details']['ReservationId'])
+                                                                   logger_params['reservation_details']['ReservationId'])
 
-        execution_info = HandlerFactory.get_execution_info(logger_params['reservation_details'], ret_logger)
+        execution_info = HandlerFactory.get_execution_info(logger_params['reservation_details'], ret_logger,
+                                                           logger_params['qs_server_address'])
         execution_info['ResourceName'] = logger_params['handler_name']
         qs_logger.log_execution_info(ret_logger, execution_info )
 
