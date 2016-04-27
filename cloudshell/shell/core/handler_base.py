@@ -34,7 +34,7 @@ class HandlerBase:
     def cloud_shell_api(self):
         if not self._cloud_shell_api:
             if not self._qs_server_address:
-                raise Exception ('HandlerBase', 'cloudshell api server address is empty')
+                raise Exception('HandlerBase', 'cloudshell api server address is empty')
             testshell_ip = self._qs_server_address
             testshell_user = self.reservation_dict['AdminUsername']
             testshell_password = self.reservation_dict['AdminPassword']
@@ -44,7 +44,7 @@ class HandlerBase:
         return self._cloud_shell_api
 
     def _send_command(self, command, expected_str=None, expected_map=None, timeout=30, retry_count=10,
-                      is_need_default_prompt=True):
+                      is_need_default_prompt=True, is_need_default_expect_list=True):
         if expected_map is None:
             expected_map = self._expected_map
 
@@ -61,7 +61,8 @@ class HandlerBase:
         for retry in range(self._command_retries):
             try:
                 out = self._session.hardware_expect(command, expected_str, timeout, expected_map=expected_map,
-                                                    retry_count=retry_count)
+                                                    retry_count=retry_count,
+                                                    is_need_default_expect_list=is_need_default_expect_list)
                 break
             except Exception as e:
                 self._logger.error(e)
