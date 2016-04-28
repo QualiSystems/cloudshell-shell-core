@@ -4,12 +4,8 @@ import re
 import inject
 import os
 import types
-from cloudshell.shell.core.context.context_utils import get_context
-from cloudshell.shell.core.dependency_injection.context_based_logger import get_logger_for_driver
 from cloudshell.shell.core import driver_config
-# from cloudshell.cli.service import CliService
 from cloudshell.core.logger.qs_logger import get_qs_logger
-from cloudshell.shell.core.dependency_injection.context_based_cloudshell_api import get_cloudshell_api
 
 try:
     import cloudshell.configuration as configuration_path
@@ -103,15 +99,13 @@ class DriverBootstrap(object):
         binder.bind('config', self._config)
 
         """Binding for context"""
-        binder.bind_to_provider('context', get_context)
+        binder.bind_to_provider('context', self._config.GET_CONTEXT_FUNCTION)
 
         """Binding for logger"""
-        binder.bind_to_provider('logger', get_logger_for_driver)
+        binder.bind_to_provider('logger', self._config.GET_LOGGER_FUNCTION)
 
         """Binding for API"""
-        binder.bind_to_provider('api', get_cloudshell_api)
-
-
+        binder.bind_to_provider('api', self._config.GET_CLOUDSHELL_API_FUNCTION)
 
     def bindings(self, binder):
         """

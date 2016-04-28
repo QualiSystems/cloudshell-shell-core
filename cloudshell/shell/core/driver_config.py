@@ -1,8 +1,8 @@
-from collections import OrderedDict
-
-from cloudshell.shell.core.context.context_utils import build_suitable_context
+from cloudshell.shell.core.context.context_utils import build_suitable_context, get_context
 from cloudshell.shell.core.context.context import AutoLoadCommandContext, ResourceCommandContext, \
     ResourceRemoteCommandContext
+from cloudshell.shell.core.dependency_injection.context_based_cloudshell_api import get_cloudshell_api
+from cloudshell.shell.core.dependency_injection.context_based_logger import get_logger_for_driver
 
 
 # Context configuration section
@@ -24,31 +24,13 @@ RESOURCE_COMMAND_CONTEXT = ResourceCommandContext.__name__
 RESOURCE_REMOTE_COMMAND_CONTEXT = ResourceRemoteCommandContext.__name__
 
 
-# Handler configuration
+# Default bindings configuration
 
-# """Function or classobj for snmp handler creation"""
-# SNMP_HANDLER = ""
-#
-# """Function or classobj for handler creation"""
-# HANDLER_CLASS = ""
-#
-#
-# # Session configuration
-# """Function or Classobj for session creation"""
-# GET_SESSION = ""
-#
-# """Default prompt used in CLI service"""
-# DEFAULT_PROMPT = r'.*[>$#]\s*$'
-#
-# """Default config mode prompt used in CLI service"""
-# CONFIG_MODE_PROMPT = r'.*#\s*$'
-#
-# """Default expected map used in CLI service"""
-# EXPECTED_MAP = OrderedDict()
-# # # ERROR_MAP = OrderedDict({r'.*':'ErrorError'})
-#
-# """Default error map used in CLI service"""
-# ERROR_MAP = OrderedDict()
-#
-# """Send command retries"""
-# COMMAND_RETRIES = 10
+"""Function used for default context binding"""
+GET_CONTEXT_FUNCTION = get_context
+
+"""Function used for default logger binding"""
+GET_LOGGER_FUNCTION = get_logger_for_driver
+
+"""Function used for default api binding"""
+GET_CLOUDSHELL_API_FUNCTION = get_cloudshell_api
