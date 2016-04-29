@@ -103,13 +103,22 @@ class DriverBootstrap(object):
         binder.bind('config', self._config)
 
         """Binding for context"""
-        binder.bind_to_provider('context', self._config.GET_CONTEXT_FUNCTION)
+        try:
+            binder.bind_to_provider('context', self._config.GET_CONTEXT_FUNCTION)
+        except inject.InjectorException:
+            pass
 
         """Binding for logger"""
-        binder.bind_to_provider('logger', self._config.GET_LOGGER_FUNCTION)
+        try:
+            binder.bind_to_provider('logger', self._config.GET_LOGGER_FUNCTION)
+        except inject.InjectorException:
+            pass
 
         """Binding for API"""
-        binder.bind_to_provider('api', self._config.GET_CLOUDSHELL_API_FUNCTION)
+        try:
+            binder.bind_to_provider('api', self._config.GET_CLOUDSHELL_API_FUNCTION)
+        except inject.InjectorException:
+            pass
 
     def bindings(self, binder):
         """
