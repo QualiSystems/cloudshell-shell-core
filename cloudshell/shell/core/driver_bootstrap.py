@@ -50,7 +50,8 @@ class DriverBootstrap(object):
         self._configuration_file_name_pattern = r'configuration.py$'
         self._bindings_file_name_pattern = r'bindings.py$'
         self._bindings_func_name = 'bindings'
-        self._config = None
+        self._config = types.ModuleType('config')
+        self._bindings = []
         self.add_config(DriverBootstrap.BASE_CONFIG)
         # self._load_configuration_for_modules()
 
@@ -71,13 +72,16 @@ class DriverBootstrap(object):
 
     def add_config(self, config):
         self._logger.debug('Load configuration ' + config.__name__)
-        if not hasattr(self, '_config') or not self._config:
-            self._config = types.ModuleType('config')
         if isinstance(config, types.ModuleType):
             for attr in filter(lambda x: x.isupper() and not x.startswith('__'), dir(config)):
                 setattr(self._config, attr, getattr(config, attr))
 
+    def add_bindings(self, bindings_func):
+        self._bindings.append(bindings_func)
+
     def _configure(self, binder):
+        for func in self._bindings:
+            func(binder)
         self.base_bindings(binder)
         self.bindings(binder)
         self._load_bindings_for_modules(binder)
