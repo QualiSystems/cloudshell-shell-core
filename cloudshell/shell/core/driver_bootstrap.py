@@ -6,7 +6,7 @@ import os
 import types
 from cloudshell.shell.core import driver_config
 from cloudshell.core.logger.qs_logger import get_qs_logger
-from cloudshell.configuration.cloudshell_shell_core_bindings import CONFIG, LOGGER, API, CONTEXT
+from cloudshell.configuration.cloudshell_shell_core_binding_keys import CONFIG, LOGGER, API, CONTEXT
 
 try:
     import cloudshell.configuration as configuration_path

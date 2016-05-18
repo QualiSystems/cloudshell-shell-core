@@ -1,4 +1,4 @@
-"""Bindings"""
+"""Binding keys"""
 
 """Config binding key"""
 CONFIG = 'config'
