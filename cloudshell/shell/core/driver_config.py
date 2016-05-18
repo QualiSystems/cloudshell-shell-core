@@ -1,5 +1,5 @@
-from cloudshell.shell.core.context.context_utils import build_suitable_context, get_context
-from cloudshell.shell.core.context.context import AutoLoadCommandContext, ResourceCommandContext, \
+from cloudshell.shell.core.context_utils import build_suitable_context, get_context
+from cloudshell.shell.core.context import AutoLoadCommandContext, ResourceCommandContext, \
     ResourceRemoteCommandContext
 from cloudshell.shell.core.dependency_injection.context_based_cloudshell_api import get_cloudshell_api
 from cloudshell.shell.core.dependency_injection.context_based_logger import get_logger_for_driver

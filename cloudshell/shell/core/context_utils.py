@@ -2,8 +2,8 @@ from weakref import WeakKeyDictionary
 from threading import currentThread
 
 import inject
-from cloudshell.shell.core.context import context as driver_context
-from cloudshell.shell.core.context.context import ResourceContextDetails
+from cloudshell.shell.core import context as driver_context
+from cloudshell.shell.core.context import ResourceContextDetails
 
 _CONTEXT_CONTAINER = WeakKeyDictionary()
 
