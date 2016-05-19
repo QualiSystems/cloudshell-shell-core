@@ -1,6 +1,6 @@
 import types
 from cloudshell.core.logger.qs_logger import get_qs_logger
-from cloudshell.shell.core.context.context_utils import is_instance_of
+from cloudshell.shell.core.context_utils import is_instance_of
 import inject
 
 

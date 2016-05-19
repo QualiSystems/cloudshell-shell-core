@@ -6,6 +6,7 @@ import os
 import types
 from cloudshell.shell.core import driver_config
 from cloudshell.core.logger.qs_logger import get_qs_logger
+from cloudshell.configuration.cloudshell_shell_core_binding_keys import CONFIG, LOGGER, API, CONTEXT
 
 try:
     import cloudshell.configuration as configuration_path
@@ -100,23 +101,23 @@ class DriverBootstrap(object):
         """
 
         """Driver configuration"""
-        binder.bind('config', self._config)
+        binder.bind(CONFIG, self._config)
 
         """Binding for context"""
         try:
-            binder.bind_to_provider('context', self._config.GET_CONTEXT_FUNCTION)
+            binder.bind_to_provider(CONTEXT, self._config.GET_CONTEXT_FUNCTION)
         except inject.InjectorException:
             pass
 
         """Binding for logger"""
         try:
-            binder.bind_to_provider('logger', self._config.GET_LOGGER_FUNCTION)
+            binder.bind_to_provider(LOGGER, self._config.GET_LOGGER_FUNCTION)
         except inject.InjectorException:
             pass
 
         """Binding for API"""
         try:
-            binder.bind_to_provider('api', self._config.GET_CLOUDSHELL_API_FUNCTION)
+            binder.bind_to_provider(API, self._config.GET_CLOUDSHELL_API_FUNCTION)
         except inject.InjectorException:
             pass
 
