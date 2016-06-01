@@ -1,3 +1,4 @@
 cloudshell-core>=2.0,<2.1
+cloudshell-automation-api>=7.0,<7.1
 inject==3.3.1
 
