@@ -4,8 +4,8 @@ from cloudshell.shell.core.context_utils import is_instance_of
 import inject
 
 
-@inject.params(context='context', config='config', api='api')
-def get_logger_for_driver(context=None, config=None, api=None):
+@inject.params(context='context', config='config')
+def get_logger_for_driver(context=None, config=None):
     """
         Create QS Logger for command context AutoLoadCommandContext, ResourceCommandContext
         or ResourceRemoteCommandContext
@@ -37,12 +37,12 @@ def get_logger_for_driver(context=None, config=None, api=None):
     else:
         raise Exception('get_context_based_logger', 'Unsuppported command context provided {0}'.format(context))
 
-    exec_info = get_execution_info(context.reservation, api)
+    exec_info = get_execution_info(context, config)
     qs_logger = get_qs_logger(reservation_id, logger_name, resource_name)
     log_execution_info(qs_logger, exec_info)
     return qs_logger
 
-def get_execution_info(reservation, api):
+def get_execution_info(context, config):
     """Aggregate information about execution server
 
 
@@ -56,24 +56,16 @@ def get_execution_info(reservation, api):
 
     reservation_info = {}
     hostname = socket.gethostname()
-
     reservation_info['Python version'] = platform.python_version()
     reservation_info['Operating System'] = platform.platform()
     reservation_info['Platform'] = platform.system()
     reservation_info['Hostname'] = hostname
     reservation_info['IP'] = socket.gethostbyname(hostname)
-    reservation_info['ReservationID'] = reservation.reservation_id
 
-    if not reservation.reservation_id == 'Autoload':
-
-        ret = api.GetReservationDetails(reservation.reservation_id)
-        reservation_description = ret.ReservationDescription
-        reservation_info['EnviromentName']='None'
-
-        if hasattr(reservation_description, 'Topologies'):
-            topologies = ret.ReservationDescription.Topologies
-            if len(topologies) > 0:
-                reservation_info['EnviromentName'] = ret.ReservationDescription.Topologies[0]
-        reservation_info['Username'] = reservation.owner_user
+    if not is_instance_of(context, config.AUTOLOAD_COMMAND_CONTEXT):
+        reservation_info['ReservationID'] = context.reservation.reservation_id
+        reservation_info['Description'] = context.reservation.description
+        reservation_info['EnviromentName'] = context.reservation.environment_name
+        reservation_info['Username'] = context.reservation.owner_user
 
     return reservation_info
