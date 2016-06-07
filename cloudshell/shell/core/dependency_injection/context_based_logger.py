@@ -1,5 +1,5 @@
 import types
-from cloudshell.core.logger.qs_logger import get_qs_logger
+from cloudshell.core.logger.qs_logger import get_qs_logger, log_execution_info
 from cloudshell.shell.core.context_utils import is_instance_of
 import inject
 
@@ -37,4 +37,35 @@ def get_logger_for_driver(context=None, config=None):
     else:
         raise Exception('get_context_based_logger', 'Unsuppported command context provided {0}'.format(context))
 
-    return get_qs_logger(reservation_id, logger_name, resource_name)
+    exec_info = get_execution_info(context, config)
+    qs_logger = get_qs_logger(reservation_id, logger_name, resource_name)
+    log_execution_info(qs_logger, exec_info)
+    return qs_logger
+
+def get_execution_info(context, config):
+    """Aggregate information about execution server
+
+
+    :param reservation: context.reservation info
+    :param api: cloudshell.api session
+
+    :return: dict with aggregated info
+    """
+
+    import platform, socket, os
+
+    reservation_info = {}
+    hostname = socket.gethostname()
+    reservation_info['Python version'] = platform.python_version()
+    reservation_info['Operating System'] = platform.platform()
+    reservation_info['Platform'] = platform.system()
+    reservation_info['Hostname'] = hostname
+    reservation_info['IP'] = socket.gethostbyname(hostname)
+
+    if not is_instance_of(context, config.AUTOLOAD_COMMAND_CONTEXT):
+        reservation_info['ReservationID'] = context.reservation.reservation_id
+        reservation_info['Description'] = context.reservation.description
+        reservation_info['EnviromentName'] = context.reservation.environment_name
+        reservation_info['Username'] = context.reservation.owner_user
+
+    return reservation_info
