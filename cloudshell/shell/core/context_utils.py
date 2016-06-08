@@ -4,6 +4,7 @@ from threading import currentThread
 import inject
 from cloudshell.shell.core import context as driver_context
 from cloudshell.shell.core.context import ResourceContextDetails
+from abc import ABCMeta
 
 _CONTEXT_CONTAINER = WeakKeyDictionary()
 
@@ -60,6 +61,17 @@ def context_from_args(func):
         return func(*args, **kwargs)
 
     return wrap_func
+
+
+class ContextFromArgsMeta(ABCMeta):
+    def __new__(metaclass, name, parents, attrs):
+        decorated_attrs = {}
+        for key, value in attrs.iteritems():
+            if callable(value) and not key.startswith('_'):
+                decorated_attrs[key] = context_from_args(value)
+            else:
+                decorated_attrs[key] = value
+        return type.__new__(metaclass, name, parents, decorated_attrs)
 
 
 @inject.params(context='context')
