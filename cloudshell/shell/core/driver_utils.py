@@ -17,12 +17,11 @@ class GlobalLock(object):
     def _wrap_lock(self, func):
         def _wrap_func(*args, **kwargs):
             if func.__name__ == '_wrap_lock_func':
-                self._lock.acquire()
-                self._event.wait()
-                self._event.clear()
-                result = func(*args, **kwargs)
-                self._event.set()
-                self._lock.release()
+                with self._lock:
+                    self._event.wait()
+                    self._event.clear()
+                    result = func(*args, **kwargs)
+                    self._event.set()
             else:
                 self._event.wait()
                 result = func(*args, **kwargs)
