@@ -1,3 +1,5 @@
+import threading
+
 import types
 from cloudshell.core.logger.qs_logger import get_qs_logger, log_execution_info
 from cloudshell.shell.core.context_utils import is_instance_of
@@ -42,6 +44,7 @@ def get_logger_for_driver(context=None, config=None):
     log_execution_info(qs_logger, exec_info)
     return qs_logger
 
+
 def get_execution_info(context, config):
     """Aggregate information about execution server
 
@@ -52,7 +55,7 @@ def get_execution_info(context, config):
     :return: dict with aggregated info
     """
 
-    import platform, socket, os
+    import platform, socket
 
     reservation_info = {}
     hostname = socket.gethostname()
@@ -69,3 +72,22 @@ def get_execution_info(context, config):
         reservation_info['Username'] = context.reservation.owner_user
 
     return reservation_info
+
+
+@inject.params(context='context', config='config')
+def get_logger_with_thread_id(context=None, config=None):
+    """
+    Create QS Logger for command context AutoLoadCommandContext, ResourceCommandContext
+    or ResourceRemoteCommandContext with thread name
+    :param context:
+    :param config:
+    :return:
+    """
+    logger = get_logger_for_driver(context, config)
+    child = logger.getChild(threading.currentThread().name)
+    for handler in logger.handlers:
+        child.addHandler(handler)
+    child.level = logger.level
+    for log_filter in logger.filters:
+        child.addFilter(log_filter)
+    return child
