@@ -19,9 +19,11 @@ class GlobalLock(object):
             if func.__name__ == '_wrap_lock_func':
                 with self._lock:
                     self._event.wait()
-                    self._event.clear()
-                    result = func(*args, **kwargs)
-                    self._event.set()
+                    try:
+                        self._event.clear()
+                        result = func(*args, **kwargs)
+                    finally:
+                        self._event.set()
             else:
                 self._event.wait()
                 result = func(*args, **kwargs)
