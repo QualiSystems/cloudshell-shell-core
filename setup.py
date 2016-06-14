@@ -13,12 +13,21 @@ with open('test_requirements.txt') as f_tests:
 setup(
     name='cloudshell-shell-core',
     url='https://github.com/QualiSystems/cloudshell-shell-core',
-    author='QualiSystems',
-    author_email='info@qualisystems.com',
+    author='Quali',
+    license='Apache 2.0',
+    author_email='info@quali.com',
     packages=find_packages(),
     install_requires=required,
     tests_require=required_for_tests,
     version=version_from_file,
-    description='CloudShell Core Python package',
-    include_package_data = True
+    description='Core package for all CloudShell Shells. This package contains the basic driver interfaces and '
+                'metadata definitions as well as utilities and helpers created specifically for Shells',
+    include_package_data = True,
+    keywords="sandbox cloud cmp cloudshell",
+    classifiers=[
+        "Development Status :: 5 - Production/Stable",
+        "Programming Language :: Python :: 2.7",
+        "Topic :: Software Development :: Libraries",
+        "License :: OSI Approved :: Apache Software License",
+    ]
 )
