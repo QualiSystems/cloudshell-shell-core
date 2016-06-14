@@ -140,7 +140,7 @@ class AutoLoadDetails:
     ATTRIBUTE_MAP = {}
 
     def __init__(self):
-        self.resources = None  # the list of resources (root and sub) that were discovered
+        self.resources = None    # the list of resources (root and sub) that were discovered
         """:type : list[AutoLoadResource]"""
         self.attributes = None  # the list of attributes for the resources
         """:type : list[AutoLoadAttribute]"""
