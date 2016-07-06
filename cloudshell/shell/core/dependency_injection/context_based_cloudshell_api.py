@@ -20,10 +20,10 @@ def _open_new_api_connection(context):
             and context.connectivity \
             and context.connectivity.__class__.__name__ == 'ConnectivityContext':
 
-        if hasattr(context, 'reservation') \
-                and context.reservation \
-                and hasattr(context.reservation, 'domain'):
+        if hasattr(context, 'reservation') and context.reservation:
             domain = context.reservation.domain
+        elif hasattr(context, 'remote_reservation') and context.remote_reservation:
+            domain = context.remote_reservation.domain
         else:
             domain = 'Global'
 

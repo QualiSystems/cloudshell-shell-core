@@ -65,11 +65,18 @@ def get_execution_info(context, config):
     reservation_info['Hostname'] = hostname
     reservation_info['IP'] = socket.gethostbyname(hostname)
 
-    if not is_instance_of(context, config.AUTOLOAD_COMMAND_CONTEXT):
-        reservation_info['ReservationID'] = context.reservation.reservation_id
-        reservation_info['Description'] = context.reservation.description
-        reservation_info['EnviromentName'] = context.reservation.environment_name
-        reservation_info['Username'] = context.reservation.owner_user
+    if is_instance_of(context, config.RESOURCE_REMOTE_COMMAND_CONTEXT):
+        reservation = context.remote_reservation
+    elif is_instance_of(context, config.RESOURCE_COMMAND_CONTEXT):
+        reservation = context.reservation
+    else:
+        reservation = None
+
+    if reservation:
+        reservation_info['ReservationID'] = reservation.reservation_id
+        reservation_info['Description'] = reservation.description
+        reservation_info['EnviromentName'] = reservation.environment_name
+        reservation_info['Username'] = reservation.owner_user
 
     return reservation_info
 
