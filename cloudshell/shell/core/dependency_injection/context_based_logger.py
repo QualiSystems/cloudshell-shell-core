@@ -2,7 +2,7 @@ import threading
 
 import types
 from cloudshell.core.logger.qs_logger import get_qs_logger, log_execution_info
-from cloudshell.shell.core.context_utils import is_instance_of
+from cloudshell.shell.core.context_utils import is_instance_of, get_reservation_context_attribute
 import inject
 
 
@@ -39,13 +39,13 @@ def get_logger_for_driver(context=None, config=None):
     else:
         raise Exception('get_context_based_logger', 'Unsuppported command context provided {0}'.format(context))
 
-    exec_info = get_execution_info(context, config)
+    exec_info = get_execution_info(context)
     qs_logger = get_qs_logger(reservation_id, logger_name, resource_name)
     log_execution_info(qs_logger, exec_info)
     return qs_logger
 
 
-def get_execution_info(context, config):
+def get_execution_info(context):
     """Aggregate information about execution server
 
 
@@ -65,18 +65,13 @@ def get_execution_info(context, config):
     reservation_info['Hostname'] = hostname
     reservation_info['IP'] = socket.gethostbyname(hostname)
 
-    if is_instance_of(context, config.RESOURCE_REMOTE_COMMAND_CONTEXT):
-        reservation = context.remote_reservation
-    elif is_instance_of(context, config.RESOURCE_COMMAND_CONTEXT):
-        reservation = context.reservation
-    else:
-        reservation = None
-
-    if reservation:
-        reservation_info['ReservationID'] = reservation.reservation_id
-        reservation_info['Description'] = reservation.description
-        reservation_info['EnviromentName'] = reservation.environment_name
-        reservation_info['Username'] = reservation.owner_user
+    try:
+        reservation_info['ReservationID'] = get_reservation_context_attribute('reservation_id', context)
+        reservation_info['Description'] = get_reservation_context_attribute('description', context)
+        reservation_info['EnviromentName'] = get_reservation_context_attribute('environment_name', context)
+        reservation_info['Username'] = get_reservation_context_attribute('owner_user', context)
+    finally:
+        pass
 
     return reservation_info
 
