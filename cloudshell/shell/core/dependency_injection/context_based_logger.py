@@ -70,7 +70,7 @@ def get_execution_info(context):
         reservation_info['Description'] = get_reservation_context_attribute('description', context)
         reservation_info['EnviromentName'] = get_reservation_context_attribute('environment_name', context)
         reservation_info['Username'] = get_reservation_context_attribute('owner_user', context)
-    finally:
+    except:
         pass
 
     return reservation_info
