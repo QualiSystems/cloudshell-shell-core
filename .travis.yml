@@ -8,7 +8,9 @@ install:
     - pip install coveralls
 
 script:
-    - python runtests.py --with-coverage  --cover-package=package --exclude-dir=integration
+    - python runtests.py --with-coverage  --cover-package=package
+    - python setup.py test
+    - python setup.py sdist --format zip
 
 after_success:
     coveralls
