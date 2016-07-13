@@ -2,6 +2,7 @@ from weakref import WeakKeyDictionary
 from threading import currentThread
 
 from cloudshell.api.cloudshell_api import CloudShellAPISession
+from cloudshell.shell.core.context_utils import get_reservation_context_attribute, get_connectivity_context_attribute
 
 import inject
 
@@ -16,21 +17,13 @@ def get_cloudshell_api(context):
 
 
 def _open_new_api_connection(context):
-    if hasattr(context, 'connectivity') \
-            and context.connectivity \
-            and context.connectivity.__class__.__name__ == 'ConnectivityContext':
+    domain = get_reservation_context_attribute('domain', context)
+    if not domain:
+        domain = 'Global'
 
-        if hasattr(context, 'reservation') \
-                and context.reservation \
-                and hasattr(context.reservation, 'domain'):
-            domain = context.reservation.domain
-        else:
-            domain = 'Global'
+    server_address = get_connectivity_context_attribute('server_address', context)
+    api_port = get_connectivity_context_attribute('cloudshell_api_port', context)
+    token = get_connectivity_context_attribute('admin_auth_token', context)
 
-        server_address = context.connectivity.server_address
-        api_port = context.connectivity.cloudshell_api_port
-        token = context.connectivity.admin_auth_token
-        api = CloudShellAPISession(server_address, port=api_port, token_id=token, domain=domain)
-        return api
-    else:
-        raise Exception('Connectivity context has not defined')
+    api = CloudShellAPISession(server_address, port=api_port, token_id=token, domain=domain)
+    return api
