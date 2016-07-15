@@ -27,6 +27,6 @@ def override_attributes_from_config(module, config=None):
             if attr in config.__dict__:
                 setattr(overridden_config, attr, config.__dict__[attr])
             else:
-                setattr(overridden_config, attr, config.__dict__[attr])
+                setattr(overridden_config, attr, module.__dict__[attr])
     return overridden_config
 
