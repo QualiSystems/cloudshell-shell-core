@@ -1,0 +1,118 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "Schema for the app_request_json property of the app_context object",
+  "description": "This object contains the information of the original app request and its parameters",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "null"
+    },
+    "logicalResource": {
+      "description": "The requested Shell mode/type/driver and attributes. The logical resource is the resource representing the app in the sandbox.",
+      "type": "object",
+      "properties": {
+        "family": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "driver": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "attributes": {
+          "type": "array",
+          "uniqueItems": false,
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "value"
+            ]
+          }
+        }
+      },
+      "required": [
+        "family",
+        "model",
+        "driver",
+        "description",
+        "attributes"
+      ]
+    },
+    "deploymentService": {
+      "type": "object",
+      "description": "The deployment service and its parameters. The deployment service is the selected deployment option (i.e vCenter template, AWS AMI",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "driver": {
+          "type": "string"
+        },
+        "attributes": {
+          "type": "array",
+          "uniqueItems": false,
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "value"
+            ]
+          }
+        },
+        "scriptCommandName": {
+          "type": "null"
+        },
+        "scriptInputs": {
+          "type": "array",
+          "uniqueItems": false,
+          "items": {}
+        }
+      },
+      "required": [
+        "name",
+        "model",
+        "driver",
+        "attributes",
+        "scriptCommandName",
+        "scriptInputs"
+      ]
+    },
+    "installationService": {
+      "type": "null"
+    }
+  },
+  "required": [
+    "name",
+    "description",
+    "logicalResource",
+    "deploymentService",
+    "installationService"
+  ]
+}
