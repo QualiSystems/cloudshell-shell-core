@@ -44,7 +44,6 @@ def get_logger_for_driver(context=None, config=None):
     log_execution_info(qs_logger, exec_info)
     return qs_logger
 
-
 def get_execution_info(context):
     """Aggregate information about execution server
 
