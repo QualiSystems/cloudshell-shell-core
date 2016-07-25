@@ -12,11 +12,13 @@ class CloudShellSessionContext(object):
 
     @staticmethod
     def _get_domain(context):
-        # noinspection PyBroadException
-        try:
-            return context.remote_reservation.domain
-        except:
+        if hasattr(context, 'reservation') and context.reservation:
             return context.reservation.domain
+
+        if hasattr(context, 'remote_reservation') and context.remote_reservation:
+            return context.remote_reservation.domain
+
+        return 'Global'
 
     def __enter__(self):
         """
