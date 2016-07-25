@@ -1,4 +1,3 @@
-from cloudshell.core.context.context_service import ContextBasedService
 from cloudshell.core.logger.qs_logger import get_qs_logger, log_execution_info
 
 from cloudshell.shell.core.dependency_injection.context_based_logger import get_execution_info
@@ -8,28 +7,31 @@ from cloudshell.shell.core.driver_context import AutoLoadCommandContext, Resourc
 INVENTORY = 'inventory'
 
 
-class LoggingSessionContext(ContextBasedService):
+class LoggingSessionContext(object):
     def __init__(self, context):
         """
         Initializes logger for context
         :param context: CommandContext
         """
         self.context = context
-        self.logger = LoggingSessionContext.get_logger_for_context(context)
 
-    def context_started(self):
-        return self.logger
-
-    def context_ended(self, exc_type, exc_val, exc_tb):
-        return self
-
-    def get_objects(self):
+    def __enter__(self):
         """
-        Create logger for context
-        :return: the logger object
+        Initializes logger for the context
+        :return: Logger
         :rtype: logging.Logger
         """
-        return self.logger
+        return LoggingSessionContext.get_logger_for_context(self.context)
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """
+        Called upon end of the context. Does nothing
+        :param exc_type: Exception type
+        :param exc_val: Exception value
+        :param exc_tb: Exception traceback
+        :return:
+        """
+        return False
 
     @staticmethod
     def get_logger_for_context(context):
