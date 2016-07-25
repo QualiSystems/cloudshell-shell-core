@@ -37,13 +37,12 @@ def get_logger_for_driver(context=None, config=None):
         reservation_id = context.remote_reservation.reservation_id
         resource_name = context.remote_endpoints[0].name
     else:
-        raise Exception('get_context_based_logger', 'Unsuppported command context provided {0}'.format(context))
+        raise Exception('get_context_based_logger', 'Unsupported command context provided {0}'.format(context))
 
     exec_info = get_execution_info(context)
     qs_logger = get_qs_logger(reservation_id, logger_name, resource_name)
     log_execution_info(qs_logger, exec_info)
     return qs_logger
-
 
 def get_execution_info(context):
     """Aggregate information about execution server
