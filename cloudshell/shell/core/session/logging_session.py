@@ -1,8 +1,7 @@
 from cloudshell.core.logger.qs_logger import get_qs_logger, log_execution_info
 
+from cloudshell.shell.core.context_utils import is_instance_of
 from cloudshell.shell.core.dependency_injection.context_based_logger import get_execution_info
-from cloudshell.shell.core.driver_context import AutoLoadCommandContext, ResourceCommandContext, \
-    ResourceRemoteCommandContext
 
 INVENTORY = 'inventory'
 
@@ -41,14 +40,14 @@ class LoggingSessionContext(object):
         :return: the logger object
         :rtype: logging.Logger
         """
-        if isinstance(context, AutoLoadCommandContext):
+        if is_instance_of(context, 'AutoLoadCommandContext'):
             log_group = INVENTORY
             resource_name = context.resource.name
-        elif isinstance(context, ResourceCommandContext):
+        elif is_instance_of(context, 'ResourceCommandContext'):
             log_group = context.reservation.reservation_id if context.reservation else INVENTORY
             resource_name = context.resource.name
-        elif isinstance(context, ResourceRemoteCommandContext):
-            log_group = context.reservation.reservation_id if context.reservation else INVENTORY
+        elif is_instance_of(context, 'ResourceRemoteCommandContext'):
+            log_group = context.remote_reservation.reservation_id if context.remote_reservation else INVENTORY
             resource_name = context.remote_endpoints[0].name
         else:
             raise Exception('get_logger_for_context', 'Unsupported command context provided {0}'.format(context))

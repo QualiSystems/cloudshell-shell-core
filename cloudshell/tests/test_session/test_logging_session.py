@@ -68,7 +68,7 @@ class TestLoggingSessionContext(TestCase):
         remote_command_context = mock.create_autospec(ResourceRemoteCommandContext)
         remote_command_context.resource = mock.create_autospec(ResourceContextDetails)
         remote_command_context.resource.name = 'my_device'
-        remote_command_context.reservation = None
+        remote_command_context.remote_reservation = None
         remote_endpoint = mock.create_autospec(ResourceContextDetails)
         remote_endpoint.name = 'connected_device'
         remote_command_context.remote_endpoints = [remote_endpoint]
@@ -87,8 +87,8 @@ class TestLoggingSessionContext(TestCase):
         remote_command_context = mock.create_autospec(ResourceRemoteCommandContext)
         remote_command_context.resource = mock.create_autospec(ResourceContextDetails)
         remote_command_context.resource.name = 'my_device'
-        remote_command_context.reservation = mock.create_autospec(ReservationContextDetails)
-        remote_command_context.reservation.reservation_id = 'reservation_id1'
+        remote_command_context.remote_reservation = mock.create_autospec(ReservationContextDetails)
+        remote_command_context.remote_reservation.reservation_id = 'reservation_id1'
         remote_endpoint = mock.create_autospec(ResourceContextDetails)
         remote_endpoint.name = 'connected_device'
         remote_command_context.remote_endpoints = [remote_endpoint]
