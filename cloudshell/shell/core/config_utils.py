@@ -1,3 +1,4 @@
+import types
 import inject
 from cloudshell.configuration.cloudshell_shell_core_binding_keys import CONFIG
 
@@ -19,7 +20,13 @@ def call_if_callable(attribute):
 
 
 @inject.params(config=CONFIG)
-def override_attributes_from_config(instance, config=None):
-    for attr in dir(instance):
-        if attr.isupper() and not attr.startswith('_') and hasattr(config, attr):
-            setattr(instance, attr, getattr(config, attr))
+def override_attributes_from_config(module, config=None):
+    overridden_config = types.ModuleType('Overridden config')
+    for attr in module.__dict__:
+        if attr.isupper() and not attr.startswith('_'):
+            if attr in config.__dict__:
+                setattr(overridden_config, attr, config.__dict__[attr])
+            else:
+                setattr(overridden_config, attr, module.__dict__[attr])
+    return overridden_config
+
