@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "Schema for the deployed_app_json property of the app_context object",
+  "description": "This JSON object describes the deployed app details, including details about its VM",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "family": {
+      "type": "string"
+    },
+    "model": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "attributes": {
+      "type": "array",
+      "uniqueItems": false,
+      "items": {
+         "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "value"
+            ]
+      }
+    },
+    "vmdetails": {∂
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "cloudProviderId": {
+          "type": "string",
+          "description" : "The CloudShell Id of the app Cloud Provider"
+
+        },
+        "uid": {
+          "type": "string",
+          "description" : "The VM unique identifier under the cloud provider."
+        },
+        "vmCustomParams": {
+          "type": "array",
+          "description" : "Custom parameters stored by the Cloud Provider describing the VM.",
+          "uniqueItems": false,
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "value"
+            ]
+          }
+        }
+      },
+      "required": [
+        "id",
+        "cloudProviderId",
+        "uid",
+        "vmCustomParams"
+      ]
+    }
+  },
+  "required": [
+    "name",
+    "family",
+    "model",
+    "address",
+    "attributes",
+    "vmdetails"
+  ]
+}
