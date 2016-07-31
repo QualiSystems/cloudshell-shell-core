@@ -1,6 +1,6 @@
 from unittest import TestCase
-
-from mock import Mock, mock, MagicMock
+import mock
+from mock import Mock, MagicMock
 
 from cloudshell.shell.core.driver_context import ResourceContextDetails, ResourceCommandContext, \
     ReservationContextDetails, ConnectivityContext, ResourceRemoteCommandContext

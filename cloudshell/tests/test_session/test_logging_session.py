@@ -2,8 +2,7 @@ import os
 from logging import Logger
 from unittest import TestCase
 
-from mock import mock
-
+import mock
 from cloudshell.shell.core.driver_context import AutoLoadCommandContext, ResourceContextDetails, ResourceCommandContext, \
     ResourceRemoteCommandContext, ReservationContextDetails
 from cloudshell.shell.core.session.logging_session import LoggingSessionContext
