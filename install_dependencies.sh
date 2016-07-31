@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-if [ "${TRAVIS_BRANCH}" = "master" ]; then
+if [ "${TRAVIS_BRANCH}" = "master" ]
+then
     pip install -r requirements.txt
     pip install cloudshell-automation-api>=7.0.0.0,<7.1.0.0
 else
