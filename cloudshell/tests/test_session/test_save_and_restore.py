@@ -1,10 +1,10 @@
 from unittest import TestCase
-from cloudshell.shell.core.interfaces.OrchestrationSaveResult import OrchestrationSaveResult
-from cloudshell.shell.core.interfaces.OrchestrationSavedArtifact import OrchestrationSavedArtifact
-from cloudshell.shell.core.interfaces.OrchestrationSavedArtifactsInfo import OrchestrationSavedArtifactsInfo
 import jsonpickle
 from jsonschema import validate
 import datetime
+
+from cloudshell.shell.core.interfaces.save_restore import OrchestrationSavedArtifact, \
+    OrchestrationSavedArtifactInfo, OrchestrationSaveResult, OrchestrationRestoreRules
 
 
 class TestSaveAndRestore(TestCase):
@@ -81,12 +81,28 @@ class TestSaveAndRestore(TestCase):
         created_date = datetime.datetime.now()
         identifier = created_date.strftime('%y_%m_%d %H_%M_%S_%f')
 
-        orchestration_saved_artifact = OrchestrationSavedArtifact('test_type',identifier)
+        orchestration_saved_artifact = OrchestrationSavedArtifact('test_type', identifier)
 
-        saved_artifacts_info = OrchestrationSavedArtifactsInfo(
+        saved_artifacts_info = OrchestrationSavedArtifactInfo(
             resource_name="some_resource",
             created_date=created_date,
-            restore_rules={'requires_same_resource': True},
+            restore_rules=OrchestrationRestoreRules(requires_same_resource=True),
+            saved_artifact=orchestration_saved_artifact)
+
+        orchestration_save_result = OrchestrationSaveResult(saved_artifacts_info)
+        json_string = jsonpickle.encode(orchestration_save_result, unpicklable=False)
+        validate(jsonpickle.loads(json_string), schema=self.get_schema())
+
+    def test_can_serialize_custom_rules(self):
+        created_date = datetime.datetime.now()
+        identifier = created_date.strftime('%y_%m_%d %H_%M_%S_%f')
+
+        orchestration_saved_artifact = OrchestrationSavedArtifact('test_type', identifier)
+
+        saved_artifacts_info = OrchestrationSavedArtifactInfo(
+            resource_name="some_resource",
+            created_date=created_date,
+            restore_rules=OrchestrationRestoreRules(requires_same_resource=True, additional_rules={'some_rule': 'True'}),
             saved_artifact=orchestration_saved_artifact)
 
         orchestration_save_result = OrchestrationSaveResult(saved_artifacts_info)
