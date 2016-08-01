@@ -1,3 +1,6 @@
+from cloudshell.shell.core.interfaces.OrchestrationSavedArtifactsInfo import OrchestrationSavedArtifactsInfo
+
+
 class OrchestrationSaveResult(object):
     def __init__(self, saved_artifacts_info):
         """
