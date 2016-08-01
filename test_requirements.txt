@@ -6,3 +6,5 @@ teamcity-messages
 jsonpickle
 nose-exclude
 inject
+cloudshell-automation-api
+jsonschema
