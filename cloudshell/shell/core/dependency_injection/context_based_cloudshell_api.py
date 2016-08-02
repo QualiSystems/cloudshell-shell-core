@@ -17,13 +17,18 @@ def get_cloudshell_api(context):
 
 
 def _open_new_api_connection(context):
-    domain = get_reservation_context_attribute('domain', context)
-    if not domain:
-        domain = 'Global'
+    domain = 'Global'
+    try:
+        domain = get_reservation_context_attribute('domain', context)
 
-    server_address = get_connectivity_context_attribute('server_address', context)
-    api_port = get_connectivity_context_attribute('cloudshell_api_port', context)
-    token = get_connectivity_context_attribute('admin_auth_token', context)
+        server_address = get_connectivity_context_attribute('server_address', context)
+        api_port = get_connectivity_context_attribute('cloudshell_api_port', context)
+        token = get_connectivity_context_attribute('admin_auth_token', context)
 
-    api = CloudShellAPISession(server_address, port=api_port, token_id=token, domain=domain)
+        api = CloudShellAPISession(server_address, port=api_port, token_id=token, domain=domain)
+    except Exception as e:
+        api = CloudShellAPISession('localhost', username='admin', password='admin', domain=domain)
+    except:
+        raise Exception('_open_new_api_connection', 'Failed to create CloudShellAPISession')
+
     return api
