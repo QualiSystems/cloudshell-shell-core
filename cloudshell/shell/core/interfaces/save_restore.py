@@ -46,6 +46,6 @@ class OrchestrationSavedArtifactInfo(object):
         :param OrchestrationSavedArtifact saved_artifact: The description of the saved artifact itself, the saved artifact can be of different types
         """
         self.resource_name = resource_name
-        self.created_date = created_date
+        self.created_date = created_date.isoformat()
         self.restore_rules = restore_rules
         self.saved_artifact = saved_artifact
