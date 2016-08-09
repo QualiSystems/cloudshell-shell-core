@@ -17,8 +17,9 @@ def get_cloudshell_api(context):
 
 
 def _open_new_api_connection(context):
-    domain = get_reservation_context_attribute('domain', context)
-    if not domain:
+    try:
+        domain = get_reservation_context_attribute('domain', context)
+    except:
         domain = 'Global'
 
     server_address = get_connectivity_context_attribute('server_address', context)
