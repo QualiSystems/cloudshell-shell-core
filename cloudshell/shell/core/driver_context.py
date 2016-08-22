@@ -148,9 +148,14 @@ class ResourceRemoteCommandContext:
 
 class ApiVmDetails(object):
     def __init__(self):
-        self.CloudProviderName = ''  # The name of the cloud provider
+        self.cloud_provider_name = ''  # The name of the cloud provider
         """:type : str"""
-        self.UID = ''                # UUID of the created VM
+        self.uid = ''                  # UUID of the created VM
         """:type : str"""
-        self.VmCustomParams = []     # VM custom parameters
-        """:type : list[string]"""
+        self.vm_custom_params = []     # VM custom parameters
+        """:type : list[ApiVmCustomParam]"""
+
+class ApiVmCustomParam(object):
+    def __init__(self):
+        self.name = ''
+        self.value = ''
