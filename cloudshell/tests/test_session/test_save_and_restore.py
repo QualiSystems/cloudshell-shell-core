@@ -1,13 +1,22 @@
+from json import JSONEncoder
 from unittest import TestCase
 import jsonpickle
 from jsonschema import validate
 import datetime
-
+import json
 from cloudshell.shell.core.interfaces.save_restore import OrchestrationSavedArtifact, \
     OrchestrationSavedArtifactInfo, OrchestrationSaveResult, OrchestrationRestoreRules
 
 
+class SimpleJSONEncoder(JSONEncoder):
+    def default(self, o):
+        if isinstance(o, datetime.datetime):
+            return o.isoformat()
+        return o.__dict__
+
 class TestSaveAndRestore(TestCase):
+
+
 
     def get_schema(self):
         return {
@@ -92,6 +101,26 @@ class TestSaveAndRestore(TestCase):
         orchestration_save_result = OrchestrationSaveResult(saved_artifacts_info)
         json_string = jsonpickle.encode(orchestration_save_result, unpicklable=False)
         validate(jsonpickle.loads(json_string), schema=self.get_schema())
+
+    def test_works_with_standard_json_serializer(self):
+        created_date = datetime.datetime.now()
+        identifier = created_date.strftime('%y_%m_%d %H_%M_%S_%f')
+
+        orchestration_saved_artifact = OrchestrationSavedArtifact('test_type', identifier)
+
+        saved_artifacts_info = OrchestrationSavedArtifactInfo(
+            resource_name="some_resource",
+            created_date=created_date,
+            restore_rules=OrchestrationRestoreRules(requires_same_resource=True),
+            saved_artifact=orchestration_saved_artifact)
+
+        orchestration_save_result = OrchestrationSaveResult(saved_artifacts_info)
+
+        result = json.dumps(orchestration_save_result, cls=SimpleJSONEncoder, indent=True)
+
+        validate(json.loads(result), schema=self.get_schema())
+
+
 
     def test_can_serialize_custom_rules(self):
         created_date = datetime.datetime.now()
