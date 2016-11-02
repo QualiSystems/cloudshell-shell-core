@@ -1,8 +1,45 @@
 from weakref import WeakKeyDictionary
 from threading import currentThread
-
+from cloudshell.shell.core import driver_context
 
 _CONTEXT_CONTAINER = WeakKeyDictionary()
+
+
+def get_context():
+    if currentThread() in _CONTEXT_CONTAINER:
+        return _CONTEXT_CONTAINER[currentThread()]
+    return None
+
+
+def get_attribute_by_name_wrapper(attribute):
+    """Wrapper uses to closure get_attribute_by_name func"""
+
+    def attribute_func():
+        return get_attribute_by_name(attribute)
+
+    return attribute_func
+
+
+def build_suitable_context(context_obj):
+    module = driver_context
+    context_class = context_obj.__class__.__name__
+    if context_class in dir(module):
+        classobject = getattr(module, context_class)
+    else:
+        raise Exception('build_suitable_context', 'Cannot find suitable context class')
+    obj = classobject()
+    for attribute in filter(lambda x: not str(x).startswith('__') and not x == 'ATTRIBUTE_MAP', dir(context_obj)):
+        value = getattr(context_obj, attribute)
+        if value and hasattr(value, '__class__') and value.__class__.__name__ in dir(module):
+            value = build_suitable_context(value)
+
+        if attribute in obj.ATTRIBUTE_MAP:
+            obj_attr = obj.ATTRIBUTE_MAP[attribute]
+        else:
+            obj_attr = attribute
+
+        setattr(obj, obj_attr, value)
+    return obj
 
 
 def put_context(context_obj):
