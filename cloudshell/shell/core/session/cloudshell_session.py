@@ -26,13 +26,17 @@ class CloudShellSessionContext(object):
         :rtype: CloudShellAPISession
         :return :
         """
-        self.context_object = CloudShellAPISession(host=self.context.connectivity.server_address,
-                                                   token_id=self.context.connectivity.admin_auth_token,
-                                                   username=None,
-                                                   password=None,
-                                                   domain=CloudShellSessionContext._get_domain(self.context))
+
+        self.context_object = self.get_api()
 
         return self.context_object
+
+    def get_api(self):
+        return CloudShellAPISession(host=self.context.connectivity.server_address,
+                                    token_id=self.context.connectivity.admin_auth_token,
+                                    username=None,
+                                    password=None,
+                                    domain=CloudShellSessionContext._get_domain(self.context))
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         """

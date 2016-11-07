@@ -1,9 +1,36 @@
 from cloudshell.core.logger.qs_logger import get_qs_logger, log_execution_info
 
-from cloudshell.shell.core.context_utils import is_instance_of
-from cloudshell.shell.core.dependency_injection.context_based_logger import get_execution_info
+from cloudshell.shell.core.context_utils import is_instance_of, get_reservation_context_attribute
 
 INVENTORY = 'inventory'
+
+
+def get_execution_info(context):
+    """Aggregate information about execution server
+
+    :param context: ResourceCommandContext
+    :return: dict with aggregated info
+    """
+
+    import platform, socket
+
+    reservation_info = {}
+    hostname = socket.gethostname()
+    reservation_info['Python version'] = platform.python_version()
+    reservation_info['Operating System'] = platform.platform()
+    reservation_info['Platform'] = platform.system()
+    reservation_info['Hostname'] = hostname
+    reservation_info['IP'] = socket.gethostbyname(hostname)
+
+    try:
+        reservation_info['ReservationID'] = get_reservation_context_attribute('reservation_id', context)
+        reservation_info['Description'] = get_reservation_context_attribute('description', context)
+        reservation_info['EnviromentName'] = get_reservation_context_attribute('environment_name', context)
+        reservation_info['Username'] = get_reservation_context_attribute('owner_user', context)
+    except:
+        pass
+
+    return reservation_info
 
 
 class LoggingSessionContext(object):
