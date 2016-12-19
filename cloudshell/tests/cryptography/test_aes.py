@@ -2,7 +2,7 @@ import base64
 import os
 from unittest import TestCase
 
-from cloudshell.core.cryptography.aes_service import AESCipher
+from cloudshell.shell.core.cryptography.aes_service import AESCipher
 
 
 class TestAES(TestCase):
