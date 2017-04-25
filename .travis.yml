@@ -6,7 +6,7 @@ install:
     - bash ./install_dependencies.sh
 
 script:
-    - python runtests.py --with-coverage  --cover-package=cloudshell
+    - python runtests.py --with-coverage  --cover-package=cloudshell/shell
     - python setup.py test
     - python setup.py sdist --format zip
 
