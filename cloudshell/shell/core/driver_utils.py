@@ -58,12 +58,27 @@ class ExceptionMappingContext(object):
             self._exception_map.update(exception_map)
 
         base_exception_map = {
-            "cloudshell.cli.session_manager_impl.SessionManagerException": "Failed to get CLI Session"
+            "cloudshell.cli.session_manager_impl.SessionManagerException": "Failed to get CLI Session",
+            "cloudshell.snmp.exceptions.SNMPConnectionFailed": None,  # get message from the internal exception
         }
 
         for key, val in base_exception_map.iteritems():
             if key not in self._exception_map:
                 self._exception_map[key] = val
+
+    def _raise_shell_exception(self, exc_key, exc_value):
+        """Prepare and raise ShellException exception
+
+        :param exc_key: key for the "_exception_map" attribute
+        :param exc_value: raised Exception instance
+        :raises exceptions.ShellException
+        """
+        msg = self._exception_map[exc_key]
+
+        if msg is None:
+            msg = str(exc_value)
+
+        raise exceptions.ShellException(msg)
 
     def __enter__(self):
         return self
@@ -75,12 +90,10 @@ class ExceptionMappingContext(object):
         exc_type_str = ".".join([exc_type.__module__, exc_type.__name__])
 
         if exc_type in self._exception_map:
-            msg = self._exception_map[exc_type]
-            raise exceptions.ShellException(msg)
+            self._raise_shell_exception(exc_key=exc_type, exc_value=exc_value)
 
         elif exc_type_str in self._exception_map:
-            msg = self._exception_map[exc_type_str]
-            raise exceptions.ShellException(msg)
+            self._raise_shell_exception(exc_key=exc_type_str, exc_value=exc_value)
 
         elif isinstance(exc_value, exceptions.BaseVisibleException):
             raise
@@ -88,5 +101,5 @@ class ExceptionMappingContext(object):
         else:
             # todo (A.Piddubny): raise some general exception and hide all unhandled exceptions
             # for now just re-raise exception
-            # raise exceptions.ShellException("Sorry, something went wrong")
+            # raise exceptions.ShellException("Command failed. Please check logs for more details")
             raise
