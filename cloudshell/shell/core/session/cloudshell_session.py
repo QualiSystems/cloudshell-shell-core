@@ -26,8 +26,8 @@ class CloudShellSessionContext(object):
     @staticmethod
     def _get_api_scheme(context):
         result = CloudShellSessionContext.DEFAULT_API_SCHEME
-        if hasattr(context.connectivity, 'cloudshell_api_scheme') and context.reservation:
-            result = context.reservation.cloudshell_api_scheme
+        if context.connectivity and hasattr(context.connectivity, 'cloudshell_api_scheme'):
+            result = context.connectivity.cloudshell_api_scheme
         return result
 
     def __enter__(self):
