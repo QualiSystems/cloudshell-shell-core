@@ -32,6 +32,8 @@ class ConnectivityContext:
         """:type : str"""
         self.quali_api_port = None  # The port of the Quali API
         """:type : str"""
+        self.cloudshell_api_scheme = None  # The http scheme of the Quali API
+        """:type : str"""
         self.admin_auth_token = None  # security token
         """:type : str"""
 
