@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from mock import MagicMock
+from mock import MagicMock, patch
 from unittest import TestCase
 
 from cloudshell.shell.core.context_utils import put_context, get_context, get_attribute_by_name, get_resource_address, \
@@ -42,9 +42,21 @@ class TestContextUtils(TestCase):
         self.context.reservation.domain = domain
         self.assertEqual(domain, get_reservation_context_attribute('domain', self.context))
 
+    @patch("cloudshell.shell.core.context_utils.get_reservation_context_details", new=MagicMock(return_value=None))
+    def test_get_reservation_context_attribute_exception(self):
+        domain = 'domain_name'
+        self.context.reservation.domain = domain
+        self.assertEqual(domain, get_reservation_context_attribute('domain', self.context))
+
     def test_get_connectivity_context_attribute(self):
         server_address = 'server_address'
         self.context.connectivity.server_address = server_address
         self.assertEqual(server_address, get_connectivity_context_attribute('server_address', self.context))
 
+    @patch("cloudshell.shell.core.context_utils.get_connectivity_context_details", new=MagicMock(return_value=None))
+    def test_get_connectivity_context_attribute_exception(self):
 
+        server_address = 'server_address'
+        self.context.connectivity.server_address = server_address
+        with self.assertRaises(Exception):
+            get_connectivity_context_attribute('server_address', self.context)
