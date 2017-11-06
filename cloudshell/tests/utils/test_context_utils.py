@@ -46,7 +46,8 @@ class TestContextUtils(TestCase):
     def test_get_reservation_context_attribute_exception(self):
         domain = 'domain_name'
         self.context.reservation.domain = domain
-        self.assertEqual(domain, get_reservation_context_attribute('domain', self.context))
+        with self.assertRaises(Exception):
+            get_reservation_context_attribute('domain', self.context)
 
     def test_get_connectivity_context_attribute(self):
         server_address = 'server_address'
