@@ -1,5 +1,6 @@
-from cloudshell.core.logger.qs_logger import get_qs_logger, log_execution_info
+import platform, socket
 
+from cloudshell.core.logger.qs_logger import get_qs_logger, log_execution_info
 from cloudshell.shell.core.context_utils import is_instance_of, get_reservation_context_attribute
 
 INVENTORY = 'inventory'
@@ -11,8 +12,6 @@ def get_execution_info(context):
     :param context: ResourceCommandContext
     :return: dict with aggregated info
     """
-
-    import platform, socket
 
     reservation_info = {}
     hostname = socket.gethostname()
