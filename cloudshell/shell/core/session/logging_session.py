@@ -20,7 +20,11 @@ def get_execution_info(context):
     reservation_info['Operating System'] = platform.platform()
     reservation_info['Platform'] = platform.system()
     reservation_info['Hostname'] = hostname
-    reservation_info['IP'] = socket.gethostbyname(hostname)
+
+    try:
+        reservation_info['IP'] = socket.gethostbyname(hostname)
+    except:
+        reservation_info['IP'] = "n/a"
 
     try:
         reservation_info['ReservationID'] = get_reservation_context_attribute('reservation_id', context)
