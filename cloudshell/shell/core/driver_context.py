@@ -74,24 +74,6 @@ class AppContext:
         """:type : str"""
 
 
-class NetworksInfoContextDetails:
-    def __init__(self, networks_info):
-        self.reservation_spec = networks_info.ReservationSpec
-        """:type : str"""
-        self.reservation_tech = networks_info.ReservationTech
-        """:type : str"""
-        self.networks = [NetworkContextDetails(n) for n in networks_info.Networks]
-        """:type : list[NetworkContextDetails]"""
-
-
-class NetworkContextDetails:
-    def __init__(self, network):
-        self.spec = network.Spec
-        """:type : str"""
-        self.interfaces = [InterfaceContextDetails(i) for i in network.Interfaces]
-        """:type : list[InterfaceContextDetails]"""
-
-
 class InterfaceContextDetails:
     def __init__(self, interface):
         self.type = interface.Type
