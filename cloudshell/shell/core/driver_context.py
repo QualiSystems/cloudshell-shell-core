@@ -58,8 +58,6 @@ class ResourceContextDetails:
         """:type : dict[str,str]"""
         self.app_context = app_context
         """:type : AppContext"""
-        self.networks_info = NetworksInfoContextDetails(networks_info) if networks_info else None
-        """:type : NetworksInfoContextDetails"""
         self.shell_standard = shell_standard
         """:type : str"""
         self.shell_standard_version = shell_standard_version
