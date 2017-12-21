@@ -1,11 +1,10 @@
 import os
-from logging import Logger
-from unittest import TestCase
-
 import mock
+
+from unittest import TestCase
 from cloudshell.shell.core.driver_context import AutoLoadCommandContext, ResourceContextDetails, ResourceCommandContext, \
     ResourceRemoteCommandContext, ReservationContextDetails
-from cloudshell.shell.core.session.logging_session import LoggingSessionContext, INVENTORY
+from cloudshell.shell.core.session.logging_session import LoggingSessionContext, INVENTORY, get_execution_info
 from cloudshell.core.logger.qs_logger import _LOGGER_CONTAINER
 
 
@@ -143,7 +142,6 @@ class TestLoggingSessionContext(TestCase):
         qs_logger = mock.Mock()
         get_qs_logger.return_value = qs_logger
 
-
         # Act
         with LoggingSessionContext(remote_command_context) as logger:
             # Assert
@@ -153,6 +151,19 @@ class TestLoggingSessionContext(TestCase):
                                                   log_file_prefix=remote_endpoint.name)
             log_execution_info.assert_called_once_with(qs_logger, execution_info)
             self.assertEqual(qs_logger, logger)
+
+    @mock.patch("cloudshell.shell.core.session.logging_session.socket.gethostbyname")
+    def test_get_execution_info_handles_gethostbyname_exception(self, get_host_by_name_mock):
+        # Arrange
+        auto_load_context = mock.create_autospec(AutoLoadCommandContext)
+        auto_load_context.resource = mock.create_autospec(ResourceContextDetails)
+        auto_load_context.resource.name = 'my_device'
+        get_host_by_name_mock.side_effect = Exception("error")
+
+        # Act
+        result = get_execution_info(auto_load_context)
+
+        self.assertEqual(result['IP'], "n/a")
 
     @staticmethod
     def _get_directory_name(base_filename):
