@@ -1,6 +1,7 @@
 import platform, socket
+import threading
 
-from cloudshell.core.logger.qs_logger import get_qs_logger, log_execution_info
+from cloudshell.logging.qs_logger import get_qs_logger, log_execution_info
 from cloudshell.shell.core.context_utils import is_instance_of, get_reservation_context_attribute
 
 INVENTORY = 'inventory'
@@ -86,6 +87,23 @@ class LoggingSessionContext(object):
         qs_logger = get_qs_logger(log_group=log_group, log_category='QS', log_file_prefix=resource_name)
         log_execution_info(qs_logger, exec_info)
         return qs_logger
+
+    @staticmethod
+    def get_logger_with_thread_id(context):
+        """
+        Create QS Logger for command context AutoLoadCommandContext, ResourceCommandContext
+        or ResourceRemoteCommandContext with thread name
+        :param context:
+        :return:
+        """
+        logger = LoggingSessionContext.get_logger_for_context(context)
+        child = logger.getChild(threading.currentThread().name)
+        for handler in logger.handlers:
+            child.addHandler(handler)
+        child.level = logger.level
+        for log_filter in logger.filters:
+            child.addFilter(log_filter)
+        return child
 
 
 
