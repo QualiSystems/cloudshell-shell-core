@@ -1,2 +1,1 @@
 cloudshell-logging>=1.0,<2
-pycrypto==2.6.1
