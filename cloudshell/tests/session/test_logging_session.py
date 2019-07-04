@@ -5,7 +5,7 @@ from unittest import TestCase
 from cloudshell.shell.core.driver_context import AutoLoadCommandContext, ResourceContextDetails, ResourceCommandContext, \
     ResourceRemoteCommandContext, ReservationContextDetails
 from cloudshell.shell.core.session.logging_session import LoggingSessionContext, INVENTORY, get_execution_info
-from cloudshell.core.logger.qs_logger import _LOGGER_CONTAINER
+from cloudshell.logging.qs_logger import _LOGGER_CONTAINER
 
 
 class TestLoggingSessionContext(TestCase):
