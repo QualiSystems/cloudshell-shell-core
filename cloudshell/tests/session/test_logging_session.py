@@ -26,6 +26,10 @@ class TestLoggingSessionContext(TestCase):
         get_execution_info.return_value = execution_info
 
         qs_logger = mock.Mock()
+        child_logger = mock.Mock()
+        qs_logger.getChild.return_value = child_logger
+        qs_logger.handlers = [mock.Mock()]
+        qs_logger.filters = [mock.Mock()]
         get_qs_logger.return_value = qs_logger
 
         # Act
@@ -34,7 +38,7 @@ class TestLoggingSessionContext(TestCase):
             get_qs_logger.assert_called_once_with(log_group=INVENTORY, log_category='QS',
                                                   log_file_prefix=auto_load_context.resource.name)
             log_execution_info.assert_called_once_with(qs_logger, execution_info)
-            self.assertEqual(qs_logger, logger)
+            self.assertEqual(child_logger, logger)
 
     @mock.patch("cloudshell.shell.core.session.logging_session.get_qs_logger")
     @mock.patch("cloudshell.shell.core.session.logging_session.log_execution_info")
@@ -50,7 +54,14 @@ class TestLoggingSessionContext(TestCase):
         execution_info = mock.Mock()
         get_execution_info.return_value = execution_info
 
+        # qs_logger = mock.Mock()
+        # get_qs_logger.return_value = qs_logger
+
         qs_logger = mock.Mock()
+        child_logger = mock.Mock()
+        qs_logger.getChild.return_value = child_logger
+        qs_logger.handlers = [mock.Mock()]
+        qs_logger.filters = [mock.Mock()]
         get_qs_logger.return_value = qs_logger
 
         # Act
@@ -60,7 +71,7 @@ class TestLoggingSessionContext(TestCase):
             get_qs_logger.assert_called_once_with(log_group=INVENTORY, log_category='QS',
                                                   log_file_prefix=resource_command_context.resource.name)
             log_execution_info.assert_called_once_with(qs_logger, execution_info)
-            self.assertEqual(qs_logger, logger)
+            self.assertEqual(child_logger, logger)
 
     @mock.patch("cloudshell.shell.core.session.logging_session.get_qs_logger")
     @mock.patch("cloudshell.shell.core.session.logging_session.log_execution_info")
@@ -80,7 +91,14 @@ class TestLoggingSessionContext(TestCase):
         execution_info = mock.Mock()
         get_execution_info.return_value = execution_info
 
+        # qs_logger = mock.Mock()
+        # get_qs_logger.return_value = qs_logger
+
         qs_logger = mock.Mock()
+        child_logger = mock.Mock()
+        qs_logger.getChild.return_value = child_logger
+        qs_logger.handlers = [mock.Mock()]
+        qs_logger.filters = [mock.Mock()]
         get_qs_logger.return_value = qs_logger
 
         # Act
@@ -90,7 +108,7 @@ class TestLoggingSessionContext(TestCase):
             get_qs_logger.assert_called_once_with(log_group=reservation_id, log_category='QS',
                                                   log_file_prefix=resource_command_context.resource.name)
             log_execution_info.assert_called_once_with(qs_logger, execution_info)
-            self.assertEqual(qs_logger, logger)
+            self.assertEqual(child_logger, logger)
 
     @mock.patch("cloudshell.shell.core.session.logging_session.get_qs_logger")
     @mock.patch("cloudshell.shell.core.session.logging_session.log_execution_info")
@@ -109,7 +127,14 @@ class TestLoggingSessionContext(TestCase):
         execution_info = mock.Mock()
         get_execution_info.return_value = execution_info
 
+        # qs_logger = mock.Mock()
+        # get_qs_logger.return_value = qs_logger
+
         qs_logger = mock.Mock()
+        child_logger = mock.Mock()
+        qs_logger.getChild.return_value = child_logger
+        qs_logger.handlers = [mock.Mock()]
+        qs_logger.filters = [mock.Mock()]
         get_qs_logger.return_value = qs_logger
 
         # Act
@@ -119,7 +144,7 @@ class TestLoggingSessionContext(TestCase):
             get_qs_logger.assert_called_once_with(log_group=INVENTORY, log_category='QS',
                                                   log_file_prefix=remote_endpoint.name)
             log_execution_info.assert_called_once_with(qs_logger, execution_info)
-            self.assertEqual(qs_logger, logger)
+            self.assertEqual(child_logger, logger)
 
     @mock.patch("cloudshell.shell.core.session.logging_session.get_qs_logger")
     @mock.patch("cloudshell.shell.core.session.logging_session.log_execution_info")
@@ -139,7 +164,14 @@ class TestLoggingSessionContext(TestCase):
         execution_info = mock.Mock()
         get_execution_info.return_value = execution_info
 
+        # qs_logger = mock.Mock()
+        # get_qs_logger.return_value = qs_logger
+
         qs_logger = mock.Mock()
+        child_logger = mock.Mock()
+        qs_logger.getChild.return_value = child_logger
+        qs_logger.handlers = [mock.Mock()]
+        qs_logger.filters = [mock.Mock()]
         get_qs_logger.return_value = qs_logger
 
         # Act
@@ -150,7 +182,7 @@ class TestLoggingSessionContext(TestCase):
                                                   log_category='QS',
                                                   log_file_prefix=remote_endpoint.name)
             log_execution_info.assert_called_once_with(qs_logger, execution_info)
-            self.assertEqual(qs_logger, logger)
+            self.assertEqual(child_logger, logger)
 
     @mock.patch("cloudshell.shell.core.session.logging_session.socket.gethostbyname")
     def test_get_execution_info_handles_gethostbyname_exception(self, get_host_by_name_mock):
