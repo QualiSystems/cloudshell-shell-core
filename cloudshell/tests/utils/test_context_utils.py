@@ -18,7 +18,8 @@ class TestContextUtils(TestCase):
 
     def test_put_context_raises_exception(self):
         context = None
-        self.assertRaises(put_context, context)
+        with self.assertRaises(Exception):
+            put_context(context)
 
     def test_get_attribute_by_name(self):
         attribute_name = 'test_attribute'
