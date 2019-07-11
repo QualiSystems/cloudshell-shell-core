@@ -106,5 +106,6 @@ class LoggingSessionContext(object):
         :param exc_tb: Exception traceback
         :return:
         """
-        self._logger.exception('Error occurred')
+        if exc_val:
+            self._logger.exception('Error occurred')
         return False
