@@ -5,7 +5,7 @@ from jsonschema import validate
 from mock import MagicMock
 
 from cloudshell.shell.core.orchestration_save_restore import OrchestrationSaveRestore
-from cloudshell.tests.interfaces.test_save_and_restore import get_schema
+from tests import get_schema
 
 
 class TestOrchestrationSaveRestore(TestCase):
