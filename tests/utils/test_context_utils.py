@@ -4,8 +4,15 @@
 import sys
 from unittest import TestCase
 
-from cloudshell.shell.core.context_utils import put_context, get_context, get_attribute_by_name, get_resource_address, \
-    get_reservation_context_attribute, get_connectivity_context_attribute, get_resource_name
+from cloudshell.shell.core.context_utils import (
+    get_attribute_by_name,
+    get_connectivity_context_attribute,
+    get_context,
+    get_reservation_context_attribute,
+    get_resource_address,
+    get_resource_name,
+    put_context
+)
 
 if sys.version_info >= (3, 0):
     from unittest.mock import MagicMock, patch

@@ -1,5 +1,6 @@
-from weakref import WeakKeyDictionary
 from threading import currentThread
+from weakref import WeakKeyDictionary
+
 from cloudshell.shell.core import driver_context
 
 _CONTEXT_CONTAINER = WeakKeyDictionary()
