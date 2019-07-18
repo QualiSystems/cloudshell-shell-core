@@ -1,10 +1,16 @@
+import sys
 from unittest import TestCase
-import mock
-from mock import Mock, MagicMock
 
 from cloudshell.shell.core.driver_context import ResourceContextDetails, ResourceCommandContext, \
     ReservationContextDetails, ConnectivityContext, ResourceRemoteCommandContext
 from cloudshell.shell.core.session.cloudshell_session import CloudShellSessionContext
+
+if sys.version_info >= (3, 0):
+    from unittest import mock
+    from unittest.mock import Mock, MagicMock
+else:
+    import mock
+    from mock import Mock, MagicMock
 
 
 class TestCloudShellSessionContext(TestCase):
