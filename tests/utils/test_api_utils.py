@@ -17,13 +17,16 @@ class TestApiUtils(TestCase):
         self.context = MagicMock()
 
     def test_decrypt_password_by_attribute_name(self):
-        password = 'test_password'
-        attribute_name = 'Password'
+        password = "test_password"
+        attribute_name = "Password"
 
         api = MagicMock()
         self.context.resource.attributes = {attribute_name: password}
 
         api.DecryptPassword.return_value.Value = password
-        self.assertEqual(password, decrypt_password_from_attribute(api=api,
-                                                                   context=self.context,
-                                                                   password_attribute_name=attribute_name))
+        self.assertEqual(
+            password,
+            decrypt_password_from_attribute(
+                api=api, context=self.context, password_attribute_name=attribute_name
+            ),
+        )

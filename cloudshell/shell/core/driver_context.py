@@ -1,6 +1,8 @@
 class InitCommandContext:
     def __init__(self, connectivity, resource):
-        self.connectivity = connectivity  # Connectivity details that can help connect to the APIs
+        self.connectivity = (
+            connectivity
+        )  # Connectivity details that can help connect to the APIs
         """:type : ConnectivityContext"""
         self.resource = resource  # The details of the resource using the driver
         """:type : ResourceContextDetails"""
@@ -8,19 +10,30 @@ class InitCommandContext:
 
 class ResourceCommandContext:
     def __init__(self, connectivity, resource, reservation, connectors):
-        self.connectivity = connectivity  # Connectivity details that can help connect to the APIs
+        self.connectivity = (
+            connectivity
+        )  # Connectivity details that can help connect to the APIs
         """:type : ConnectivityContext"""
         self.resource = resource  # The details of the resource using the driver
         """:type : ResourceContextDetails"""
         self.reservation = reservation  # The details of the reservation
         """:type : ReservationContextDetails"""
-        self.connectors = connectors  # The list of visual connectors and routes that are connected to the resource (the resource will be considered as the source end point)
+        self.connectors = (
+            connectors
+        )  # The list of visual connectors and routes that are connected to the resource (the resource will be considered as the source end point)
         """:type : list[Connector]"""
 
 
 class ConnectivityContext:
-    def __init__(self, server_address, cloudshell_api_port, quali_api_port, admin_auth_token, cloudshell_version,
-                 cloudshell_api_scheme):
+    def __init__(
+        self,
+        server_address,
+        cloudshell_api_port,
+        quali_api_port,
+        admin_auth_token,
+        cloudshell_version,
+        cloudshell_api_scheme,
+    ):
         self.server_address = server_address  # The address of the Quali server
         """:type : str"""
         self.cloudshell_api_port = cloudshell_api_port  # the port of the TestShell API
@@ -36,9 +49,25 @@ class ConnectivityContext:
 
 
 class ResourceContextDetails:
-    def __init__(self, id, name, fullname, type, address, model, family, description, attributes, app_context,
-                 networks_info, shell_standard, shell_standard_version):
-        self.id = id  # The identifier of the resource / service / app - consistent value that can't be changed / renamed by the user
+    def __init__(
+        self,
+        id,
+        name,
+        fullname,
+        type,
+        address,
+        model,
+        family,
+        description,
+        attributes,
+        app_context,
+        networks_info,
+        shell_standard,
+        shell_standard_version,
+    ):
+        self.id = (
+            id
+        )  # The identifier of the resource / service / app - consistent value that can't be changed / renamed by the user
         """:type : str"""
         self.name = name  # The name of the resource
         """:type : str"""
@@ -54,7 +83,9 @@ class ResourceContextDetails:
         """:type : str"""
         self.description = description  # The resource description
         """:type : str"""
-        self.attributes = attributes  # A dictionary that contains the resource attributes (name, value)
+        self.attributes = (
+            attributes
+        )  # A dictionary that contains the resource attributes (name, value)
         """:type : dict[str,str]"""
         self.app_context = app_context
         """:type : AppContext"""
@@ -66,9 +97,13 @@ class ResourceContextDetails:
 
 class AppContext:
     def __init__(self, app_request_json, deployed_app_json):
-        self.app_request_json = app_request_json  # app request details: selected deployment path
+        self.app_request_json = (
+            app_request_json
+        )  # app request details: selected deployment path
         """:type : str"""
-        self.deployed_app_json = deployed_app_json  # resource name, family, model, address, attributes names and values, vm details
+        self.deployed_app_json = (
+            deployed_app_json
+        )  # resource name, family, model, address, attributes names and values, vm details
         """:type : str"""
 
 
@@ -81,8 +116,19 @@ class InterfaceContextDetails:
 
 
 class Connector:
-    def __init__(self, source, target, target_family, target_model, target_type, target_attributes, direction, alias,
-                 attributes, connection_type):
+    def __init__(
+        self,
+        source,
+        target,
+        target_family,
+        target_model,
+        target_type,
+        target_attributes,
+        direction,
+        alias,
+        attributes,
+        connection_type,
+    ):
         self.source = source  # The name of the source resource (end point)
         """:type : str"""
         self.target = target  # The name of the target resource (end point)
@@ -91,23 +137,39 @@ class Connector:
         """:type : str"""
         self.target_model = target_model  # The model of the target resource
         """:type : str"""
-        self.target_type = target_type  # The type of the target resource  (Service, App, Resource)
+        self.target_type = (
+            target_type
+        )  # The type of the target resource  (Service, App, Resource)
         """:type : str"""
-        self.target_attributes = target_attributes  # A dictionary with the target resource attributes (name, value)
+        self.target_attributes = (
+            target_attributes
+        )  # A dictionary with the target resource attributes (name, value)
         """:type : dict[str,str]"""
         self.direction = direction  # The direction of the connection: Uni, Bi
         """:type : str"""
         self.alias = alias  # The connection alias
         """:type : str"""
-        self.attributes = attributes  # The dictionary that includes the connection attributes (name, value)
+        self.attributes = (
+            attributes
+        )  # The dictionary that includes the connection attributes (name, value)
         """:type : dict[str,str]"""
-        self.connection_type = connection_type  # The type of the connection: Route, Visual Connector, Physical
+        self.connection_type = (
+            connection_type
+        )  # The type of the connection: Route, Visual Connector, Physical
         """:type : str"""
 
 
 class ReservationContextDetails:
-    def __init__(self, environment_name, environment_path, domain, description, owner_user, owner_email,
-                 reservation_id):
+    def __init__(
+        self,
+        environment_name,
+        environment_path,
+        domain,
+        description,
+        owner_user,
+        owner_email,
+        reservation_id,
+    ):
         self.reservation_id = reservation_id  # The unique identifier of the reservation
         """:type : str"""
         self.environment_name = environment_name  # The name of the environment
@@ -132,7 +194,9 @@ class CancellationContext:
 
 class AutoLoadCommandContext:
     def __init__(self, connectivity, resource):
-        self.connectivity = connectivity  # Connectivity details that can help connect to the APIs
+        self.connectivity = (
+            connectivity
+        )  # Connectivity details that can help connect to the APIs
         """:type : ConnectivityContext"""
         self.resource = resource  # The details of the resource using the driver
         """:type : ResourceContextDetails"""
@@ -140,7 +204,9 @@ class AutoLoadCommandContext:
 
 class AutoLoadDetails:
     def __init__(self, resources, attributes):
-        self.resources = resources  # the list of resources (root and sub) that were discovered
+        self.resources = (
+            resources
+        )  # the list of resources (root and sub) that were discovered
         """:type : list[AutoLoadResource]"""
         self.attributes = attributes  # the list of attributes for the resources
         """:type : list[AutoLoadAttribute]"""
@@ -170,11 +236,15 @@ class AutoLoadAttribute:
 
 class ResourceRemoteCommandContext:
     def __init__(self, connectivity, resource, remote_reservation, remote_endpoints):
-        self.connectivity = connectivity  # Connectivity details that can help connect to the APIs
+        self.connectivity = (
+            connectivity
+        )  # Connectivity details that can help connect to the APIs
         """:type : ConnectivityContext"""
         self.resource = resource  # The details of the resource using the driver
         """:type : ResourceContextDetails"""
-        self.remote_reservation = remote_reservation  # The details of the remote reservation
+        self.remote_reservation = (
+            remote_reservation
+        )  # The details of the remote reservation
         """:type : ReservationContextDetails"""
         self.remote_endpoints = remote_endpoints
         """:type : list[ResourceContextDetails]"""

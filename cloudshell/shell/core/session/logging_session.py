@@ -6,10 +6,10 @@ from cloudshell.logging.qs_logger import get_qs_logger, log_execution_info
 
 from cloudshell.shell.core.context_utils import (
     get_reservation_context_attribute,
-    is_instance_of
+    is_instance_of,
 )
 
-INVENTORY = 'inventory'
+INVENTORY = "inventory"
 
 
 class LoggingSessionContext(object):
@@ -113,5 +113,5 @@ class LoggingSessionContext(object):
         :return:
         """
         if exc_val:
-            self._logger.exception('Error occurred')
+            self._logger.exception("Error occurred")
         return False
