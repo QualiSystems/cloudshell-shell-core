@@ -6,10 +6,10 @@ from cloudshell.logging.qs_logger import get_qs_logger, log_execution_info
 
 from cloudshell.shell.core.context_utils import (
     get_reservation_context_attribute,
-    is_instance_of
+    is_instance_of,
 )
 
-INVENTORY = 'inventory'
+INVENTORY = "inventory"
 
 
 def get_execution_info(context):
@@ -21,21 +21,29 @@ def get_execution_info(context):
 
     reservation_info = {}
     hostname = socket.gethostname()
-    reservation_info['Python version'] = platform.python_version()
-    reservation_info['Operating System'] = platform.platform()
-    reservation_info['Platform'] = platform.system()
-    reservation_info['Hostname'] = hostname
+    reservation_info["Python version"] = platform.python_version()
+    reservation_info["Operating System"] = platform.platform()
+    reservation_info["Platform"] = platform.system()
+    reservation_info["Hostname"] = hostname
 
     try:
-        reservation_info['IP'] = socket.gethostbyname(hostname)
+        reservation_info["IP"] = socket.gethostbyname(hostname)
     except:
-        reservation_info['IP'] = "n/a"
+        reservation_info["IP"] = "n/a"
 
     try:
-        reservation_info['ReservationID'] = get_reservation_context_attribute('reservation_id', context)
-        reservation_info['Description'] = get_reservation_context_attribute('description', context)
-        reservation_info['EnviromentName'] = get_reservation_context_attribute('environment_name', context)
-        reservation_info['Username'] = get_reservation_context_attribute('owner_user', context)
+        reservation_info["ReservationID"] = get_reservation_context_attribute(
+            "reservation_id", context
+        )
+        reservation_info["Description"] = get_reservation_context_attribute(
+            "description", context
+        )
+        reservation_info["EnviromentName"] = get_reservation_context_attribute(
+            "environment_name", context
+        )
+        reservation_info["Username"] = get_reservation_context_attribute(
+            "owner_user", context
+        )
     except:
         pass
 
@@ -49,20 +57,31 @@ def get_logger_for_context(context):
     :return: the logger object
     :rtype: logging.Logger
     """
-    if is_instance_of(context, 'AutoLoadCommandContext'):
+    if is_instance_of(context, "AutoLoadCommandContext"):
         log_group = INVENTORY
         resource_name = context.resource.name
-    elif is_instance_of(context, 'ResourceCommandContext'):
-        log_group = context.reservation.reservation_id if context.reservation else INVENTORY
+    elif is_instance_of(context, "ResourceCommandContext"):
+        log_group = (
+            context.reservation.reservation_id if context.reservation else INVENTORY
+        )
         resource_name = context.resource.name
-    elif is_instance_of(context, 'ResourceRemoteCommandContext'):
-        log_group = context.remote_reservation.reservation_id if context.remote_reservation else INVENTORY
+    elif is_instance_of(context, "ResourceRemoteCommandContext"):
+        log_group = (
+            context.remote_reservation.reservation_id
+            if context.remote_reservation
+            else INVENTORY
+        )
         resource_name = context.remote_endpoints[0].name
     else:
-        raise Exception('get_logger_for_context', 'Unsupported command context provided {0}'.format(context))
+        raise Exception(
+            "get_logger_for_context",
+            "Unsupported command context provided {0}".format(context),
+        )
 
     exec_info = get_execution_info(context)
-    qs_logger = get_qs_logger(log_group=log_group, log_category='QS', log_file_prefix=resource_name)
+    qs_logger = get_qs_logger(
+        log_group=log_group, log_category="QS", log_file_prefix=resource_name
+    )
     log_execution_info(qs_logger, exec_info)
     return qs_logger
 
@@ -112,5 +131,5 @@ class LoggingSessionContext(object):
         :return:
         """
         if exc_val:
-            self._logger.exception('Error occurred')
+            self._logger.exception("Error occurred")
         return False
