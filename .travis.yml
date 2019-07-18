@@ -1,14 +1,29 @@
 language: python
-python:
-    - "2.7"
+
+jobs:
+  include:
+    - if: branch = master
+      env: TOXFACTOR=master
+      python:
+        - '2.7'
+        - '3.6'
+        - '3.7'
+      after_success: codecov
+    - if: branch != master
+      env: TOXFACTOR=dev
+      python:
+        - '2.7'
+        - '3.6'
+        - '3.7'
+      after_success: codecov
+    - env: TOXENV=build
+      python: 2.7
+    - env: TOXENV=pre-commit
+      python: 3.7
+      dist: xenial
 
 install:
-    - bash ./install_dependencies.sh
+  - pip install tox-factor
+  - pip install codecov
 
-script:
-    - python runtests.py --with-coverage  --cover-package=cloudshell
-    - python setup.py test
-    - python setup.py sdist --format zip
-
-after_success:
-    coveralls
+script: tox
