@@ -1,4 +1,4 @@
-from cloudshell.shell.core.driver_context import AutoLoadResource, AutoLoadAttribute
+from cloudshell.shell.core.driver_context import AutoLoadAttribute, AutoLoadResource
 
 
 class BaseResource(object):

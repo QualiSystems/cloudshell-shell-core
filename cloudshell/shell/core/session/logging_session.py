@@ -1,8 +1,13 @@
-import platform, socket
+import platform
+import socket
 import threading
 
 from cloudshell.logging.qs_logger import get_qs_logger, log_execution_info
-from cloudshell.shell.core.context_utils import is_instance_of, get_reservation_context_attribute
+
+from cloudshell.shell.core.context_utils import (
+    get_reservation_context_attribute,
+    is_instance_of
+)
 
 INVENTORY = 'inventory'
 

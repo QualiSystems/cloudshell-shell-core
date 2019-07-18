@@ -2,8 +2,12 @@ import datetime
 
 import jsonpickle
 
-from cloudshell.shell.core.interfaces.save_restore import OrchestrationSavedArtifact, OrchestrationSavedArtifactInfo, \
-    OrchestrationSaveResult, OrchestrationRestoreRules
+from cloudshell.shell.core.interfaces.save_restore import (
+    OrchestrationRestoreRules,
+    OrchestrationSavedArtifact,
+    OrchestrationSavedArtifactInfo,
+    OrchestrationSaveResult
+)
 
 
 class OrchestrationSaveRestore(object):

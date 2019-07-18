@@ -5,6 +5,7 @@ import jsonpickle
 from jsonschema import validate
 
 from cloudshell.shell.core.orchestration_save_restore import OrchestrationSaveRestore
+
 from tests.interfaces.test_save_and_restore import get_schema
 
 if sys.version_info >= (3, 0):

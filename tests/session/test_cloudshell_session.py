@@ -1,8 +1,13 @@
 import sys
 from unittest import TestCase
 
-from cloudshell.shell.core.driver_context import ResourceContextDetails, ResourceCommandContext, \
-    ReservationContextDetails, ConnectivityContext, ResourceRemoteCommandContext
+from cloudshell.shell.core.driver_context import (
+    ConnectivityContext,
+    ReservationContextDetails,
+    ResourceCommandContext,
+    ResourceContextDetails,
+    ResourceRemoteCommandContext
+)
 from cloudshell.shell.core.session.cloudshell_session import CloudShellSessionContext
 
 if sys.version_info >= (3, 0):

@@ -1,11 +1,17 @@
-from json import JSONEncoder
-from unittest import TestCase
-import jsonpickle
-from jsonschema import validate
 import datetime
 import json
-from cloudshell.shell.core.interfaces.save_restore import OrchestrationSavedArtifact, \
-    OrchestrationSavedArtifactInfo, OrchestrationSaveResult, OrchestrationRestoreRules
+from json import JSONEncoder
+from unittest import TestCase
+
+import jsonpickle
+from jsonschema import validate
+
+from cloudshell.shell.core.interfaces.save_restore import (
+    OrchestrationRestoreRules,
+    OrchestrationSavedArtifact,
+    OrchestrationSavedArtifactInfo,
+    OrchestrationSaveResult
+)
 
 
 def get_schema():
@@ -134,4 +140,3 @@ class TestSaveAndRestore(TestCase):
         orchestration_save_result = OrchestrationSaveResult(saved_artifacts_info)
         json_string = jsonpickle.encode(orchestration_save_result, unpicklable=False)
         validate(jsonpickle.loads(json_string), schema=get_schema())
-

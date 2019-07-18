@@ -1,11 +1,21 @@
 import os
 import sys
-
 from unittest import TestCase
-from cloudshell.shell.core.driver_context import AutoLoadCommandContext, ResourceContextDetails, ResourceCommandContext, \
-    ResourceRemoteCommandContext, ReservationContextDetails
-from cloudshell.shell.core.session.logging_session import LoggingSessionContext, INVENTORY, get_execution_info
+
 from cloudshell.logging.qs_logger import _LOGGER_CONTAINER
+
+from cloudshell.shell.core.driver_context import (
+    AutoLoadCommandContext,
+    ReservationContextDetails,
+    ResourceCommandContext,
+    ResourceContextDetails,
+    ResourceRemoteCommandContext
+)
+from cloudshell.shell.core.session.logging_session import (
+    INVENTORY,
+    LoggingSessionContext,
+    get_execution_info
+)
 
 if sys.version_info >= (3, 0):
     from unittest import mock
