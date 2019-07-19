@@ -1,0 +1,13 @@
+repos:
+# todo uncomment this when will be isort version compatible with black
+#  - repo: https://github.com/pre-commit/mirrors-isort
+#    rev: master
+#    hooks:
+#      - id: isort
+#        language_version: python3.7
+  - repo: https://github.com/python/black
+    rev: stable
+    hooks:
+      - id: black
+        language_version: python3.7
+        exclude: '/mibs'
