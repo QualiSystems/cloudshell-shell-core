@@ -7,6 +7,7 @@ class InitCommandContext:
     :param resource: The details of the resource using the driver
     :type resource: ResourceContextDetails
     """
+
     def __init__(self, connectivity, resource):
         self.connectivity = connectivity
         self.resource = resource
@@ -28,6 +29,7 @@ class ResourceCommandContext:
     to the resource (the resource will be considered as the source end point)
     :type connectors: list[Connector]
     """
+
     def __init__(self, connectivity, resource, reservation, connectors):
         self.connectivity = connectivity
         self.resource = resource
@@ -54,6 +56,7 @@ class ConnectivityContext:
 
     :type cloudshell_api_scheme: str
     """
+
     def __init__(
         self,
         server_address,
@@ -109,6 +112,7 @@ class ResourceContextDetails:
 
     :type shell_standard_version: str
     """
+
     def __init__(
         self,
         id,  # noqa: A002
@@ -149,6 +153,7 @@ class AppContext:
     names and values, vm details
     :type deployed_app_json: str
     """
+
     def __init__(self, app_request_json, deployed_app_json):
         self.app_request_json = app_request_json
         self.deployed_app_json = deployed_app_json
@@ -160,6 +165,7 @@ class InterfaceContextDetails:
     :type type: str
     :type fullName: str
     """
+
     def __init__(self, interface):
         self.type = interface.Type
         self.fullName = interface.FullName
@@ -201,6 +207,7 @@ class Connector:
     Physical
     :type connection_type: str
     """
+
     def __init__(
         self,
         source,
@@ -250,6 +257,7 @@ class ReservationContextDetails:
     :param reservation_id: The unique identifier of the reservation
     :type reservation_id: str
     """
+
     def __init__(
         self,
         environment_name,
@@ -274,6 +282,7 @@ class CancellationContext:
 
     :type is_cancelled: bool
     """
+
     def __init__(self):
         self.is_cancelled = False
 
@@ -287,6 +296,7 @@ class AutoLoadCommandContext:
     :param resource: The details of the resource using the driver
     :type resource: ResourceContextDetails
     """
+
     def __init__(self, connectivity, resource):
         self.connectivity = connectivity
         self.resource = resource
@@ -301,6 +311,7 @@ class AutoLoadDetails:
     :param attributes: the list of attributes for the resources
     :type attributes: list[AutoLoadAttribute]
     """
+
     def __init__(self, resources, attributes):
         self.resources = resources
         self.attributes = attributes
@@ -314,6 +325,7 @@ class AutoLoadResource:
     :type relative_address: str
     :type unique_identifier: str
     """
+
     def __init__(self, model, name, relative_address, unique_identifier=None):
         self.model = model
         self.name = name
@@ -328,6 +340,7 @@ class AutoLoadAttribute:
     :type attribute_name: str
     :type attribute_value: str
     """
+
     def __init__(self, relative_address, attribute_name, attribute_value):
         self.relative_address = relative_address
         self.attribute_name = attribute_name
@@ -348,6 +361,7 @@ class ResourceRemoteCommandContext:
 
     :type remote_endpoints: list[ResourceContextDetails]
     """
+
     def __init__(self, connectivity, resource, remote_reservation, remote_endpoints):
         self.connectivity = connectivity
         self.resource = resource
