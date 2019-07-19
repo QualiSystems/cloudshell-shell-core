@@ -18,9 +18,9 @@ class ResourceCommandContext:
         """:type : ResourceContextDetails"""
         self.reservation = reservation  # The details of the reservation
         """:type : ReservationContextDetails"""
-        self.connectors = (
-            connectors
-        )  # The list of visual connectors and routes that are connected to the resource (the resource will be considered as the source end point)
+        # The list of visual connectors and routes that are connected to the resource
+        # (the resource will be considered as the source end point)
+        self.connectors = connectors
         """:type : list[Connector]"""
 
 
@@ -51,10 +51,10 @@ class ConnectivityContext:
 class ResourceContextDetails:
     def __init__(
         self,
-        id,
+        id,  # noqa: A002
         name,
         fullname,
-        type,
+        type,  # noqa: A002
         address,
         model,
         family,
@@ -65,9 +65,9 @@ class ResourceContextDetails:
         shell_standard,
         shell_standard_version,
     ):
-        self.id = (
-            id
-        )  # The identifier of the resource / service / app - consistent value that can't be changed / renamed by the user
+        # The identifier of the resource / service / app - consistent value
+        # that can't be changed / renamed by the user
+        self.id = id
         """:type : str"""
         self.name = name  # The name of the resource
         """:type : str"""
@@ -101,9 +101,8 @@ class AppContext:
             app_request_json
         )  # app request details: selected deployment path
         """:type : str"""
-        self.deployed_app_json = (
-            deployed_app_json
-        )  # resource name, family, model, address, attributes names and values, vm details
+        # resource name, family, model, address, attributes names and values, vm details
+        self.deployed_app_json = deployed_app_json
         """:type : str"""
 
 

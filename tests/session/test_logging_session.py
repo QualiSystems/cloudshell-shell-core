@@ -75,9 +75,6 @@ class TestLoggingSessionContext(TestCase):
         execution_info = mock.Mock()
         get_execution_info.return_value = execution_info
 
-        # qs_logger = mock.Mock()
-        # get_qs_logger.return_value = qs_logger
-
         qs_logger = mock.Mock()
         child_logger = mock.Mock()
         qs_logger.getChild.return_value = child_logger
@@ -118,9 +115,6 @@ class TestLoggingSessionContext(TestCase):
         execution_info = mock.Mock()
         get_execution_info.return_value = execution_info
 
-        # qs_logger = mock.Mock()
-        # get_qs_logger.return_value = qs_logger
-
         qs_logger = mock.Mock()
         child_logger = mock.Mock()
         qs_logger.getChild.return_value = child_logger
@@ -157,9 +151,6 @@ class TestLoggingSessionContext(TestCase):
 
         execution_info = mock.Mock()
         get_execution_info.return_value = execution_info
-
-        # qs_logger = mock.Mock()
-        # get_qs_logger.return_value = qs_logger
 
         qs_logger = mock.Mock()
         child_logger = mock.Mock()
@@ -200,9 +191,6 @@ class TestLoggingSessionContext(TestCase):
 
         execution_info = mock.Mock()
         get_execution_info.return_value = execution_info
-
-        # qs_logger = mock.Mock()
-        # get_qs_logger.return_value = qs_logger
 
         qs_logger = mock.Mock()
         child_logger = mock.Mock()

@@ -13,7 +13,7 @@ def get_context():
 
 
 def get_attribute_by_name_wrapper(attribute):
-    """Wrapper uses to closure get_attribute_by_name func"""
+    """Wrapper uses to closure get_attribute_by_name func."""  # noqa: D202
 
     def attribute_func():
         return get_attribute_by_name(attribute)
@@ -58,8 +58,7 @@ def put_context(context):
 
 
 def get_resource_context_details(context=None):
-    """Helps to get resource context details"""
-
+    """Helps to get resource context details."""
     if not context:
         _CONTEXT_CONTAINER.get(currentThread(), None)
     if context and hasattr(context, "resource"):
@@ -76,8 +75,7 @@ def is_instance_of(context, type_name):
 
 
 def get_resource_context_attribute(attribute, context=None):
-    """Helps to get resource context attribute"""
-
+    """Helps to get resource context attribute."""
     if not context:
         _CONTEXT_CONTAINER.get(currentThread(), None)
     resource = get_resource_context_details(context)
@@ -91,8 +89,7 @@ def get_resource_context_attribute(attribute, context=None):
 
 
 def get_attribute_by_name(attribute_name, context=None):
-    """Return attribute from attributes or resource context """
-
+    """Return attribute from attributes or resource context."""
     attributes = get_resource_context_attribute(context=context, attribute="attributes")
     resolved_attribute = None
     if attribute_name in attributes:
@@ -101,20 +98,17 @@ def get_attribute_by_name(attribute_name, context=None):
 
 
 def get_resource_address(context=None):
-    """Returns resource address"""
-
+    """Returns resource address."""
     return get_resource_context_attribute(context=context, attribute="address")
 
 
 def get_resource_name(context=None):
-    """Returns resource name"""
-
+    """Returns resource name."""
     return get_resource_context_attribute(context=context, attribute="name")
 
 
 def get_reservation_context_details(context=None):
-    """Helps to get reservation context details"""
-
+    """Helps to get reservation context details."""
     if not context:
         _CONTEXT_CONTAINER.get(currentThread(), None)
     if context and hasattr(context, "reservation"):
@@ -130,8 +124,7 @@ def get_reservation_context_details(context=None):
 
 
 def get_reservation_context_attribute(attribute, context=None):
-    """Helps to get reservation context attribute"""
-
+    """Helps to get reservation context attribute."""
     reservation = get_reservation_context_details(context)
     if reservation and hasattr(reservation, attribute):
         return getattr(reservation, attribute)
@@ -143,7 +136,7 @@ def get_reservation_context_attribute(attribute, context=None):
 
 
 def get_connectivity_context_details(context=None):
-    """Helps to get connectivity context details"""
+    """Helps to get connectivity context details."""
     if not context:
         _CONTEXT_CONTAINER.get(currentThread(), None)
     if context and hasattr(context, "connectivity"):
@@ -156,8 +149,7 @@ def get_connectivity_context_details(context=None):
 
 
 def get_connectivity_context_attribute(attribute, context=None):
-    """Helps to get connectivity context attribute"""
-
+    """Helps to get connectivity context attribute."""
     connectivity = get_connectivity_context_details(context)
     if connectivity and hasattr(connectivity, attribute):
         return getattr(connectivity, attribute)

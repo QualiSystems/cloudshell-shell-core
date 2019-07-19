@@ -100,7 +100,7 @@ class OrchestrationSaveRestore(object):
         return restore_params
 
     def _validate_artifact_info_object(self, saved_config):
-        """Validate OrchestrationSavedArtifactInfo object for key components
+        """Validate OrchestrationSavedArtifactInfo object for key components.
 
         :param OrchestrationSavedArtifactInfo saved_config: object to validate
         """
@@ -124,9 +124,8 @@ class OrchestrationSaveRestore(object):
         if is_fail:
             raise Exception(
                 "ConfigurationOperations",
-                "Mandatory field {0} is missing in Saved Artifact Info request json".format(
-                    fail_attribute
-                ),
+                "Mandatory field {0} is missing in Saved Artifact Info "
+                "request json".format(fail_attribute),
             )
 
     def _validate_custom_params(self, custom_params):
@@ -136,11 +135,9 @@ class OrchestrationSaveRestore(object):
             )
 
     def _get_restore_rules(self):
-        """
-        Populate required restore rules.
+        """Populate required restore rules.
 
         :return OrchestrationRestoreRules: response
         """
-
         self._logger.info("Creating Restore Rules")
         return OrchestrationRestoreRules(True)

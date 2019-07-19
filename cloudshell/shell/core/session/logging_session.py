@@ -13,12 +13,11 @@ INVENTORY = "inventory"
 
 
 def get_execution_info(context):
-    """Aggregate information about execution server
+    """Aggregate information about execution server.
 
     :param context: ResourceCommandContext
     :return: dict with aggregated info
     """
-
     reservation_info = {}
     hostname = socket.gethostname()
     reservation_info["Python version"] = platform.python_version()
@@ -28,7 +27,7 @@ def get_execution_info(context):
 
     try:
         reservation_info["IP"] = socket.gethostbyname(hostname)
-    except:
+    except Exception:
         reservation_info["IP"] = "n/a"
 
     try:
@@ -44,15 +43,15 @@ def get_execution_info(context):
         reservation_info["Username"] = get_reservation_context_attribute(
             "owner_user", context
         )
-    except:
+    except Exception:
         pass
 
     return reservation_info
 
 
 def get_logger_for_context(context):
-    """
-    Create logger for context
+    """Create logger for context.
+
     :param context:
     :return: the logger object
     :rtype: logging.Logger
@@ -87,9 +86,10 @@ def get_logger_for_context(context):
 
 
 def get_logger_with_thread_id(context):
-    """
-    Create QS Logger for command context AutoLoadCommandContext, ResourceCommandContext
-    or ResourceRemoteCommandContext with thread name
+    """Create QS Logger for command context with thread name.
+
+    Context can be: AutoLoadCommandContext, ResourceCommandContext
+    or ResourceRemoteCommandContext
     :param context:
     :return:
     :rtype: logging.Logger
@@ -106,16 +106,16 @@ def get_logger_with_thread_id(context):
 
 class LoggingSessionContext(object):
     def __init__(self, context):
-        """
-        Initializes logger for context
+        """Initializes logger for context.
+
         :param context: CommandContext
         """
         self.context = context
         self._logger = None
 
     def __enter__(self):
-        """
-        Initializes logger for the context
+        """Initializes logger for the context.
+
         :return: Logger
         :rtype: logging.Logger
         """
@@ -123,8 +123,9 @@ class LoggingSessionContext(object):
         return self._logger
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        """
-        Called upon end of the context. Does nothing
+        """Called upon end of the context.
+
+        Logs an error if exists
         :param exc_type: Exception type
         :param exc_val: Exception value
         :param exc_tb: Exception traceback

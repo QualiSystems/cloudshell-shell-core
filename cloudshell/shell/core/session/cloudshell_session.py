@@ -6,8 +6,8 @@ class CloudShellSessionContext(object):
     DEFAULT_API_SCHEME = "http"
 
     def __init__(self, context):
-        """
-        Initializes an instance of CloudShellSessionContext
+        """Initializes an instance of CloudShellSessionContext.
+
         :param context: Command context
         :type: context: ResourceCommandContext
         """
@@ -33,12 +33,11 @@ class CloudShellSessionContext(object):
         return result
 
     def __enter__(self):
-        """
-        Called upon context start and initializes a session for CloudShell API
+        """Called upon context start and initializes a session for CloudShell API.
+
         :rtype: CloudShellAPISession
         :return :
         """
-
         self.context_object = self.get_api()
 
         return self.context_object
@@ -73,8 +72,9 @@ class CloudShellSessionContext(object):
         return result
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        """
-        Called upon end of the context. Does nothing
+        """Called upon end of the context.
+
+         Does nothing
         :param exc_type: Exception type
         :param exc_val: Exception value
         :param exc_tb: Exception traceback
