@@ -15,8 +15,8 @@ INVENTORY = "inventory"
 class LoggingSessionContext(object):
 
     def __init__(self, context):
-        """
-        Initializes logger for context
+        """Initializes logger for context.
+
         :param context: CommandContext
         """
         self.context = context
@@ -96,8 +96,8 @@ class LoggingSessionContext(object):
         return child
 
     def __enter__(self):
-        """
-        Initializes logger for the context
+        """Initializes logger for the context.
+
         :return: Logger
         :rtype: logging.Logger
         """
@@ -105,8 +105,9 @@ class LoggingSessionContext(object):
         return self._logger
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        """
-        Called upon end of the context. Does nothing
+        """Called upon end of the context.
+
+        Logs an error if exists
         :param exc_type: Exception type
         :param exc_val: Exception value
         :param exc_tb: Exception traceback
