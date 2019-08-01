@@ -1,66 +1,51 @@
 import platform, socket
+import threading
 
-from cloudshell.core.logger.qs_logger import get_qs_logger, log_execution_info
+from cloudshell.logging.qs_logger import get_qs_logger, log_execution_info
 from cloudshell.shell.core.context_utils import is_instance_of, get_reservation_context_attribute
 
 INVENTORY = 'inventory'
 
 
-def get_execution_info(context):
-    """Aggregate information about execution server
-
-    :param context: ResourceCommandContext
-    :return: dict with aggregated info
-    """
-
-    reservation_info = {}
-    hostname = socket.gethostname()
-    reservation_info['Python version'] = platform.python_version()
-    reservation_info['Operating System'] = platform.platform()
-    reservation_info['Platform'] = platform.system()
-    reservation_info['Hostname'] = hostname
-
-    try:
-        reservation_info['IP'] = socket.gethostbyname(hostname)
-    except:
-        reservation_info['IP'] = "n/a"
-
-    try:
-        reservation_info['ReservationID'] = get_reservation_context_attribute('reservation_id', context)
-        reservation_info['Description'] = get_reservation_context_attribute('description', context)
-        reservation_info['EnviromentName'] = get_reservation_context_attribute('environment_name', context)
-        reservation_info['Username'] = get_reservation_context_attribute('owner_user', context)
-    except:
-        pass
-
-    return reservation_info
-
-
 class LoggingSessionContext(object):
+
     def __init__(self, context):
         """
         Initializes logger for context
         :param context: CommandContext
         """
         self.context = context
+        self._logger = None
 
-    def __enter__(self):
-        """
-        Initializes logger for the context
-        :return: Logger
-        :rtype: logging.Logger
-        """
-        return LoggingSessionContext.get_logger_for_context(self.context)
+    @staticmethod
+    def get_execution_info(context):
+        """Aggregate information about execution server
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+        :param context: ResourceCommandContext
+        :return: dict with aggregated info
         """
-        Called upon end of the context. Does nothing
-        :param exc_type: Exception type
-        :param exc_val: Exception value
-        :param exc_tb: Exception traceback
-        :return:
-        """
-        return False
+
+        reservation_info = {}
+        hostname = socket.gethostname()
+        reservation_info['Python version'] = platform.python_version()
+        reservation_info['Operating System'] = platform.platform()
+        reservation_info['Platform'] = platform.system()
+        reservation_info['Hostname'] = hostname
+
+        try:
+            reservation_info['IP'] = socket.gethostbyname(hostname)
+        except:
+            reservation_info['IP'] = "n/a"
+
+        try:
+            reservation_info['ReservationID'] = get_reservation_context_attribute('reservation_id', context)
+            reservation_info['Description'] = get_reservation_context_attribute('description', context)
+            reservation_info['EnviromentName'] = get_reservation_context_attribute('environment_name', context)
+            reservation_info['Username'] = get_reservation_context_attribute('owner_user', context)
+        except:
+            pass
+
+        return reservation_info
 
     @staticmethod
     def get_logger_for_context(context):
@@ -82,11 +67,46 @@ class LoggingSessionContext(object):
         else:
             raise Exception('get_logger_for_context', 'Unsupported command context provided {0}'.format(context))
 
-        exec_info = get_execution_info(context)
+        exec_info = LoggingSessionContext.get_execution_info(context)
         qs_logger = get_qs_logger(log_group=log_group, log_category='QS', log_file_prefix=resource_name)
         log_execution_info(qs_logger, exec_info)
         return qs_logger
 
+    @staticmethod
+    def get_logger_with_thread_id(context):
+        """
+        Create QS Logger for command context AutoLoadCommandContext, ResourceCommandContext
+        or ResourceRemoteCommandContext with thread name
+        :param context:
+        :return:
+        :rtype: logging.Logger
+        """
+        logger = LoggingSessionContext.get_logger_for_context(context)
+        child = logger.getChild(threading.currentThread().name)
+        for handler in logger.handlers:
+            child.addHandler(handler)
+        child.level = logger.level
+        for log_filter in logger.filters:
+            child.addFilter(log_filter)
+        return child
 
+    def __enter__(self):
+        """
+        Initializes logger for the context
+        :return: Logger
+        :rtype: logging.Logger
+        """
+        self._logger = self.get_logger_with_thread_id(self.context)
+        return self._logger
 
-
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """
+        Called upon end of the context. Does nothing
+        :param exc_type: Exception type
+        :param exc_val: Exception value
+        :param exc_tb: Exception traceback
+        :return:
+        """
+        if exc_val:
+            self._logger.exception('Error occurred')
+        return False

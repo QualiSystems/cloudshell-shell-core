@@ -17,18 +17,21 @@ class OrchestrationSavedArtifact(object):
 class OrchestrationSaveResult(object):
     def __init__(self, saved_artifacts_info):
         """
-        Container class for the orhcestration_save result
+        Container class for the orchestration_save result
         :param OrchestrationSavedArtifactInfo saved_artifacts_info: An object describing the artifacts saved by this operation
         """
         self.saved_artifacts_info = saved_artifacts_info
 
 
 class OrchestrationRestoreRules(object):
-    def __init__(self, requires_same_resource, additional_rules={}):
+    def __init__(self, requires_same_resource, additional_rules=None):
         """
         Container class for the orhcestration_save result
+        :type additional_rules: dict
         :param OrchestrationSavedArtifactInfo saved_artifacts_info: An object describing the artifacts saved by this operation
         """
+        if not additional_rules:
+            additional_rules = dict()
         self.requires_same_resource = requires_same_resource
         for rule in additional_rules:
             setattr(self, rule, additional_rules[rule])
@@ -43,7 +46,8 @@ class OrchestrationSavedArtifactInfo(object):
         :param str resource_name: The name of the resource on which the save operation was performed
         :param datetime created_date: The time in which this save operation occurred
         :param OrchestrationRestoreRules restore_rules: A list of rules governing constraints on restoring the saved artifact
-        :param OrchestrationSavedArtifact saved_artifact: The description of the saved artifact itself, the saved artifact can be of different types
+        :param OrchestrationSavedArtifact saved_artifact: The description of the saved artifact itself,
+        the saved artifact can be of different types
         """
         self.resource_name = resource_name
         self.created_date = created_date.isoformat()

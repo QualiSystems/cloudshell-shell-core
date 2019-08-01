@@ -16,7 +16,7 @@ class BaseResource(object):
 
     def get_attributes(self):
         result = []
-        for name, value in self.attributes.iteritems():
+        for name, value in self.attributes.items():
             result.append(AutoLoadAttribute(relative_address=self.relative_address, attribute_name=name,
                                             attribute_value=value))
         return result

@@ -178,3 +178,21 @@ class ResourceRemoteCommandContext:
         """:type : ReservationContextDetails"""
         self.remote_endpoints = remote_endpoints
         """:type : list[ResourceContextDetails]"""
+
+
+class ApiVmDetails(object):
+    def __init__(self, cloud_provider_name="", uid="", vm_custom_params=None):
+        self.CloudProviderName = cloud_provider_name  # The name of the cloud provider
+        """:type : str"""
+        self.UID = uid  # UUID of the created VM
+        """:type : str"""
+        self.VmCustomParams = vm_custom_params or []  # VM custom parameters
+        """:type : list[ApiVmCustomParam]"""
+
+
+class ApiVmCustomParam(object):
+    def __init__(self, name="", value=""):
+        self.Name = name
+        """:type : str"""
+        self.Value = value
+        """:type : str"""
