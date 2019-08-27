@@ -356,7 +356,7 @@ class ResourceRemoteCommandContext:
     :param resource: The details of the resource using the driver
     :type resource: ResourceContextDetails
 
-    :paramet remote_reservation: The details of the remote reservation
+    :param remote_reservation: The details of the remote reservation
     :type remote_reservation: ReservationContextDetails
 
     :type remote_endpoints: list[ResourceContextDetails]
