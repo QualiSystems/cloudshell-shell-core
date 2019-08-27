@@ -1,17 +1,22 @@
 language: python
 
-python:
-  - "2.7"
-  - "3.6"
-  - "3.7"
-
-matrix:
+jobs:
   include:
     - if: branch = master
-      env: TOXFACTOR=master
+      python: 2.7
+      env: TOXENV = py27-master
+      after_success: codecov
+    - if: branch = master
+      python: 3.7
+      env: TOXENV = py37-master
       after_success: codecov
     - if: branch != master
-      env: TOXFACTOR=dev
+      python: 2.7
+      env: TOXENV=py27-dev
+      after_success: codecov
+    - if: branch != master
+      python: 3.7
+      env: TOXENV=py37-dev
       after_success: codecov
     - env: TOXENV=build
       python: 2.7
@@ -20,7 +25,7 @@ matrix:
       dist: xenial
 
 install:
-  - pip install tox-factor
+  - pip install tox
   - pip install codecov
 
 script: tox
