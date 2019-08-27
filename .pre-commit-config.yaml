@@ -16,8 +16,6 @@ repos:
     hooks:
       - id: flake8
         additional_dependencies: [
-          # todo remove this after fixing flake8-docstring
-          'pydocstyle<4.0.0',
           flake8-docstrings,
           flake8-builtins,
           flake8-comprehensions,
