@@ -381,6 +381,7 @@ class ApiVmDetails(object):
     :param VmCustomParams: VM custom parameters
     :type VmCustomParams: list[ApiVmCustomParam]
     """
+
     def __init__(self, cloud_provider_name="", uid="", vm_custom_params=None):
         self.CloudProviderName = cloud_provider_name
         self.UID = uid
@@ -393,6 +394,7 @@ class ApiVmCustomParam(object):
     :type Name: str
     :type Value: str
     """
+
     def __init__(self, name="", value=""):
         self.Name = name
         self.Value = value

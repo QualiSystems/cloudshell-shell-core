@@ -28,7 +28,10 @@ class TestLoggingSessionContext(TestCase):
 
     @mock.patch("cloudshell.shell.core.session.logging_session.get_qs_logger")
     @mock.patch("cloudshell.shell.core.session.logging_session.log_execution_info")
-    @mock.patch("cloudshell.shell.core.session.logging_session.LoggingSessionContext.get_execution_info")
+    @mock.patch(
+        "cloudshell.shell.core.session.logging_session.LoggingSessionContext"
+        ".get_execution_info"
+    )
     def test_logger_initialized_for_autoload_context(
         self, get_execution_info, log_execution_info, get_qs_logger
     ):
@@ -60,7 +63,10 @@ class TestLoggingSessionContext(TestCase):
 
     @mock.patch("cloudshell.shell.core.session.logging_session.get_qs_logger")
     @mock.patch("cloudshell.shell.core.session.logging_session.log_execution_info")
-    @mock.patch("cloudshell.shell.core.session.logging_session.LoggingSessionContext.get_execution_info")
+    @mock.patch(
+        "cloudshell.shell.core.session.logging_session.LoggingSessionContext"
+        ".get_execution_info"
+    )
     def test_logger_initialized_for_resource_context_without_reservation(
         self, get_execution_info, log_execution_info, get_qs_logger
     ):
@@ -94,7 +100,10 @@ class TestLoggingSessionContext(TestCase):
 
     @mock.patch("cloudshell.shell.core.session.logging_session.get_qs_logger")
     @mock.patch("cloudshell.shell.core.session.logging_session.log_execution_info")
-    @mock.patch("cloudshell.shell.core.session.logging_session.LoggingSessionContext.get_execution_info")
+    @mock.patch(
+        "cloudshell.shell.core.session.logging_session.LoggingSessionContext"
+        ".get_execution_info"
+    )
     def test_logger_initialized_for_resource_context_with_reservation(
         self, get_execution_info, log_execution_info, get_qs_logger
     ):
@@ -134,7 +143,10 @@ class TestLoggingSessionContext(TestCase):
 
     @mock.patch("cloudshell.shell.core.session.logging_session.get_qs_logger")
     @mock.patch("cloudshell.shell.core.session.logging_session.log_execution_info")
-    @mock.patch("cloudshell.shell.core.session.logging_session.LoggingSessionContext.get_execution_info")
+    @mock.patch(
+        "cloudshell.shell.core.session.logging_session.LoggingSessionContext"
+        ".get_execution_info"
+    )
     def test_logger_initialized_for_remote_context_without_reservation(
         self, get_execution_info, log_execution_info, get_qs_logger
     ):
@@ -171,7 +183,10 @@ class TestLoggingSessionContext(TestCase):
 
     @mock.patch("cloudshell.shell.core.session.logging_session.get_qs_logger")
     @mock.patch("cloudshell.shell.core.session.logging_session.log_execution_info")
-    @mock.patch("cloudshell.shell.core.session.logging_session.LoggingSessionContext.get_execution_info")
+    @mock.patch(
+        "cloudshell.shell.core.session.logging_session.LoggingSessionContext"
+        ".get_execution_info"
+    )
     def test_logger_initialized_for_remote_context_with_reservation(
         self, get_execution_info, log_execution_info, get_qs_logger
     ):
