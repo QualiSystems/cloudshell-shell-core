@@ -6,13 +6,13 @@ repos:
 #      - id: isort
 #        language_version: python3.7
   - repo: https://github.com/python/black
-    rev: stable
+    rev: 19.3b0
     hooks:
       - id: black
         language_version: python3.7
         exclude: '/mibs'
   - repo: https://gitlab.com/pycqa/flake8
-    rev: master
+    rev: 3.7.8
     hooks:
       - id: flake8
         additional_dependencies: [
