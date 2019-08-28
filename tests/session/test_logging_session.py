@@ -1,6 +1,7 @@
 import os
 import sys
 from unittest import TestCase
+
 from cloudshell.logging.qs_logger import _LOGGER_CONTAINER
 
 from cloudshell.shell.core.driver_context import (
