@@ -1,4 +1,4 @@
-# cloudshell-shell-core
+# CloudShell Shell Core
 
 [![Build status](https://travis-ci.org/QualiSystems/cloudshell-shell-core.svg?branch=dev)](https://travis-ci.org/QualiSystems/cloudshell-shell-core)
 [![codecov](https://codecov.io/gh/QualiSystems/cloudshell-shell-core/branch/dev/graph/badge.svg)](https://codecov.io/gh/QualiSystems/cloudshell-shell-core)
@@ -9,9 +9,9 @@
 
 The **cloudshell-shell-core** open source Python package is the base package for all CloudShell shells. It provides basic shell functionality including:
 - Resource driver interface, which enables CloudShell to use the shell. This interface is automatically added to the shell’s driver when creating a shell via shellfoundry.
-- Definitions of the driver’s context objects, which CloudShell sends to the shell’s commands **_[steve] add link to devguide’s shells’ ‘Getting information from cloudshell’ article_**
-- **cloudshell-automation-api** wrapper [steve] add link to documentation
-- **cloudshell-logging** wrapper [steve] add link to github readme
+- Definitions of the driver’s context objects, which CloudShell sends to the shell’s commands. For details, see the CloudShell Dev Guide's [Getting information from cloudshell](https://devguide.quali.com/shells/9.3.0/getting-information-from-cloudshell.html)
+- [cloudshell-automation-api](https://help.quali.com/Online%20Help/0.0/Python-API/) wrapper. Use of the CloudShell Automation API mostly applies to setting live status and writing messages to output. Other API capabilities are outside the scope of the shell and should be implemented on the sandbox orchestration level,
+- [cloudshell-logging](https://github.com/QualiSystems/cloudshell-logging/blob/dev/README.md) wrapper
 
 ## Installation
 ```bash
