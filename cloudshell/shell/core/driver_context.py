@@ -256,6 +256,16 @@ class ReservationContextDetails:
 
     :param reservation_id: The unique identifier of the reservation
     :type reservation_id: str
+
+    :param saved_sandbox_name:
+    :type saved_sandbox_name: str
+
+    :param saved_sandbox_id:
+    :type saved_sandbox_id: str
+
+    :param running_user: The user that run the command
+    :type running_user: str
+
     """
 
     def __init__(
@@ -267,6 +277,9 @@ class ReservationContextDetails:
         owner_user,
         owner_email,
         reservation_id,
+        saved_sandbox_name,
+        saved_sandbox_id,
+        running_user,
     ):
         self.reservation_id = reservation_id
         self.environment_name = environment_name
@@ -275,6 +288,9 @@ class ReservationContextDetails:
         self.description = description
         self.owner_user = owner_user
         self.owner_email = owner_email
+        self.saved_sandbox_name = saved_sandbox_name
+        self.saved_sandbox_id = saved_sandbox_id
+        self.running_user = running_user
 
 
 class CancellationContext:
