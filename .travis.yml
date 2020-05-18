@@ -85,5 +85,5 @@ stages:
     if: branch = dev AND type != pull_request
   - name: Create GitHub release
     if: branch = master AND type != pull_request
-  - name: Deploy to PyPI release (now to test PyPI)
+  - name: Deploy to PyPI release
     if: tag IS present
