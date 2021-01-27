@@ -1,3 +1,4 @@
+setuptools<45
 jsonpickle
 cloudshell-automation-api
 cloudshell-logging>=1.0,<2
