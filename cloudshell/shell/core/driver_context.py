@@ -283,7 +283,7 @@ class ReservationContextDetails:
         saved_sandbox_name,
         saved_sandbox_id,
         running_user,
-        cloud_info_access_key
+        cloud_info_access_key,
     ):
         self.reservation_id = reservation_id
         self.environment_name = environment_name
