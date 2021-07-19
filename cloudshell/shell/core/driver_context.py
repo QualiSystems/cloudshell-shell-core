@@ -266,6 +266,9 @@ class ReservationContextDetails:
     :param running_user: The user that run the command
     :type running_user: str
 
+    :param cloud_info_access_key: The private key
+    :type cloud_info_access_key: str
+
     """
 
     def __init__(
@@ -280,6 +283,7 @@ class ReservationContextDetails:
         saved_sandbox_name,
         saved_sandbox_id,
         running_user,
+        cloud_info_access_key
     ):
         self.reservation_id = reservation_id
         self.environment_name = environment_name
@@ -291,6 +295,7 @@ class ReservationContextDetails:
         self.saved_sandbox_name = saved_sandbox_name
         self.saved_sandbox_id = saved_sandbox_id
         self.running_user = running_user
+        self.cloud_info_access_key = cloud_info_access_key
 
 
 class CancellationContext:
