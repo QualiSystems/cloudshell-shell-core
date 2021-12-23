@@ -12,10 +12,10 @@ from cloudshell.shell.core.session.cloudshell_session import CloudShellSessionCo
 
 if sys.version_info >= (3, 0):
     from unittest import mock
-    from unittest.mock import Mock, MagicMock
+    from unittest.mock import MagicMock, Mock
 else:
     import mock
-    from mock import Mock, MagicMock
+    from mock import MagicMock, Mock
 
 
 class TestCloudShellSessionContext(TestCase):
