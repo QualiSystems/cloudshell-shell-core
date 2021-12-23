@@ -327,6 +327,7 @@ class UnreservedResourceCommandContext:
     :param resource: The details of the resource using the driver
     :type resource: ResourceContextDetails
     """
+
     def __init__(self, connectivity, resource):
         self.connectivity = connectivity
         self.resource = resource
