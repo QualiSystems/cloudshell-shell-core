@@ -10,6 +10,7 @@ from cloudshell.shell.core.context_utils import (
 )
 
 INVENTORY = "inventory"
+DELETE_ARTIFACTS = "DeleteArtifacts"
 
 
 class LoggingSessionContext(object):
@@ -81,6 +82,9 @@ class LoggingSessionContext(object):
                 else INVENTORY
             )
             resource_name = context.remote_endpoints[0].name
+        elif is_instance_of(context, "UnreservedResourceCommandContext"):
+            log_group = DELETE_ARTIFACTS
+            resource_name = context.resource.name
         else:
             raise Exception(
                 "get_logger_for_context",

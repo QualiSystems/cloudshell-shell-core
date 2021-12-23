@@ -2,11 +2,11 @@ name: CI
 
 on:
   push:
-    branches:
-      - "*"
+    paths-ignore:
+      - "README.md"
   pull_request:
-    branches:
-      - "*"
+    paths-ignore:
+      - "README.md"
   release:
     types: [published]
 
@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [2.7, 3.7]
+        python-version: ["2.7", "3.7", "3.10"]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -46,9 +46,8 @@ jobs:
       - name: Run tox
         run: tox
       - name: Upload coverage report
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v2
         with:
-          file: .coverage
           fail_ci_if_error: true
           verbose: true
   pre-commit:
@@ -123,7 +122,7 @@ jobs:
           TOXENV: build
         run: tox
       - name: Publish
-        uses: pypa/gh-action-pypi-publish@v1.4.1
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
           password: ${{ secrets.TEST_PYPI_TOKEN }}
@@ -184,7 +183,7 @@ jobs:
           TOXENV: build
         run: tox
       - name: Publish
-        uses: pypa/gh-action-pypi-publish@v1.4.1
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
           password: ${{ secrets.PYPI_TOKEN }}
