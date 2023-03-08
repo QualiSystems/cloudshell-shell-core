@@ -26,6 +26,11 @@ setup(
         "driver interfaces and metadata definitions as well as utilities and helpers "
         "created specifically for Shells"
     ),
+    long_description=(
+        "Core package for all CloudShell Shells. This package contains the basic "
+        "driver interfaces and metadata definitions as well as utilities and helpers "
+        "created specifically for Shells"
+    ),
     include_package_data=True,
     keywords="sandbox cloud cmp cloudshell",
     classifiers=[
