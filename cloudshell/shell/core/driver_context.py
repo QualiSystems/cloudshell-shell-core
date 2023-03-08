@@ -266,7 +266,7 @@ class ReservationContextDetails:
     :param running_user: The user that run the command
     :type running_user: str
 
-    :param cloud_info_access_key: The private key
+    :param cloud_info_access_key: The private key. Was added in 2021.1 version
     :type cloud_info_access_key: str
 
     """
