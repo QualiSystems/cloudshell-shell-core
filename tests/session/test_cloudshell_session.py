@@ -20,7 +20,6 @@ else:
 
 class TestCloudShellSessionContext(TestCase):
     def test_cloudshell_session_context_proper_initialized(self):
-
         # Arrange
         context = mock.create_autospec(ResourceCommandContext)
         context.connectivity = mock.create_autospec(ConnectivityContext)
@@ -39,7 +38,6 @@ class TestCloudShellSessionContext(TestCase):
 
             # Act
             with CloudShellSessionContext(context) as cloudshell_session:
-
                 # Assert
                 cloudshell_api_session.assert_called_with(
                     domain="my_space",
@@ -51,7 +49,6 @@ class TestCloudShellSessionContext(TestCase):
                 self.assertEqual(cloudshell_session, expected_cloudshell_session)
 
     def test_cloudshell_session_context_proper_initialized_using_https(self):
-
         # Arrange
         context = mock.create_autospec(ResourceCommandContext)
         context.connectivity = mock.create_autospec(ConnectivityContext)
@@ -71,7 +68,6 @@ class TestCloudShellSessionContext(TestCase):
 
             # Act
             with CloudShellSessionContext(context) as cloudshell_session:
-
                 # Assert
                 cloudshell_api_session.assert_called_with(
                     domain="my_space",
@@ -102,7 +98,6 @@ class TestCloudShellSessionContext(TestCase):
 
             # Act
             with CloudShellSessionContext(context) as cloudshell_session:
-
                 # Assert
                 cloudshell_api_session.assert_called_with(
                     domain="my_space",
@@ -114,7 +109,6 @@ class TestCloudShellSessionContext(TestCase):
                 self.assertEqual(cloudshell_session, expected_cloudshell_session)
 
     def test_cloudshell_session_global_domain_used_when_outside_of_reservation(self):
-
         # Arrange
         context = mock.create_autospec(ResourceCommandContext)
         context.connectivity = mock.create_autospec(ConnectivityContext)
@@ -132,7 +126,6 @@ class TestCloudShellSessionContext(TestCase):
 
             # Act
             with CloudShellSessionContext(context) as cloudshell_session:
-
                 # Assert
                 cloudshell_api_session.assert_called_with(
                     domain="Global",

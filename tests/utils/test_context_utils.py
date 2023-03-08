@@ -82,7 +82,6 @@ class TestContextUtils(TestCase):
         new=MagicMock(return_value=None),
     )
     def test_get_connectivity_context_attribute_exception(self):
-
         server_address = "server_address"
         self.context.connectivity.server_address = server_address
         with self.assertRaises(Exception):
