@@ -1,8 +1,7 @@
 import platform
 import socket
-import threading
 
-from cloudshell.logging.qs_logger import get_qs_logger, log_execution_info
+from cloudshell.logging.qs_logger import get_qs_logger
 
 from cloudshell.shell.core.context_utils import (
     get_reservation_context_attribute,
@@ -69,33 +68,32 @@ class LoggingSessionContext:
         """
         if is_instance_of(context, "AutoLoadCommandContext"):
             log_group = INVENTORY
-            resource_name = context.resource.name
         elif is_instance_of(context, "ResourceCommandContext"):
             log_group = (
                 context.reservation.reservation_id if context.reservation else INVENTORY
             )
-            resource_name = context.resource.name
         elif is_instance_of(context, "ResourceRemoteCommandContext"):
             log_group = (
                 context.remote_reservation.reservation_id
                 if context.remote_reservation
                 else INVENTORY
             )
-            resource_name = context.remote_endpoints[0].name
         elif is_instance_of(context, "UnreservedResourceCommandContext"):
             log_group = DELETE_ARTIFACTS
-            resource_name = context.resource.name
         else:
             raise Exception(
                 "get_logger_for_context",
                 f"Unsupported command context provided {context}",
             )
 
+        resource_name = context.resource.name
         exec_info = LoggingSessionContext.get_execution_info(context)
         qs_logger = get_qs_logger(
-            log_group=log_group, log_category="QS", log_file_prefix=resource_name
+            log_group=log_group,
+            log_category="cloudshell",
+            log_file_prefix=resource_name,
+            exec_info=exec_info,
         )
-        log_execution_info(qs_logger, exec_info)
         return qs_logger
 
     @staticmethod
@@ -108,13 +106,7 @@ class LoggingSessionContext:
         :rtype: logging.Logger
         """
         logger = LoggingSessionContext.get_logger_for_context(context)
-        child = logger.getChild(threading.currentThread().name)
-        for handler in logger.handlers:
-            child.addHandler(handler)
-        child.level = logger.level
-        for log_filter in logger.filters:
-            child.addFilter(log_filter)
-        return child
+        return logger
 
     def __enter__(self):
         """Initializes logger for the context.

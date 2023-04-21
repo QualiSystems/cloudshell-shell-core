@@ -11,11 +11,8 @@ from tests.interfaces.test_save_and_restore import get_schema
 
 class TestOrchestrationSaveRestore(TestCase):
     def setUp(self):
-        logger = MagicMock()
         resource_name = "Test"
-        self._orch_obj = OrchestrationSaveRestore(
-            logger=logger, resource_name=resource_name
-        )
+        self._orch_obj = OrchestrationSaveRestore(resource_name)
 
     def test_prepare_orchestration_save_result(self):
         file_path = "tftp://127.0.0.1/Test Folder/file.name"
