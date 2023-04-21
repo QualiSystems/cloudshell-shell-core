@@ -1,4 +1,4 @@
-class OrchestrationSavedArtifact(object):
+class OrchestrationSavedArtifact:
     def __init__(self, artifact_type, identifier):
         """Represents a saved artifact according to the save and restore standard.
 
@@ -17,7 +17,7 @@ class OrchestrationSavedArtifact(object):
         self.identifier = identifier
 
 
-class OrchestrationSaveResult(object):
+class OrchestrationSaveResult:
     def __init__(self, saved_artifacts_info):
         """Container class for the orchestration_save result.
 
@@ -28,7 +28,7 @@ class OrchestrationSaveResult(object):
         self.saved_artifacts_info = saved_artifacts_info
 
 
-class OrchestrationRestoreRules(object):
+class OrchestrationRestoreRules:
     def __init__(self, requires_same_resource, additional_rules=None):
         """Container class for the orchestration_save result.
 
@@ -41,7 +41,7 @@ class OrchestrationRestoreRules(object):
             setattr(self, rule, additional_rules[rule])
 
 
-class OrchestrationSavedArtifactInfo(object):
+class OrchestrationSavedArtifactInfo:
     def __init__(self, resource_name, created_date, restore_rules, saved_artifact):
         """This object describes the saved artifacts from a specific save operation.
 

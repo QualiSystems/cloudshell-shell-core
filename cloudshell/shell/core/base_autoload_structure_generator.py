@@ -1,7 +1,7 @@
 from cloudshell.shell.core.driver_context import AutoLoadAttribute, AutoLoadResource
 
 
-class BaseResource(object):
+class BaseResource:
     def __init__(self, resource_model="", name="", relative_address="", unique_id=None):
         self.resource_model = resource_model
         self.name = name

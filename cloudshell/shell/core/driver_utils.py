@@ -2,7 +2,7 @@ from functools import wraps
 from threading import Event, Lock
 
 
-class GlobalLock(object):
+class GlobalLock:
     _event = Event()
     _event.set()
     _lock = Lock()

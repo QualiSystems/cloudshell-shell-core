@@ -405,7 +405,7 @@ class ResourceRemoteCommandContext:
         self.remote_endpoints = remote_endpoints
 
 
-class ApiVmDetails(object):
+class ApiVmDetails:
     """API VM details.
 
     :param CloudProviderName: The name of the cloud provider
@@ -424,7 +424,7 @@ class ApiVmDetails(object):
         self.VmCustomParams = vm_custom_params or []
 
 
-class ApiVmCustomParam(object):
+class ApiVmCustomParam:
     """API VM custom param.
 
     :type Name: str

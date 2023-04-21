@@ -84,7 +84,7 @@ def get_resource_context_attribute(attribute, context=None):
     else:
         raise Exception(
             "get_resource_context_attribute",
-            "Resource context does not have attribute {0}".format(attribute),
+            f"Resource context does not have attribute {attribute}",
         )
 
 
@@ -131,7 +131,7 @@ def get_reservation_context_attribute(attribute, context=None):
     else:
         raise Exception(
             "get_reservation_context_attribute",
-            "Reservation context does not have attribute {0}".format(attribute),
+            f"Reservation context does not have attribute {attribute}",
         )
 
 
@@ -156,5 +156,5 @@ def get_connectivity_context_attribute(attribute, context=None):
     else:
         raise Exception(
             "get_connectivity_context_attribute",
-            "Connectivity context does not have attribute {0}".format(attribute),
+            f"Connectivity context does not have attribute {attribute}",
         )

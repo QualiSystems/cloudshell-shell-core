@@ -1,5 +1,5 @@
-import sys
 from unittest import TestCase
+from unittest.mock import MagicMock
 
 import jsonpickle
 from jsonschema import validate
@@ -7,11 +7,6 @@ from jsonschema import validate
 from cloudshell.shell.core.orchestration_save_restore import OrchestrationSaveRestore
 
 from tests.interfaces.test_save_and_restore import get_schema
-
-if sys.version_info >= (3, 0):
-    from unittest.mock import MagicMock
-else:
-    from mock import MagicMock
 
 
 class TestOrchestrationSaveRestore(TestCase):
@@ -30,7 +25,7 @@ class TestOrchestrationSaveRestore(TestCase):
     def test_parse_orch_save_result_no_custom_params(self):
         scheme = "tftp"
         folder_path = "//127.0.0.1/Test Folder/file.name"
-        file_path = "{}:{}".format(scheme, folder_path)
+        file_path = f"{scheme}:{folder_path}"
         saved_artifact_info = self._orch_obj.prepare_orchestration_save_result(
             file_path
         )
@@ -52,7 +47,7 @@ class TestOrchestrationSaveRestore(TestCase):
                 }"""
         scheme = "tftp"
         folder_path = "//127.0.0.1/Test Folder/file.name"
-        file_path = "{}:{}".format(scheme, folder_path)
+        file_path = f"{scheme}:{folder_path}"
         saved_artifact_info = self._orch_obj.prepare_orchestration_save_result(
             file_path
         )

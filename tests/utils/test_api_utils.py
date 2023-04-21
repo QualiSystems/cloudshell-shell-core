@@ -1,15 +1,7 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
-import sys
 from unittest import TestCase
+from unittest.mock import MagicMock
 
 from cloudshell.shell.core.api_utils import decrypt_password_from_attribute
-
-if sys.version_info >= (3, 0):
-    from unittest.mock import MagicMock
-else:
-    from mock import MagicMock
 
 
 class TestApiUtils(TestCase):
