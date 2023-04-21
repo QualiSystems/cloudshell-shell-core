@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import platform
 import socket
 
@@ -7,6 +9,7 @@ from cloudshell.shell.core.context_utils import (
     get_reservation_context_attribute,
     is_instance_of,
 )
+from cloudshell.shell.core.utils.get_installed_packages import get_installed_packages
 
 INVENTORY = "inventory"
 DELETE_ARTIFACTS = "DeleteArtifacts"
@@ -22,7 +25,7 @@ class LoggingSessionContext:
         self._logger = None
 
     @staticmethod
-    def get_execution_info(context):
+    def get_execution_info(context) -> dict[str, dict[str, str | tuple[str]]]:
         """Aggregate information about execution server.
 
         :param context: ResourceCommandContext
@@ -30,7 +33,7 @@ class LoggingSessionContext:
         """
         reservation_info = {}
         hostname = socket.gethostname()
-        reservation_info["Python version"] = platform.python_version()
+        reservation_info["Python Version"] = platform.python_version()
         reservation_info["Operating System"] = platform.platform()
         reservation_info["Platform"] = platform.system()
         reservation_info["Hostname"] = hostname
@@ -41,13 +44,13 @@ class LoggingSessionContext:
             reservation_info["IP"] = "n/a"
 
         try:
-            reservation_info["ReservationID"] = get_reservation_context_attribute(
+            reservation_info["Reservation ID"] = get_reservation_context_attribute(
                 "reservation_id", context
             )
             reservation_info["Description"] = get_reservation_context_attribute(
                 "description", context
             )
-            reservation_info["EnviromentName"] = get_reservation_context_attribute(
+            reservation_info["Environment Name"] = get_reservation_context_attribute(
                 "environment_name", context
             )
             reservation_info["Username"] = get_reservation_context_attribute(
@@ -56,7 +59,17 @@ class LoggingSessionContext:
         except Exception:
             pass
 
-        return reservation_info
+        installed_packages = tuple(
+            f"{name} == {version}"
+            for name, version in sorted(get_installed_packages().items())
+        )
+
+        exec_info = {
+            "INFO": reservation_info,
+            "DEBUG": {"Installed Packages": installed_packages},
+        }
+
+        return exec_info
 
     @staticmethod
     def get_logger_for_context(context):

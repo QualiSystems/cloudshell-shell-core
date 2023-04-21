@@ -10,7 +10,6 @@ from cloudshell.shell.core.interfaces.save_restore import (
     OrchestrationSaveResult,
 )
 
-
 logger = logging.getLogger(__name__)
 
 
