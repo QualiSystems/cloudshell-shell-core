@@ -1,8 +1,5 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
-import sys
 from unittest import TestCase
+from unittest.mock import MagicMock, patch
 
 from cloudshell.shell.core.context_utils import (
     get_attribute_by_name,
@@ -13,11 +10,6 @@ from cloudshell.shell.core.context_utils import (
     get_resource_name,
     put_context,
 )
-
-if sys.version_info >= (3, 0):
-    from unittest.mock import MagicMock, patch
-else:
-    from mock import MagicMock, patch
 
 
 class TestContextUtils(TestCase):

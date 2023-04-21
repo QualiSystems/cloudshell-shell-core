@@ -1,5 +1,5 @@
-import sys
-from unittest import TestCase
+from unittest import TestCase, mock
+from unittest.mock import MagicMock, Mock
 
 from cloudshell.shell.core.driver_context import (
     ConnectivityContext,
@@ -9,13 +9,6 @@ from cloudshell.shell.core.driver_context import (
     ResourceRemoteCommandContext,
 )
 from cloudshell.shell.core.session.cloudshell_session import CloudShellSessionContext
-
-if sys.version_info >= (3, 0):
-    from unittest import mock
-    from unittest.mock import MagicMock, Mock
-else:
-    import mock
-    from mock import MagicMock, Mock
 
 
 class TestCloudShellSessionContext(TestCase):

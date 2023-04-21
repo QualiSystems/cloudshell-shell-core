@@ -10,7 +10,7 @@ from cloudshell.shell.core.interfaces.save_restore import (
 )
 
 
-class OrchestrationSaveRestore(object):
+class OrchestrationSaveRestore:
     REQUIRED_SAVE_ATTRIBUTES_LIST = [
         "resource_name",
         ("saved_artifact", "identifier"),
@@ -24,7 +24,7 @@ class OrchestrationSaveRestore(object):
 
     def prepare_orchestration_save_result(self, saved_file_path):
         artifact_type = saved_file_path.split(":")[0]
-        identifier = saved_file_path.replace("{0}:".format(artifact_type), "")
+        identifier = saved_file_path.replace(f"{artifact_type}:", "")
         saved_artifact = OrchestrationSavedArtifact(
             identifier=identifier, artifact_type=artifact_type
         )
@@ -65,7 +65,7 @@ class OrchestrationSaveRestore(object):
         ):
             raise Exception(
                 "ConfigurationOperations",
-                "Incompatible resource, expected {}".format(self._resource_name),
+                f"Incompatible resource, expected {self._resource_name}",
             )
 
         saved_artifact_dict = saved_config.get("saved_artifact", {})
@@ -73,7 +73,7 @@ class OrchestrationSaveRestore(object):
             raise Exception()
         scheme = saved_artifact_dict.get("artifact_type")
         url_path = saved_artifact_dict.get("identifier")
-        path = "{}:{}".format(scheme, url_path)
+        path = f"{scheme}:{url_path}"
         restore_params = {
             "configuration_type": "running",
             "restore_method": "override",
@@ -124,8 +124,8 @@ class OrchestrationSaveRestore(object):
         if is_fail:
             raise Exception(
                 "ConfigurationOperations",
-                "Mandatory field {0} is missing in Saved Artifact Info "
-                "request json".format(fail_attribute),
+                f"Mandatory field {fail_attribute} is missing in Saved Artifact Info "
+                "request json",
             )
 
     def _validate_custom_params(self, custom_params):
