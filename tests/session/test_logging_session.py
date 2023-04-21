@@ -1,4 +1,5 @@
 import os
+import platform
 from unittest import TestCase, mock
 
 from cloudshell.logging.qs_logger import _LOGGER_CONTAINER
@@ -207,7 +208,7 @@ class TestLoggingSessionContext(TestCase):
         # Act
         result = LoggingSessionContext.get_execution_info(auto_load_context)
 
-        self.assertEqual(result["IP"], "n/a")
+        assert result["INFO"]["IP"] == "n/a"
 
     @staticmethod
     def _get_directory_name(base_filename):
@@ -216,3 +217,26 @@ class TestLoggingSessionContext(TestCase):
     @staticmethod
     def _get_filename(base_filename):
         return os.path.basename(base_filename).split("--")[0]
+
+
+def test_get_exec_info():
+    context = mock.Mock()
+
+    exec_info = LoggingSessionContext.get_execution_info(context)
+
+    info_data = exec_info["INFO"]
+    debug_data = exec_info["DEBUG"]
+
+    assert info_data["Python Version"] == platform.python_version()
+    assert info_data["Platform"] == platform.system()
+    assert info_data["Reservation ID"] == context.reservation.reservation_id
+    assert info_data["Description"] == context.reservation.description
+    assert info_data["Username"] == context.reservation.owner_user
+
+    packages = debug_data["Installed Packages"]
+    assert isinstance(packages, tuple)
+    assert len(packages) > 0
+
+    packages_names = [package.split(" ==")[0] for package in packages]
+    assert "cloudshell-shell-core" in packages_names
+    assert "cloudshell-logging" in packages_names
