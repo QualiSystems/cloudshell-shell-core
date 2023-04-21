@@ -1,7 +1,7 @@
 from cloudshell.api.cloudshell_api import CloudShellAPISession
 
 
-class CloudShellSessionContext(object):
+class CloudShellSessionContext:
     DEFAULT_DOMAIN = "Global"
     DEFAULT_API_SCHEME = "http"
 

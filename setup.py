@@ -19,6 +19,7 @@ setup(
     author_email="info@quali.com",
     packages=find_packages(),
     install_requires=required,
+    python_requires="~=3.7",
     tests_require=required_for_tests,
     version=version_from_file,
     description=(
@@ -35,7 +36,8 @@ setup(
     keywords="sandbox cloud cmp cloudshell",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
-        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.9",
         "Topic :: Software Development :: Libraries",
         "License :: OSI Approved :: Apache Software License",
     ],

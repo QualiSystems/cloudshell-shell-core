@@ -1,6 +1,5 @@
 import os
-import sys
-from unittest import TestCase
+from unittest import TestCase, mock
 
 from cloudshell.logging.qs_logger import _LOGGER_CONTAINER
 
@@ -15,11 +14,6 @@ from cloudshell.shell.core.session.logging_session import (
     INVENTORY,
     LoggingSessionContext,
 )
-
-if sys.version_info >= (3, 0):
-    from unittest import mock
-else:
-    import mock
 
 
 class TestLoggingSessionContext(TestCase):

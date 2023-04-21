@@ -13,7 +13,7 @@ INVENTORY = "inventory"
 DELETE_ARTIFACTS = "DeleteArtifacts"
 
 
-class LoggingSessionContext(object):
+class LoggingSessionContext:
     def __init__(self, context):
         """Initializes logger for context.
 
@@ -88,7 +88,7 @@ class LoggingSessionContext(object):
         else:
             raise Exception(
                 "get_logger_for_context",
-                "Unsupported command context provided {0}".format(context),
+                f"Unsupported command context provided {context}",
             )
 
         exec_info = LoggingSessionContext.get_execution_info(context)
