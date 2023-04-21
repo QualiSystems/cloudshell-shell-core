@@ -1,4 +1,5 @@
 import datetime
+import logging
 
 import jsonpickle
 
@@ -10,6 +11,9 @@ from cloudshell.shell.core.interfaces.save_restore import (
 )
 
 
+logger = logging.getLogger(__name__)
+
+
 class OrchestrationSaveRestore:
     REQUIRED_SAVE_ATTRIBUTES_LIST = [
         "resource_name",
@@ -18,9 +22,8 @@ class OrchestrationSaveRestore:
         ("restore_rules", "requires_same_resource"),
     ]
 
-    def __init__(self, logger, resource_name):
+    def __init__(self, resource_name: str):
         self._resource_name = resource_name
-        self._logger = logger
 
     def prepare_orchestration_save_result(self, saved_file_path):
         artifact_type = saved_file_path.split(":")[0]
@@ -139,5 +142,5 @@ class OrchestrationSaveRestore:
 
         :return OrchestrationRestoreRules: response
         """
-        self._logger.info("Creating Restore Rules")
+        logger.info("Creating Restore Rules")
         return OrchestrationRestoreRules(True)
