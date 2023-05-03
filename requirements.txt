@@ -1,3 +1,4 @@
+setuptools
 jsonpickle
 cloudshell-automation-api>2021
 cloudshell-logging~=2.0
