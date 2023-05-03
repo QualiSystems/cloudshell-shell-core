@@ -25,6 +25,3 @@ repos:
           flake8-eradicate,
           flake8-requirements,
         ]
-        args: [
-          "--known-modules=cloudshell-shell-core:[cloudshell.shell.core,tests],cloudshell-automation-api:[cloudshell.api],cloudshell-logging:[cloudshell.logging]"
-        ]

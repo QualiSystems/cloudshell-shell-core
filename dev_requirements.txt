@@ -1,2 +1,5 @@
 -r test_requirements.txt
--r requirements.txt
+jsonpickle
+cloudshell-automation-api
+cloudshell-logging @ git+https://github.com/QualiSystems/cloudshell-logging@dev
+cloudshell-rest-api @ git+https://github.com/QualiSystems/cloudshell-rest-api@dev
