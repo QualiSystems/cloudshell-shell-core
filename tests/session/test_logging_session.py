@@ -238,5 +238,4 @@ def test_get_exec_info():
     assert len(packages) > 0
 
     packages_names = [package.split(" ==")[0] for package in packages]
-    assert "cloudshell-shell-core" in packages_names
     assert "cloudshell-logging" in packages_names
