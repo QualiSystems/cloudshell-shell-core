@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import platform
 import socket
+import threading
 from contextlib import suppress
 
 from cloudshell.rest.api import PackagingRestApiClient
@@ -12,6 +13,7 @@ from cloudshell.shell.core.context_utils import get_reservation_context_attribut
 from cloudshell.shell.core.utils.get_installed_packages import get_installed_packages
 
 _exec_basic_info = {}
+_lock = threading.Lock()
 
 
 def get_execution_info(context) -> dict[str, dict[str, str | tuple[str, ...]]]:
@@ -39,30 +41,36 @@ def _get_basic_info(context) -> dict[str, dict[str, str | tuple[str, ...]]]:
 
     This would be changed until the process is alive.
     """
-    if not _exec_basic_info:
-        info_level = {
-            "Python Version": platform.python_version(),
-            "Operating System": platform.platform(),
-            "Platform": platform.system(),
-            "Hostname": socket.gethostname(),
-        }
-        try:
-            info_level["IP"] = socket.gethostbyname(info_level["Hostname"])
-        except Exception:
-            info_level["IP"] = "n/a"
-        with suppress(Exception):
-            info_level["CloudShell Version"] = context.connectivity.cloudshell_version
-        with suppress(Exception):
-            shell = _get_shell(context)
-            info_level["Shell Version"] = shell.version
-            info_level["Shell Official"] = shell.is_official
+    if _exec_basic_info:
+        return _exec_basic_info.copy()
 
-        installed_packages = tuple(
-            f"{name} == {version}"
-            for name, version in sorted(get_installed_packages().items())
-        )
-        _exec_basic_info["INFO"] = info_level
-        _exec_basic_info["DEBUG"] = {"Installed Packages": installed_packages}
+    with _lock:
+        if not _exec_basic_info:
+            info_level = {
+                "Python Version": platform.python_version(),
+                "Operating System": platform.platform(),
+                "Platform": platform.system(),
+                "Hostname": socket.gethostname(),
+            }
+            try:
+                info_level["IP"] = socket.gethostbyname(info_level["Hostname"])
+            except Exception:
+                info_level["IP"] = "n/a"
+            with suppress(Exception):
+                info_level[
+                    "CloudShell Version"
+                ] = context.connectivity.cloudshell_version
+            with suppress(Exception):
+                shell = _get_shell(context)
+                info_level["Shell Version"] = shell.version
+                info_level["Shell Official"] = shell.is_official
+
+            installed_packages = tuple(
+                f"{name} == {version}"
+                for name, version in sorted(get_installed_packages().items())
+            )
+            _exec_basic_info["INFO"] = info_level
+            _exec_basic_info["DEBUG"] = {"Installed Packages": installed_packages}
     return _exec_basic_info.copy()
 
 
