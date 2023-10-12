@@ -23,10 +23,7 @@ class TestLoggingSessionContext(TestCase):
         _LOGGER_CONTAINER.clear()
 
     @mock.patch("cloudshell.shell.core.session.logging_session.get_qs_logger")
-    @mock.patch(
-        "cloudshell.shell.core.session.logging_session.LoggingSessionContext"
-        ".get_execution_info"
-    )
+    @mock.patch("cloudshell.shell.core.session.logging_session.get_execution_info")
     def test_logger_initialized_for_autoload_context(
         self, get_execution_info, get_qs_logger
     ):
@@ -53,10 +50,7 @@ class TestLoggingSessionContext(TestCase):
             assert logger == qs_logger
 
     @mock.patch("cloudshell.shell.core.session.logging_session.get_qs_logger")
-    @mock.patch(
-        "cloudshell.shell.core.session.logging_session.LoggingSessionContext"
-        ".get_execution_info"
-    )
+    @mock.patch("cloudshell.shell.core.session.logging_session.get_execution_info")
     def test_logger_initialized_for_resource_context_without_reservation(
         self, get_execution_info, get_qs_logger
     ):
@@ -85,10 +79,7 @@ class TestLoggingSessionContext(TestCase):
             assert logger == qs_logger
 
     @mock.patch("cloudshell.shell.core.session.logging_session.get_qs_logger")
-    @mock.patch(
-        "cloudshell.shell.core.session.logging_session.LoggingSessionContext"
-        ".get_execution_info"
-    )
+    @mock.patch("cloudshell.shell.core.session.logging_session.get_execution_info")
     def test_logger_initialized_for_resource_context_with_reservation(
         self, get_execution_info, get_qs_logger
     ):
@@ -123,10 +114,7 @@ class TestLoggingSessionContext(TestCase):
             assert logger == qs_logger
 
     @mock.patch("cloudshell.shell.core.session.logging_session.get_qs_logger")
-    @mock.patch(
-        "cloudshell.shell.core.session.logging_session.LoggingSessionContext"
-        ".get_execution_info"
-    )
+    @mock.patch("cloudshell.shell.core.session.logging_session.get_execution_info")
     def test_logger_initialized_for_remote_context_without_reservation(
         self, get_execution_info, get_qs_logger
     ):
@@ -158,10 +146,7 @@ class TestLoggingSessionContext(TestCase):
             assert logger == qs_logger
 
     @mock.patch("cloudshell.shell.core.session.logging_session.get_qs_logger")
-    @mock.patch(
-        "cloudshell.shell.core.session.logging_session.LoggingSessionContext"
-        ".get_execution_info"
-    )
+    @mock.patch("cloudshell.shell.core.session.logging_session.get_execution_info")
     def test_logger_initialized_for_remote_context_with_reservation(
         self, get_execution_info, get_qs_logger
     ):
@@ -195,10 +180,12 @@ class TestLoggingSessionContext(TestCase):
             )
             assert logger == qs_logger
 
-    @mock.patch("cloudshell.shell.core.session.logging_session.socket.gethostbyname")
+    @mock.patch("cloudshell.shell.core.utils.execution_info.socket.gethostbyname")
     def test_get_execution_info_handles_gethostbyname_exception(
         self, get_host_by_name_mock
     ):
+        from cloudshell.shell.core.utils import get_execution_info
+
         # Arrange
         auto_load_context = mock.create_autospec(AutoLoadCommandContext)
         auto_load_context.resource = mock.create_autospec(ResourceContextDetails)
@@ -206,7 +193,7 @@ class TestLoggingSessionContext(TestCase):
         get_host_by_name_mock.side_effect = Exception("error")
 
         # Act
-        result = LoggingSessionContext.get_execution_info(auto_load_context)
+        result = get_execution_info(auto_load_context)
 
         assert result["INFO"]["IP"] == "n/a"
 
@@ -220,9 +207,11 @@ class TestLoggingSessionContext(TestCase):
 
 
 def test_get_exec_info():
+    from cloudshell.shell.core.utils import get_execution_info
+
     context = mock.Mock()
 
-    exec_info = LoggingSessionContext.get_execution_info(context)
+    exec_info = get_execution_info(context)
 
     info_data = exec_info["INFO"]
     debug_data = exec_info["DEBUG"]
