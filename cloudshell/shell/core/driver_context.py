@@ -55,6 +55,9 @@ class ConnectivityContext:
     :type cloudshell_version: str
 
     :type cloudshell_api_scheme: str
+
+    :param use_web_api_endpoint: Is Cloudshell API Web Api Endpoint enabled on server?
+    :type use_web_api_endpoint: str
     """
 
     def __init__(
@@ -65,6 +68,7 @@ class ConnectivityContext:
         admin_auth_token,
         cloudshell_version,
         cloudshell_api_scheme,
+        use_web_api_endpoint=None,
     ):
         self.server_address = server_address
         self.cloudshell_api_port = cloudshell_api_port
@@ -72,6 +76,7 @@ class ConnectivityContext:
         self.admin_auth_token = admin_auth_token
         self.cloudshell_version = cloudshell_version
         self.cloudshell_api_scheme = cloudshell_api_scheme
+        self.use_web_api_endpoint = use_web_api_endpoint
 
 
 class ResourceContextDetails:
