@@ -56,12 +56,10 @@ class ConnectivityContext:
 
     :type cloudshell_api_scheme: str
 
-    :param use_webapi_endpoint: Is Cloudshell API Web Api Endpoint enabled on server? 
+    :param use_webapi_endpoint: Is Cloudshell API Web Api Endpoint enabled on server?
     can be either 'True' or 'False'
     :type use_webapi_endpoint: str
     """
-
-
 
     def __init__(
         self,
