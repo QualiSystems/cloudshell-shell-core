@@ -56,7 +56,9 @@ class ConnectivityContext:
 
     :type cloudshell_api_scheme: str
 
-    :param use_webapi_endpoint: Is Cloudshell API Web Api Endpoint enabled on server?
+    :param use_webapi_endpoint: Is Cloudshell API Web Api Endpoint enabled on server? 
+    Can be either 'True' or 'False' or None. 
+    Only 'True' indicates that web api endpoint has been enabled.
     :type use_webapi_endpoint: str
     """
 
@@ -76,7 +78,7 @@ class ConnectivityContext:
         self.admin_auth_token = admin_auth_token
         self.cloudshell_version = cloudshell_version
         self.cloudshell_api_scheme = cloudshell_api_scheme
-        self.use_webapi_endpoint = use_web_api_endpoint
+        self.use_webapi_endpoint = use_webapi_endpoint
 
 
 class ResourceContextDetails:
