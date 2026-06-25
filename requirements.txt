@@ -1,5 +1,4 @@
-setuptools
 jsonpickle
-cloudshell-automation-api>2021
+cloudshell-automation-api>2021,<2027
 cloudshell-logging~=2.0
 cloudshell-rest-api~=9.0
