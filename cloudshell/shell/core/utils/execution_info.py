@@ -63,7 +63,7 @@ def _get_basic_info(context) -> dict[str, dict[str, str | tuple[str, ...]]]:
             with suppress(Exception):
                 shell = _get_shell(context)
                 info_level["Shell Version"] = shell.version
-                info_level["Shell Official"] = shell.is_official
+                info_level["Shell Official"] = str(shell.is_official)
 
             installed_packages = tuple(
                 f"{name} == {version}"
